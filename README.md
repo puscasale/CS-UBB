@@ -1,7 +1,7 @@
 # CS-UBB
 **Projects from university**
 
-## First Year
+## *First Year*
 
 ### First semester
 - **Computer Systems Architecture**
