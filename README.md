@@ -4,7 +4,7 @@
 ## First Year
 
 ### First semester
-- ** Computer Systems Architecture**
+- **Computer Systems Architecture*
 - ** Fundamentals of Programming**
 
 
