@@ -3,7 +3,7 @@
 
 ## *First Year*
 
-### [First semester](sem%201/)
+### First semester
 - **[Computer Systems Architecture](sem%201/asc/)**
 - **[Fundamentals of Programming](sem%201/fp/)**
 
