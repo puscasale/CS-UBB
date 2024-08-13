@@ -1,0 +1,66 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_apartamente/main.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_apartamente\cmake-build-debug-coverage\CMakeFiles\sim_apartamente.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_apartamente\cmake-build-debug-coverage\CMakeFiles\sim_apartamente.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include <QApplication>
+        -:    2:#include <QPushButton>
+        -:    3:#include "Repo.h"
+        -:    4:#include "Service.h"
+        -:    5:#include "GUI.h"
+        -:    6:#include "tests.h"
+function main called 1 returned 100% blocks executed 61%
+        1:    7:int main(int argc, char *argv[]) {
+        1:    8:    QApplication a(argc, argv);
+        1:    8-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:    9:    test_all();
+        1:    9-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   10:    RepoInFile rep(R"(C:\Users\Ale\Desktop\sim_apartamente\merge.txt)");
+        1:   10-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   10-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   10-block  2
+call    6 returned 1
+    $$$$$:   10-block  3
+call    7 never executed
+    $$$$$:   10-block  4
+    $$$$$:   10-block  5
+        -:   11:    //Repo rep;
+        1:   12:    Service srv(rep);
+call    0 returned 1
+        1:   13:    GUI gui(srv);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   14:    gui.show();
+        1:   14-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   15:    return a.exec();
+        1:   15-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   15-block  1
+        1:   16:}
+        1:   16-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+    $$$$$:   16-block  1
+call    3 never executed
+    $$$$$:   16-block  2
+call    4 never executed
+    $$$$$:   16-block  3
+call    5 never executed

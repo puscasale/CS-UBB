@@ -1,0 +1,7 @@
+oktoberfest,celebration,festival,15
+comiccon,convention,convention,25
+tedtalks,inspiration,conference,12
+mardigras,parade,festival,8
+burningman,art,festival,7
+sxsw,multimedia,festival,18
+artbasel,exhibit,fair,4

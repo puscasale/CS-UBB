@@ -1,0 +1,78 @@
+        -:    0:Source:C:/Users/Ale/Desktop/QT/activity.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\activity.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\activity.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include "activity.h"
+        -:    2:
+function _ZN8ActivityC2ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_S5_i called 54 returned 100% blocks executed 62%
+       54:    3:Activity::Activity(string name, string description, string type, int time): name{name}, description{description}, type{type}, time{time}{};
+       54:    3-block  0
+call    0 returned 54
+call    1 returned 54
+branch  2 taken 54 (fallthrough)
+branch  3 taken 0 (throw)
+       54:    3-block  1
+call    4 returned 54
+branch  5 taken 54 (fallthrough)
+branch  6 taken 0 (throw)
+       54:    3-block  2
+    $$$$$:    3-block  3
+call    7 never executed
+    $$$$$:    3-block  4
+call    8 never executed
+        -:    4:
+function _ZNK8Activity8get_nameB5cxx11Ev called 300 returned 100% blocks executed 100%
+      300:    5:string Activity::get_name() const{
+      300:    6:    return name;
+      300:    6-block  0
+call    0 returned 300
+        -:    7:}
+        -:    8:
+function _ZNK8Activity15get_descriptionB5cxx11Ev called 100 returned 100% blocks executed 100%
+      100:    9:string Activity::get_description() const{
+      100:   10:    return description;
+      100:   10-block  0
+call    0 returned 100
+        -:   11:}
+        -:   12:
+function _ZNK8Activity8get_typeB5cxx11Ev called 104 returned 100% blocks executed 100%
+      104:   13:string Activity::get_type() const{
+      104:   14:    return type;
+      104:   14-block  0
+call    0 returned 104
+        -:   15:}
+        -:   16:
+function _ZNK8Activity8get_timeEv called 72 returned 100% blocks executed 100%
+       72:   17:int Activity::get_time() const{
+       72:   18:    return time;
+       72:   18-block  0
+        -:   19:}
+        -:   20:
+function _ZN8Activity8set_nameERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 4 returned 100% blocks executed 100%
+        4:   21:void Activity::set_name(const string &namee) {
+        4:   22:    this->name = namee;
+        4:   22-block  0
+call    0 returned 4
+        4:   23:}
+        -:   24:
+function _ZN8Activity15set_descriptionERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 4 returned 100% blocks executed 100%
+        4:   25:void Activity::set_description(const string &descr) {
+        4:   26:    this->description = descr;
+        4:   26-block  0
+call    0 returned 4
+        4:   27:}
+        -:   28:
+function _ZN8Activity8set_typeERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 4 returned 100% blocks executed 100%
+        4:   29:void Activity::set_type(const string &typee) {
+        4:   30:    this->type = typee;
+        4:   30-block  0
+call    0 returned 4
+        4:   31:}
+        -:   32:
+function _ZN8Activity8set_timeEi called 4 returned 100% blocks executed 100%
+        4:   33:void Activity::set_time(int timee) {
+        4:   34:    this->time = timee;
+        4:   35:}
+        -:   36:
+        -:   37:
+        -:   38:

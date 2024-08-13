@@ -1,0 +1,3 @@
+nume1, prenume1
+nume2, prenume2
+nume3, prenume3

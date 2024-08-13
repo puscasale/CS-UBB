@@ -1,0 +1,47 @@
+     1                                  bits 32
+     2                                  global start
+     3                                  extern exit
+     4                                  import exit msvcrt.dll
+     5                                  
+     6                                  segment data use32 class=data 
+     7                                      ;nr pare dublate si cele impare triplate
+     8 00000000 01020304                    s1 db 1, 2, 3, 4
+     9 00000004 05060708                    s2 db 5, 6, 7, 8
+    10                                      l equ ($-s1) ; calculam lungimea
+    11 00000008 <res 00000008>              d resb l
+    12                                  segment code use32 class=code
+    13                                  start:
+    14 00000000 B908000000                 mov ecx, l
+    15 00000005 E335                       jecxz final
+    16 00000007 BE00000000                 mov esi, 0
+    17                                     
+    18                                     start_loop:
+    19                                     
+    20                                       ;mov al, esi
+    21                                       ;cbw
+    22 0000000C B302                         mov bl, 2
+    23 0000000E 89F0                         mov eax, esi
+    24 00000010 F6FB                         idiv bl; ah = edi % 2
+    25 00000012 80FC00                       cmp ah, 0
+    26 00000015 7402                         je par
+    27 00000017 750E                         jne impar 
+    28                                       
+    29                                       par:
+    30 00000019 8A86[00000000]                mov al, [s1 + esi]
+    31 0000001F 0286[04000000]                add al, [s2 + esi]
+    32 00000025 EB0C                          jmp adaugare
+    33                                        
+    34                                       impar:
+    35 00000027 8A86[00000000]                 mov al, [s1 + esi]
+    36 0000002D 2A86[04000000]                 sub al, [s2 + esi]
+    37                                         
+    38                                       adaugare:
+    39 00000033 8886[08000000]                 mov [d + esi], al 
+    40                                         
+    41 00000039 46                           inc esi 
+    42                                       
+    43 0000003A E2D0                       loop start_loop
+    44                                     
+    45                                  final: 
+    46 0000003C 6A00                    push dword 0
+    47 0000003E FF15[00000000]          call [exit]

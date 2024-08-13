@@ -1,0 +1,36 @@
+        -:    0:Source:C:/Users/Ale/Desktop/oop/lab6_7/ui.h
+        -:    0:Graph:C:\Users\Ale\Desktop\oop\lab6_7\cmake-build-debug-coverage\CMakeFiles\lab6_7.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\oop\lab6_7\cmake-build-debug-coverage\CMakeFiles\lab6_7.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#ifndef LAB6_7_UI_H
+        -:    2:#define LAB6_7_UI_H
+        -:    3:#include "Service.h"
+        -:    4:class UI
+        -:    5:{
+        -:    6:
+        -:    7:    Service& srv;
+        -:    8:public:
+function _ZN2UIC1ER7Service called 1 returned 100% blocks executed 100%
+        1:    9:    UI(Service& srv) :srv{ srv }{
+        1:   10:    }
+        -:   11:    UI(const UI& ot) = delete;
+        -:   12:    void start();
+        -:   13:    void add_ui();
+        -:   14:    void del_ui();
+        -:   15:    void modify_ui();
+        -:   16:    void filter_ui();
+        -:   17:    void sort_ui();
+        -:   18:    void get_ui();
+        -:   19:    void afis_ui(const vector<Activity>& all_elements);
+        -:   20:    void random_ui();
+        -:   21:    void exp_html();
+        -:   22:    void empty_cos_ui();
+        -:   23:    void add_cos_ui();
+        -:   24:    void raport_ui();
+        -:   25:    void print_menu();
+        -:   26:    void print_cart_menu();
+        -:   27:    void cart();
+        -:   28:    void add_default();
+        -:   29:    void undo_ui();
+        -:   30:};
+        -:   31:#endif //LAB6_7_UI_H

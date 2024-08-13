@@ -1,0 +1,148 @@
+        -:    0:Source:C:/Users/Ale/Desktop/untitled1/domain.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\domain.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\domain.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 06/25/2024.
+        -:    3://
+        -:    4:
+        -:    5:#include "domain.h"
+        -:    6:#include "iostream"
+        -:    7:#include "assert.h"
+        -:    8:
+function _Z11test_domainv called 1 returned 100% blocks executed 54%
+        1:    9:void test_domain(){
+        1:    9-block  0
+        5:   10:    Masina m("nr1","a",2022,"van");
+        1:   10-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   10-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   10-block  2
+call    6 returned 1
+branch  7 taken 1 (fallthrough)
+branch  8 taken 0 (throw)
+        1:   10-block  3
+call    9 returned 1
+branch 10 taken 1 (fallthrough)
+branch 11 taken 0 (throw)
+        1:   10-block  4
+call   12 returned 1
+call   13 returned 1
+call   14 returned 1
+    $$$$$:   10-block  5
+call   15 never executed
+    $$$$$:   10-block  6
+    $$$$$:   10-block  7
+    $$$$$:   10-block  8
+call   16 never executed
+    $$$$$:   10-block  9
+    $$$$$:   10-block 10
+    $$$$$:   10-block 11
+call   17 never executed
+    $$$$$:   10-block 12
+    $$$$$:   10-block 13
+       1*:   11:    assert(m.get_an() == 2022);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   11-block  0
+call    3 never executed
+        1:   11-block  1
+       1*:   12:    assert(m.get_tip() == "van");
+        1:   12-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   12-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   12-block  2
+branch  6 taken 0 (fallthrough)
+branch  7 taken 1
+    %%%%%:   12-block  3
+call    8 never executed
+        1:   12-block  4
+        1:   12-block  5
+branch  9 taken 1 (fallthrough)
+branch 10 taken 0
+        1:   12-block  6
+call   11 returned 1
+    $$$$$:   12-block  7
+branch 12 never executed (fallthrough)
+branch 13 never executed
+    $$$$$:   12-block  8
+call   14 never executed
+    $$$$$:   12-block  9
+       1*:   13:    assert(m.get_den() == "a");
+        1:   13-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   13-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   13-block  2
+branch  6 taken 0 (fallthrough)
+branch  7 taken 1
+    %%%%%:   13-block  3
+call    8 never executed
+        1:   13-block  4
+        1:   13-block  5
+branch  9 taken 1 (fallthrough)
+branch 10 taken 0
+        1:   13-block  6
+call   11 returned 1
+    $$$$$:   13-block  7
+branch 12 never executed (fallthrough)
+branch 13 never executed
+    $$$$$:   13-block  8
+call   14 never executed
+    $$$$$:   13-block  9
+       1*:   14:    assert(m.get_nr() == "nr1");
+        1:   14-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   14-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   14-block  2
+branch  6 taken 0 (fallthrough)
+branch  7 taken 1
+    %%%%%:   14-block  3
+call    8 never executed
+        1:   14-block  4
+        1:   14-block  5
+branch  9 taken 1 (fallthrough)
+branch 10 taken 0
+        1:   14-block  6
+call   11 returned 1
+    $$$$$:   14-block  7
+branch 12 never executed (fallthrough)
+branch 13 never executed
+    $$$$$:   14-block  8
+call   14 never executed
+    $$$$$:   14-block  9
+        1:   15:    m.set_an(2000);
+        1:   15-block  0
+call    0 returned 1
+       1*:   16:    assert(m.get_an() == 2000);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   16-block  0
+call    3 never executed
+        1:   16-block  1
+        1:   17:}
+        1:   17-block  0
+call    0 returned 1
+    $$$$$:   17-block  1
+call    1 never executed

@@ -1,0 +1,1273 @@
+        -:    0:Source:C:/Users/Ale/Desktop/QT/Repo.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\Repo.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\Repo.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include "Repo.h"
+        -:    2:#include <algorithm>
+        -:    3:#include <fstream>
+        -:    4:#include <random>
+        -:    5:
+function _ZN4Repo5storeERK8Activity called 43 returned 98% blocks executed 59%
+       43:    6:void Repo::store(const Activity &activity){
+      123:    7:    for (const Activity& e : act) {
+       43:    7-block  0
+call    0 returned 43
+call    1 returned 43
+       81:    7-block  1
+call    2 returned 81
+       80:    7-block  2
+call    3 returned 80
+      123:    7-block  3
+call    4 returned 123
+branch  5 taken 81
+branch  6 taken 42 (fallthrough)
+       81:    8:        if(e.get_name() == activity.get_name() && e.get_description() == activity.get_description() && e.get_type() == activity.get_type() && e.get_time() == activity.get_time()){
+call    0 returned 81
+branch  1 taken 81 (fallthrough)
+branch  2 taken 0 (throw)
+       81:    8-block  0
+call    3 returned 81
+branch  4 taken 81 (fallthrough)
+branch  5 taken 0 (throw)
+       81:    8-block  1
+call    6 returned 81
+branch  7 taken 3 (fallthrough)
+branch  8 taken 78
+        3:    8-block  2
+call    9 returned 3
+branch 10 taken 3 (fallthrough)
+branch 11 taken 0 (throw)
+        3:    8-block  3
+call   12 returned 3
+branch 13 taken 3 (fallthrough)
+branch 14 taken 0 (throw)
+        3:    8-block  4
+call   15 returned 3
+branch 16 taken 1 (fallthrough)
+branch 17 taken 2
+        1:    8-block  5
+call   18 returned 1
+branch 19 taken 1 (fallthrough)
+branch 20 taken 0 (throw)
+        1:    8-block  6
+call   21 returned 1
+branch 22 taken 1 (fallthrough)
+branch 23 taken 0 (throw)
+        1:    8-block  7
+call   24 returned 1
+branch 25 taken 1 (fallthrough)
+branch 26 taken 0
+        1:    8-block  8
+call   27 returned 1
+branch 28 taken 1 (fallthrough)
+branch 29 taken 0 (throw)
+        1:    8-block  9
+call   30 returned 1
+branch 31 taken 1 (fallthrough)
+branch 32 taken 0 (throw)
+        1:    8-block 10
+branch 33 taken 1 (fallthrough)
+branch 34 taken 0
+        1:    8-block 11
+       80:    8-block 12
+       81:    8-block 13
+branch 35 taken 1 (fallthrough)
+branch 36 taken 80
+        1:    8-block 14
+call   37 returned 1
+       81:    8-block 15
+branch 38 taken 1 (fallthrough)
+branch 39 taken 80
+        1:    8-block 16
+call   40 returned 1
+       81:    8-block 17
+branch 41 taken 3 (fallthrough)
+branch 42 taken 78
+        3:    8-block 18
+call   43 returned 3
+       81:    8-block 19
+branch 44 taken 3 (fallthrough)
+branch 45 taken 78
+        3:    8-block 20
+call   46 returned 3
+       81:    8-block 21
+branch 47 taken 81 (fallthrough)
+branch 48 taken 0
+       81:    8-block 22
+call   49 returned 81
+       81:    8-block 23
+branch 50 taken 81 (fallthrough)
+branch 51 taken 0
+       81:    8-block 24
+call   52 returned 81
+       81:    8-block 25
+branch 53 taken 1 (fallthrough)
+branch 54 taken 80
+    $$$$$:    8-block 26
+branch 55 never executed (fallthrough)
+branch 56 never executed
+    $$$$$:    8-block 27
+call   57 never executed
+    $$$$$:    8-block 28
+    $$$$$:    8-block 29
+branch 58 never executed (fallthrough)
+branch 59 never executed
+    $$$$$:    8-block 30
+call   60 never executed
+    $$$$$:    8-block 31
+    $$$$$:    8-block 32
+branch 61 never executed (fallthrough)
+branch 62 never executed
+    $$$$$:    8-block 33
+call   63 never executed
+    $$$$$:    8-block 34
+    $$$$$:    8-block 35
+branch 64 never executed (fallthrough)
+branch 65 never executed
+    $$$$$:    8-block 36
+call   66 never executed
+    $$$$$:    8-block 37
+    $$$$$:    8-block 38
+branch 67 never executed (fallthrough)
+branch 68 never executed
+    $$$$$:    8-block 39
+call   69 never executed
+    $$$$$:    8-block 40
+    $$$$$:    8-block 41
+branch 70 never executed (fallthrough)
+branch 71 never executed
+    $$$$$:    8-block 42
+call   72 never executed
+    $$$$$:    8-block 43
+        3:    9:            throw RepoException("\nThis activity already exists!\n\n");
+        1:    9-block  0
+call    0 returned 1
+        1:    9-block  1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+        1:    9-block  2
+call    4 returned 1
+branch  5 taken 1 (fallthrough)
+branch  6 taken 0 (throw)
+        1:    9-block  3
+call    7 returned 1
+call    8 returned 1
+    $$$$$:    9-block  4
+call    9 never executed
+    $$$$$:    9-block  5
+    $$$$$:    9-block  6
+    $$$$$:    9-block  7
+call   10 never executed
+        -:   10:        }
+        -:   11:    }
+       42:   12:    this->act.push_back(activity);
+       42:   12-block  0
+call    0 returned 42
+       42:   13:}
+        -:   14:
+        -:   15:
+function _ZN4Repo6removeERK8Activity called 10 returned 100% blocks executed 69%
+       10:   16:void Repo::remove(const Activity& a) {
+function _ZZN4Repo6removeERK8ActivityENKUlS2_E_clES2_ called 23 returned 100% blocks executed 59%
+       10:   17:    auto it = std::remove_if(act.begin(), act.end(), [a](const Activity& a_cmp){
+       10:   17-block  0
+call    0 returned 10
+branch  1 taken 10 (fallthrough)
+branch  2 taken 0 (throw)
+       10:   17-block  1
+call    3 returned 10
+call    4 returned 10
+call    5 returned 10
+branch  6 taken 10 (fallthrough)
+branch  7 taken 0 (throw)
+       10:   17-block  2
+call    8 returned 10
+    $$$$$:   17-block  3
+call    9 never executed
+    $$$$$:   17-block  4
+       23:   18:        return a.get_name() == a_cmp.get_name() and a.get_description() == a_cmp.get_description() and a.get_type() == a_cmp.get_type() and a.get_time() == a_cmp.get_time();
+       23:   18-block  0
+call    0 returned 23
+branch  1 taken 23 (fallthrough)
+branch  2 taken 0 (throw)
+       23:   18-block  1
+call    3 returned 23
+branch  4 taken 23 (fallthrough)
+branch  5 taken 0 (throw)
+       23:   18-block  2
+call    6 returned 23
+branch  7 taken 10 (fallthrough)
+branch  8 taken 13
+       10:   18-block  3
+call    9 returned 10
+branch 10 taken 10 (fallthrough)
+branch 11 taken 0 (throw)
+       10:   18-block  4
+call   12 returned 10
+branch 13 taken 10 (fallthrough)
+branch 14 taken 0 (throw)
+       10:   18-block  5
+call   15 returned 10
+branch 16 taken 8 (fallthrough)
+branch 17 taken 2
+        8:   18-block  6
+call   18 returned 8
+branch 19 taken 8 (fallthrough)
+branch 20 taken 0 (throw)
+        8:   18-block  7
+call   21 returned 8
+branch 22 taken 8 (fallthrough)
+branch 23 taken 0 (throw)
+        8:   18-block  8
+call   24 returned 8
+branch 25 taken 8 (fallthrough)
+branch 26 taken 0
+        8:   18-block  9
+call   27 returned 8
+branch 28 taken 8 (fallthrough)
+branch 29 taken 0 (throw)
+        8:   18-block 10
+call   30 returned 8
+branch 31 taken 8 (fallthrough)
+branch 32 taken 0 (throw)
+        8:   18-block 11
+branch 33 taken 8 (fallthrough)
+branch 34 taken 0
+        8:   18-block 12
+       15:   18-block 13
+       23:   18-block 14
+       23:   18-block 15
+branch 35 taken 8 (fallthrough)
+branch 36 taken 15
+        8:   18-block 16
+call   37 returned 8
+       23:   18-block 17
+branch 38 taken 8 (fallthrough)
+branch 39 taken 15
+        8:   18-block 18
+call   40 returned 8
+       23:   18-block 19
+branch 41 taken 10 (fallthrough)
+branch 42 taken 13
+       10:   18-block 20
+call   43 returned 10
+       23:   18-block 21
+branch 44 taken 10 (fallthrough)
+branch 45 taken 13
+       10:   18-block 22
+call   46 returned 10
+       23:   18-block 23
+branch 47 taken 23 (fallthrough)
+branch 48 taken 0
+       23:   18-block 24
+call   49 returned 23
+       23:   18-block 25
+branch 50 taken 23 (fallthrough)
+branch 51 taken 0
+       23:   18-block 26
+call   52 returned 23
+       23:   18-block 27
+       23:   18-block 28
+    $$$$$:   18-block 29
+branch 53 never executed (fallthrough)
+branch 54 never executed
+    $$$$$:   18-block 30
+call   55 never executed
+    $$$$$:   18-block 31
+    $$$$$:   18-block 32
+branch 56 never executed (fallthrough)
+branch 57 never executed
+    $$$$$:   18-block 33
+call   58 never executed
+    $$$$$:   18-block 34
+    $$$$$:   18-block 35
+branch 59 never executed (fallthrough)
+branch 60 never executed
+    $$$$$:   18-block 36
+call   61 never executed
+    $$$$$:   18-block 37
+    $$$$$:   18-block 38
+branch 62 never executed (fallthrough)
+branch 63 never executed
+    $$$$$:   18-block 39
+call   64 never executed
+    $$$$$:   18-block 40
+    $$$$$:   18-block 41
+branch 65 never executed (fallthrough)
+branch 66 never executed
+    $$$$$:   18-block 42
+call   67 never executed
+    $$$$$:   18-block 43
+    $$$$$:   18-block 44
+branch 68 never executed (fallthrough)
+branch 69 never executed
+    $$$$$:   18-block 45
+call   70 never executed
+        -:   19:
+        -:   20:    });
+       10:   21:    act.erase(it);
+call    0 returned 10
+call    1 returned 10
+branch  2 taken 10 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   21-block  0
+       10:   22:}
+       10:   22-block  0
+        -:   23:
+function _ZN4Repo6modifyERK8ActivityS2_ called 5 returned 100% blocks executed 60%
+        5:   24:void Repo::modify(const Activity& a, const Activity& newActivity) {
+        -:   25:
+       15:   26:    for( auto& activity: Repo::get_all()) {
+        5:   26-block  0
+call    0 returned 5
+call    1 returned 5
+call    2 returned 5
+       10:   26-block  1
+call    3 returned 10
+       10:   26-block  2
+call    4 returned 10
+       15:   26-block  3
+call    5 returned 15
+branch  6 taken 10
+branch  7 taken 5 (fallthrough)
+       10:   27:        if(activity.get_name() == a.get_name() and activity.get_description() == a.get_description() and activity.get_type() == a.get_type() and activity.get_time() == a.get_time()) {
+call    0 returned 10
+branch  1 taken 10 (fallthrough)
+branch  2 taken 0 (throw)
+       10:   27-block  0
+call    3 returned 10
+branch  4 taken 10 (fallthrough)
+branch  5 taken 0 (throw)
+       10:   27-block  1
+call    6 returned 10
+branch  7 taken 4 (fallthrough)
+branch  8 taken 6
+        4:   27-block  2
+call    9 returned 4
+branch 10 taken 4 (fallthrough)
+branch 11 taken 0 (throw)
+        4:   27-block  3
+call   12 returned 4
+branch 13 taken 4 (fallthrough)
+branch 14 taken 0 (throw)
+        4:   27-block  4
+call   15 returned 4
+branch 16 taken 4 (fallthrough)
+branch 17 taken 0
+        4:   27-block  5
+call   18 returned 4
+branch 19 taken 4 (fallthrough)
+branch 20 taken 0 (throw)
+        4:   27-block  6
+call   21 returned 4
+branch 22 taken 4 (fallthrough)
+branch 23 taken 0 (throw)
+        4:   27-block  7
+call   24 returned 4
+branch 25 taken 4 (fallthrough)
+branch 26 taken 0
+        4:   27-block  8
+call   27 returned 4
+branch 28 taken 4 (fallthrough)
+branch 29 taken 0 (throw)
+        4:   27-block  9
+call   30 returned 4
+branch 31 taken 4 (fallthrough)
+branch 32 taken 0 (throw)
+        4:   27-block 10
+branch 33 taken 4 (fallthrough)
+branch 34 taken 0
+        4:   27-block 11
+        6:   27-block 12
+       10:   27-block 13
+branch 35 taken 4 (fallthrough)
+branch 36 taken 6
+        4:   27-block 14
+call   37 returned 4
+       10:   27-block 15
+branch 38 taken 4 (fallthrough)
+branch 39 taken 6
+        4:   27-block 16
+call   40 returned 4
+       10:   27-block 17
+branch 41 taken 4 (fallthrough)
+branch 42 taken 6
+        4:   27-block 18
+call   43 returned 4
+       10:   27-block 19
+branch 44 taken 4 (fallthrough)
+branch 45 taken 6
+        4:   27-block 20
+call   46 returned 4
+       10:   27-block 21
+branch 47 taken 10 (fallthrough)
+branch 48 taken 0
+       10:   27-block 22
+call   49 returned 10
+       10:   27-block 23
+branch 50 taken 10 (fallthrough)
+branch 51 taken 0
+       10:   27-block 24
+call   52 returned 10
+       10:   27-block 25
+branch 53 taken 4 (fallthrough)
+branch 54 taken 6
+    $$$$$:   27-block 26
+branch 55 never executed (fallthrough)
+branch 56 never executed
+    $$$$$:   27-block 27
+call   57 never executed
+    $$$$$:   27-block 28
+    $$$$$:   27-block 29
+branch 58 never executed (fallthrough)
+branch 59 never executed
+    $$$$$:   27-block 30
+call   60 never executed
+    $$$$$:   27-block 31
+    $$$$$:   27-block 32
+branch 61 never executed (fallthrough)
+branch 62 never executed
+    $$$$$:   27-block 33
+call   63 never executed
+    $$$$$:   27-block 34
+    $$$$$:   27-block 35
+branch 64 never executed (fallthrough)
+branch 65 never executed
+    $$$$$:   27-block 36
+call   66 never executed
+    $$$$$:   27-block 37
+    $$$$$:   27-block 38
+branch 67 never executed (fallthrough)
+branch 68 never executed
+    $$$$$:   27-block 39
+call   69 never executed
+    $$$$$:   27-block 40
+    $$$$$:   27-block 41
+branch 70 never executed (fallthrough)
+branch 71 never executed
+    $$$$$:   27-block 42
+call   72 never executed
+    $$$$$:   27-block 43
+        4:   28:            activity.set_name(newActivity.get_name());
+        4:   28-block  0
+call    0 returned 4
+branch  1 taken 4 (fallthrough)
+branch  2 taken 0 (throw)
+        4:   28-block  1
+call    3 returned 4
+branch  4 taken 4 (fallthrough)
+branch  5 taken 0 (throw)
+        4:   28-block  2
+call    6 returned 4
+    $$$$$:   28-block  3
+call    7 never executed
+    $$$$$:   28-block  4
+        4:   29:            activity.set_description(newActivity.get_description());
+call    0 returned 4
+branch  1 taken 4 (fallthrough)
+branch  2 taken 0 (throw)
+        4:   29-block  0
+call    3 returned 4
+branch  4 taken 4 (fallthrough)
+branch  5 taken 0 (throw)
+        4:   29-block  1
+call    6 returned 4
+    $$$$$:   29-block  2
+call    7 never executed
+    $$$$$:   29-block  3
+        4:   30:            activity.set_type(newActivity.get_type());
+call    0 returned 4
+branch  1 taken 4 (fallthrough)
+branch  2 taken 0 (throw)
+        4:   30-block  0
+call    3 returned 4
+branch  4 taken 4 (fallthrough)
+branch  5 taken 0 (throw)
+        4:   30-block  1
+call    6 returned 4
+    $$$$$:   30-block  2
+call    7 never executed
+    $$$$$:   30-block  3
+        4:   31:            activity.set_time(newActivity.get_time());
+call    0 returned 4
+branch  1 taken 4 (fallthrough)
+branch  2 taken 0 (throw)
+        4:   31-block  0
+call    3 returned 4
+branch  4 taken 4 (fallthrough)
+branch  5 taken 0 (throw)
+        -:   32:        }
+        -:   33:    }
+        5:   34:}
+        5:   34-block  0
+        -:   35:
+function _ZN4Repo12get_activityERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_S7_i called 3 returned 100% blocks executed 61%
+        3:   36:const Activity* Repo::get_activity(const string& name, const string& descr, const string& type, int time)  {
+        -:   37:
+function _ZZN4Repo12get_activityERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_S7_iENKUlRK8ActivityE_clESA_ called 3 returned 100% blocks executed 68%
+        3:   38:    auto pred = [name, descr, type, time](const Activity& activity){
+        3:   39:        return activity.get_name() == name and activity.get_description() == descr and activity.get_type() == type and activity.get_time() == time;
+        3:   39-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        3:   39-block  1
+call    3 returned 3
+branch  4 taken 3 (fallthrough)
+branch  5 taken 0
+        3:   39-block  2
+call    6 returned 3
+branch  7 taken 3 (fallthrough)
+branch  8 taken 0 (throw)
+        3:   39-block  3
+call    9 returned 3
+branch 10 taken 2 (fallthrough)
+branch 11 taken 1
+        2:   39-block  4
+call   12 returned 2
+branch 13 taken 2 (fallthrough)
+branch 14 taken 0 (throw)
+        2:   39-block  5
+call   15 returned 2
+branch 16 taken 2 (fallthrough)
+branch 17 taken 0
+        2:   39-block  6
+call   18 returned 2
+branch 19 taken 2 (fallthrough)
+branch 20 taken 0 (throw)
+        2:   39-block  7
+branch 21 taken 2 (fallthrough)
+branch 22 taken 0
+        2:   39-block  8
+        1:   39-block  9
+        3:   39-block 10
+        3:   39-block 11
+branch 23 taken 2 (fallthrough)
+branch 24 taken 1
+        2:   39-block 12
+call   25 returned 2
+        3:   39-block 13
+branch 26 taken 3 (fallthrough)
+branch 27 taken 0
+        3:   39-block 14
+call   28 returned 3
+        3:   39-block 15
+branch 29 taken 3 (fallthrough)
+branch 30 taken 0
+        3:   39-block 16
+call   31 returned 3
+        3:   39-block 17
+        3:   39-block 18
+    $$$$$:   39-block 19
+branch 32 never executed (fallthrough)
+branch 33 never executed
+    $$$$$:   39-block 20
+call   34 never executed
+    $$$$$:   39-block 21
+    $$$$$:   39-block 22
+branch 35 never executed (fallthrough)
+branch 36 never executed
+    $$$$$:   39-block 23
+call   37 never executed
+    $$$$$:   39-block 24
+    $$$$$:   39-block 25
+branch 38 never executed (fallthrough)
+branch 39 never executed
+    $$$$$:   39-block 26
+call   40 never executed
+        3:   40:    };
+        3:   40-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        3:   40-block  1
+call    3 returned 3
+branch  4 taken 3 (fallthrough)
+branch  5 taken 0 (throw)
+        3:   40-block  2
+call    6 returned 3
+branch  7 taken 3 (fallthrough)
+branch  8 taken 0 (throw)
+    $$$$$:   40-block  3
+branch  9 never executed (fallthrough)
+branch 10 never executed
+    $$$$$:   40-block  4
+call   11 never executed
+    $$$$$:   40-block  5
+branch 12 never executed (fallthrough)
+branch 13 never executed
+    $$$$$:   40-block  6
+call   14 never executed
+        -:   41:
+        3:   42:    auto iterator = std::find_if(act.begin(), act.end(),pred);
+        3:   42-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        3:   42-block  1
+call    3 returned 3
+call    4 returned 3
+call    5 returned 3
+branch  6 taken 3 (fallthrough)
+branch  7 taken 0 (throw)
+        3:   42-block  2
+call    8 returned 3
+    $$$$$:   42-block  3
+call    9 never executed
+    $$$$$:   42-block  4
+        3:   43:    if(iterator != act.end())
+call    0 returned 3
+call    1 returned 3
+branch  2 taken 2 (fallthrough)
+branch  3 taken 1
+        2:   44:        return &(*iterator);
+        2:   44-block  0
+call    0 returned 2
+        -:   45:    else{
+        1:   46:        return nullptr;
+        1:   46-block  0
+        -:   47:    }
+        3:   48:}
+        3:   48-block  0
+call    0 returned 3
+    $$$$$:   48-block  1
+call    1 never executed
+        -:   49:
+        -:   50:
+function _ZN4Repo13find_act_nameENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 2 returned 100% blocks executed 75%
+        2:   51:const Activity& Repo::find_act_name(string name) {
+function _ZZN4Repo13find_act_nameENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEENKUlRK8ActivityE_clES8_ called 2 returned 100% blocks executed 100%
+        2:   52:    vector<Activity>::iterator f = std::find_if(this->act.begin(), this->act.end(), [=](const Activity& a){
+        2:   52-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   52-block  1
+call    3 returned 2
+call    4 returned 2
+call    5 returned 2
+branch  6 taken 2 (fallthrough)
+branch  7 taken 0 (throw)
+        2:   52-block  2
+call    8 returned 2
+    $$$$$:   52-block  3
+call    9 never executed
+    $$$$$:   52-block  4
+        2:   53:        return a.get_name() == name;
+        2:   53-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   53-block  1
+call    3 returned 2
+call    4 returned 2
+        2:   53-block  2
+        -:   54:    });
+        2:   55:    if(f != this->act.end())
+call    0 returned 2
+call    1 returned 2
+branch  2 taken 2 (fallthrough)
+branch  3 taken 0
+        4:   56:        return (*f);
+        2:   56-block  0
+call    0 returned 2
+        2:   56-block  1
+        -:   57:}
+        -:   58:
+        -:   59:
+function _ZN10RepoInFile14read_from_fileEv called 2 returned 100% blocks executed 64%
+        2:   60:void RepoInFile::read_from_file() {
+        2:   61:    std::ifstream file;
+        2:   61-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   62:    file.open(file_name);
+        2:   62-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   63:
+        2:   64:    string line, word;
+        2:   64-block  0
+call    0 returned 2
+call    1 returned 2
+        -:   65:
+       15:   66:    while (!file.eof())
+       15:   66-block  0
+call    0 returned 15
+branch  1 taken 15 (fallthrough)
+branch  2 taken 0 (throw)
+       15:   66-block  1
+branch  3 taken 13
+branch  4 taken 2 (fallthrough)
+        -:   67:    {
+       13:   68:        getline(file, line);
+       13:   68-block  0
+call    0 returned 13
+branch  1 taken 13 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   69:
+       13:   70:        if(line.size())
+       13:   70-block  0
+call    0 returned 13
+branch  1 taken 11 (fallthrough)
+branch  2 taken 2
+        -:   71:        {
+       11:   72:            vector<string> activity_info;
+       11:   72-block  0
+call    0 returned 11
+        -:   73:
+        -:   74:
+       11:   75:            auto found = line.find(',');
+call    0 returned 11
+       44:   76:            while (found != -1)
+       44:   76-block  0
+branch  0 taken 33
+branch  1 taken 11 (fallthrough)
+        -:   77:            {
+       33:   78:                word = line.substr(0, found);
+       33:   78-block  0
+call    0 returned 33
+branch  1 taken 33 (fallthrough)
+branch  2 taken 0 (throw)
+       33:   78-block  1
+call    3 returned 33
+call    4 returned 33
+    $$$$$:   78-block  2
+       33:   79:                line.erase(line.begin(), line.begin() + found + 1);
+call    0 returned 33
+call    1 returned 33
+call    2 returned 33
+call    3 returned 33
+call    4 returned 33
+call    5 returned 33
+call    6 returned 33
+branch  7 taken 33 (fallthrough)
+branch  8 taken 0 (throw)
+    $$$$$:   79-block  0
+    $$$$$:   79-block  1
+    $$$$$:   79-block  2
+    $$$$$:   79-block  3
+    $$$$$:   79-block  4
+    $$$$$:   79-block  5
+        -:   80:
+       33:   81:                activity_info.push_back(word);
+       33:   81-block  0
+call    0 returned 33
+branch  1 taken 33 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   82:
+       33:   83:                found = line.find(',');
+       33:   83-block  0
+call    0 returned 33
+        -:   84:            }
+        -:   85:
+        -:   86:
+       11:   87:            const Activity& a{ activity_info.at(0), activity_info.at(1) ,activity_info.at(2),stoi(line)};
+       11:   87-block  0
+call    0 returned 11
+branch  1 taken 11 (fallthrough)
+branch  2 taken 0 (throw)
+       11:   87-block  1
+call    3 returned 11
+branch  4 taken 11 (fallthrough)
+branch  5 taken 0 (throw)
+       11:   87-block  2
+call    6 returned 11
+branch  7 taken 11 (fallthrough)
+branch  8 taken 0 (throw)
+       11:   87-block  3
+call    9 returned 11
+branch 10 taken 11 (fallthrough)
+branch 11 taken 0 (throw)
+       11:   87-block  4
+call   12 returned 11
+branch 13 taken 11 (fallthrough)
+branch 14 taken 0 (throw)
+       11:   87-block  5
+call   15 returned 11
+branch 16 taken 11 (fallthrough)
+branch 17 taken 0 (throw)
+       11:   87-block  6
+call   18 returned 11
+branch 19 taken 11 (fallthrough)
+branch 20 taken 0 (throw)
+       11:   87-block  7
+call   21 returned 11
+branch 22 taken 11 (fallthrough)
+branch 23 taken 0 (throw)
+       11:   87-block  8
+call   24 returned 11
+call   25 returned 11
+call   26 returned 11
+    $$$$$:   87-block  9
+call   27 never executed
+    $$$$$:   87-block 10
+    $$$$$:   87-block 11
+call   28 never executed
+    $$$$$:   87-block 12
+    $$$$$:   87-block 13
+call   29 never executed
+    $$$$$:   87-block 14
+       11:   88:            Repo::store(a);
+call    0 returned 11
+branch  1 taken 11 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   89:
+       11:   90:            activity_info.clear();
+       11:   90-block  0
+call    0 returned 11
+       11:   91:        }
+call    0 returned 11
+call    1 returned 11
+    $$$$$:   91-block  0
+call    2 never executed
+    $$$$$:   91-block  1
+call    3 never executed
+        -:   92:
+        -:   93:    }
+        -:   94:
+        2:   95:    file.close();
+        2:   95-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   96:}
+        2:   96-block  0
+call    0 returned 2
+call    1 returned 2
+call    2 returned 2
+    $$$$$:   96-block  1
+call    3 never executed
+    $$$$$:   96-block  2
+call    4 never executed
+    $$$$$:   96-block  3
+call    5 never executed
+        -:   97:
+        -:   98:
+function _ZN10RepoInFile13write_to_fileEv called 3 returned 100% blocks executed 65%
+        3:   99:void RepoInFile::write_to_file() {
+        3:  100:    std::ofstream file;
+        3:  100-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        3:  101:    file.open(file_name);
+        3:  101-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        -:  102:
+        8:  103:    for (const auto& activity : get_all())
+        3:  103-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        3:  103-block  1
+call    3 returned 3
+call    4 returned 3
+        5:  103-block  2
+call    5 returned 5
+call    6 returned 5
+        8:  103-block  3
+call    7 returned 8
+branch  8 taken 5
+branch  9 taken 3 (fallthrough)
+        -:  104:    {
+        5:  105:        string line;
+call    0 returned 5
+        5:  106:        line.append(activity.get_name());
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:  106-block  0
+call    3 returned 5
+branch  4 taken 5 (fallthrough)
+branch  5 taken 0 (throw)
+        5:  106-block  1
+call    6 returned 5
+    $$$$$:  106-block  2
+call    7 never executed
+    $$$$$:  106-block  3
+        5:  107:        line.append(",");
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:  108:        line.append(activity.get_description());
+        5:  108-block  0
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:  108-block  1
+call    3 returned 5
+branch  4 taken 5 (fallthrough)
+branch  5 taken 0 (throw)
+        5:  108-block  2
+call    6 returned 5
+    $$$$$:  108-block  3
+call    7 never executed
+    $$$$$:  108-block  4
+        5:  109:        line.append(",");
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:  110:        line.append(activity.get_type());
+        5:  110-block  0
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:  110-block  1
+call    3 returned 5
+branch  4 taken 5 (fallthrough)
+branch  5 taken 0 (throw)
+        5:  110-block  2
+call    6 returned 5
+    $$$$$:  110-block  3
+call    7 never executed
+    $$$$$:  110-block  4
+        5:  111:        line.append(",");
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:  112:        line.append(std::to_string(activity.get_time()));
+        5:  112-block  0
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:  112-block  1
+call    3 returned 5
+call    4 returned 5
+branch  5 taken 5 (fallthrough)
+branch  6 taken 0 (throw)
+        5:  112-block  2
+call    7 returned 5
+    $$$$$:  112-block  3
+call    8 never executed
+    $$$$$:  112-block  4
+        5:  113:        line.append("\n");
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:  114:        file << line;
+        5:  114-block  0
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:  115:    }
+        5:  115-block  0
+call    0 returned 5
+    $$$$$:  115-block  1
+call    1 never executed
+        -:  116:
+        3:  117:    file.close();
+        3:  117-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        3:  118:}
+        3:  118-block  0
+call    0 returned 3
+    $$$$$:  118-block  1
+call    1 never executed
+        -:  119:
+        -:  120:
+function _ZN7RepoLab11random_probEv called 12 returned 92% blocks executed 70%
+       12:  121:void RepoLab::random_prob() {
+       12:  122:    std::random_device rd;
+       12:  122-block  0
+call    0 returned 12
+branch  1 taken 12 (fallthrough)
+branch  2 taken 0 (throw)
+       12:  123:    std::mt19937 gen(rd());
+       12:  123-block  0
+call    0 returned 12
+branch  1 taken 12 (fallthrough)
+branch  2 taken 0 (throw)
+       12:  123-block  1
+call    3 returned 12
+branch  4 taken 12 (fallthrough)
+branch  5 taken 0 (throw)
+       12:  124:    std::uniform_real_distribution<double> dis(0.0, 1.0);
+       12:  124-block  0
+call    0 returned 12
+branch  1 taken 12 (fallthrough)
+branch  2 taken 0 (throw)
+       12:  125:    double probability = dis(gen);
+       12:  125-block  0
+call    0 returned 12
+branch  1 taken 12 (fallthrough)
+branch  2 taken 0 (throw)
+       12:  126:    if( probability > prob)
+       12:  126-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 11
+        3:  127:        throw RepoException("Eroare!\n\n");
+        1:  127-block  0
+call    0 returned 1
+        1:  127-block  1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+        1:  127-block  2
+call    4 returned 1
+branch  5 taken 1 (fallthrough)
+branch  6 taken 0 (throw)
+        1:  127-block  3
+call    7 returned 1
+call    8 returned 1
+    $$$$$:  127-block  4
+call    9 never executed
+    $$$$$:  127-block  5
+    $$$$$:  127-block  6
+    $$$$$:  127-block  7
+call   10 never executed
+        -:  128:
+       12:  129:}
+       11:  129-block  0
+call    0 returned 11
+        1:  129-block  1
+call    1 returned 1
+        -:  130:
+function _ZN7RepoLab5storeERK8Activity called 6 returned 83% blocks executed 57%
+        6:  131:void RepoLab::store(const Activity &a) {
+        6:  132:    random_prob();
+        6:  132-block  0
+call    0 returned 5
+        5:  133:    activities.insert(std::make_pair(a.get_name(),a));
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:  133-block  0
+call    3 returned 5
+branch  4 taken 5 (fallthrough)
+branch  5 taken 0 (throw)
+        5:  133-block  1
+call    6 returned 5
+branch  7 taken 5 (fallthrough)
+branch  8 taken 0 (throw)
+        5:  133-block  2
+call    9 returned 5
+call   10 returned 5
+    $$$$$:  133-block  3
+call   11 never executed
+    $$$$$:  133-block  4
+call   12 never executed
+    $$$$$:  133-block  5
+    $$$$$:  133-block  6
+        -:  134:
+        5:  135:}
+        -:  136:
+function _ZN7RepoLab6removeERK8Activity called 3 returned 100% blocks executed 75%
+        3:  137:void RepoLab::remove(const Activity& a) {
+        3:  138:    random_prob();
+        3:  138-block  0
+call    0 returned 3
+        3:  139:    activities.erase(a.get_name());
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        3:  139-block  0
+call    3 returned 3
+branch  4 taken 3 (fallthrough)
+branch  5 taken 0 (throw)
+        3:  139-block  1
+call    6 returned 3
+    $$$$$:  139-block  2
+call    7 never executed
+        3:  140:}
+        -:  141:
+function _ZN7RepoLab7get_allEv called 5 returned 100% blocks executed 100%
+        5:  142:vector<Activity> &RepoLab::get_all() {
+        5:  143:    all.clear();
+        5:  143-block  0
+call    0 returned 5
+        8:  144:    for(auto& it: activities) {
+call    0 returned 5
+call    1 returned 5
+        3:  144-block  0
+call    2 returned 3
+        3:  144-block  1
+call    3 returned 3
+        8:  144-block  2
+call    4 returned 8
+branch  5 taken 3
+branch  6 taken 5 (fallthrough)
+        3:  145:        all.push_back(it.second);
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        -:  146:    }
+        5:  147:    return all;
+        5:  147-block  0
+        5:  147-block  1
+        -:  148:}
+        -:  149:
+function _ZN7RepoLab6modifyERK8ActivityS2_ called 1 returned 100% blocks executed 55%
+        1:  150:void RepoLab::modify(const Activity& a_rm, const Activity &a) {
+        1:  151:    random_prob();
+        1:  151-block  0
+call    0 returned 1
+        1:  152:    activities.erase(a_rm.get_name());
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  152-block  0
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:  152-block  1
+call    6 returned 1
+    $$$$$:  152-block  2
+call    7 never executed
+    $$$$$:  152-block  3
+call    8 never executed
+        1:  153:    activities.insert(std::make_pair(a.get_name(), a));
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  153-block  0
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:  153-block  1
+call    6 returned 1
+branch  7 taken 1 (fallthrough)
+branch  8 taken 0 (throw)
+        1:  153-block  2
+call    9 returned 1
+call   10 returned 1
+    $$$$$:  153-block  3
+call   11 never executed
+    $$$$$:  153-block  4
+call   12 never executed
+    $$$$$:  153-block  5
+    $$$$$:  153-block  6
+        1:  154:}
+        -:  155:
+        -:  156:
+function _ZN7RepoLab12get_activityERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_S7_i called 2 returned 100% blocks executed 72%
+        2:  157:const Activity* RepoLab::get_activity(const string& name, const string& descr, const string& type, int time) {
+        -:  158:
+        2:  159:    random_prob();
+        2:  159-block  0
+call    0 returned 2
+        3:  160:    for(const auto& p: activities)
+call    0 returned 2
+call    1 returned 2
+        2:  160-block  0
+call    2 returned 2
+        1:  160-block  1
+call    3 returned 1
+        3:  160-block  2
+call    4 returned 3
+branch  5 taken 2
+branch  6 taken 1 (fallthrough)
+        2:  161:        if(p.second.get_name() == name and p.second.get_description() == descr and p.second.get_type() == type and p.second.get_time() ==time)
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:  161-block  0
+call    3 returned 2
+branch  4 taken 2 (fallthrough)
+branch  5 taken 0
+        2:  161-block  1
+call    6 returned 2
+branch  7 taken 2 (fallthrough)
+branch  8 taken 0 (throw)
+        2:  161-block  2
+call    9 returned 2
+branch 10 taken 1 (fallthrough)
+branch 11 taken 1
+        1:  161-block  3
+call   12 returned 1
+branch 13 taken 1 (fallthrough)
+branch 14 taken 0 (throw)
+        1:  161-block  4
+call   15 returned 1
+branch 16 taken 1 (fallthrough)
+branch 17 taken 0
+        1:  161-block  5
+call   18 returned 1
+branch 19 taken 1 (fallthrough)
+branch 20 taken 0 (throw)
+        1:  161-block  6
+branch 21 taken 1 (fallthrough)
+branch 22 taken 0
+        1:  161-block  7
+        1:  161-block  8
+        2:  161-block  9
+branch 23 taken 1 (fallthrough)
+branch 24 taken 1
+        1:  161-block 10
+call   25 returned 1
+        2:  161-block 11
+branch 26 taken 2 (fallthrough)
+branch 27 taken 0
+        2:  161-block 12
+call   28 returned 2
+        2:  161-block 13
+branch 29 taken 2 (fallthrough)
+branch 30 taken 0
+        2:  161-block 14
+call   31 returned 2
+        2:  161-block 15
+branch 32 taken 1 (fallthrough)
+branch 33 taken 1
+    $$$$$:  161-block 16
+branch 34 never executed (fallthrough)
+branch 35 never executed
+    $$$$$:  161-block 17
+call   36 never executed
+    $$$$$:  161-block 18
+    $$$$$:  161-block 19
+branch 37 never executed (fallthrough)
+branch 38 never executed
+    $$$$$:  161-block 20
+call   39 never executed
+    $$$$$:  161-block 21
+    $$$$$:  161-block 22
+branch 40 never executed (fallthrough)
+branch 41 never executed
+    $$$$$:  161-block 23
+call   42 never executed
+    $$$$$:  161-block 24
+        1:  162:            return &p.second;
+        1:  162-block  0
+        1:  163:    return nullptr;
+        1:  163-block  0
+        -:  164:}
+        -:  165:
+function _ZN7RepoLab13find_act_nameENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 1 returned 100% blocks executed 80%
+        1:  166:const Activity &RepoLab::find_act_name(string name) {
+       1*:  167:    for(auto& it : activities) {
+        1:  167-block  0
+call    0 returned 1
+call    1 returned 1
+        1:  167-block  1
+call    2 returned 1
+    %%%%%:  167-block  2
+call    3 never executed
+        1:  167-block  3
+call    4 returned 1
+branch  5 taken 1
+branch  6 taken 0 (fallthrough)
+        1:  168:        if(it.second.get_name() == name)
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  168-block  0
+call    3 returned 1
+call    4 returned 1
+branch  5 taken 1 (fallthrough)
+branch  6 taken 0
+    $$$$$:  168-block  1
+        1:  169:            return it.second;
+        1:  169-block  0
+        1:  169-block  1
+        -:  170:    }
+        -:  171:}
+        -:  172:
+        -:  173:
+        -:  174:

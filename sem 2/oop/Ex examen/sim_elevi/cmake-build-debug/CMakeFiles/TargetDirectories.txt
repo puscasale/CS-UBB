@@ -1,0 +1,5 @@
+C:/Users/Ale/Desktop/sim_elevi/cmake-build-debug/CMakeFiles/sim_elevi.dir
+C:/Users/Ale/Desktop/sim_elevi/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Ale/Desktop/sim_elevi/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/Ale/Desktop/sim_elevi/cmake-build-debug/CMakeFiles/sim_elevi_autogen_timestamp_deps.dir
+C:/Users/Ale/Desktop/sim_elevi/cmake-build-debug/CMakeFiles/sim_elevi_autogen.dir

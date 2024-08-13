@@ -1,0 +1,48 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  
+     7                                  import exit msvcrt.dll
+     8                                  
+     9                                  segment data use32 class=data
+    10 00000000 4F29BAA2F688E85A            a dq 0101101011101000100010001111011010100010101110100010100101001111b
+    11 00000008 <res 00000001>              n resb 1
+    12 00000009 <res 00000004>              b resb 4
+    13 0000000D 00                          c db 0
+    14                                   
+    15                                  ;Se da quadwordul A. Sa se obtina numarul intreg N reprezentat de bitii 17-19 ai lui A. Sa se obtina apoi in B dublucuvantul rezultat prin rotirea spre stanga a dublucuvantului superior al lui A cu N pozitii. Sa se 
+    16                                  ;bitii 0-2 ai lui C sunt bitii 9-11 ai lui B
+    17                                  ;bitii 3-7 ai lui C sunt bitii 20-24 ai lui B
+    18                                  
+    19                                   segment code use32 class=code
+    20                                  start:
+    21                                      
+    22                                      ;bitii 17-19 ai lui A
+    23 00000000 A1[00000000]                mov eax, [a+0]; eax = 1010 0010 1011 1010 0010 1001 0100 1111b = A2BA294Fh 
+    24 00000005 2500000E00                  and eax, 00000000000011100000000000000000b
+    25 0000000A C1C811                      ror eax, 17; eax = 0000 0000 0000 0000 0000 0000 0000 0101b=00000005h 
+    26 0000000D A2[08000000]                mov [n], al
+    27                                      
+    28                                      ;B dublucuvantul rezultat prin rotirea spre stanga a dublucuvantului superior al lui A cu N pozitii
+    29 00000012 A1[04000000]                mov eax, [a+4]; eax = 0101 1010 1110 1000 1000 1000 1111 0110b = 5AE888F6h
+    30 00000017 8A0D[08000000]              mov cl, [n]
+    31 0000001D D3C0                        rol eax, cl; eax = 0101 1101 0001 0001 0001 1110 1100 1011b = 5D111ECBh
+    32 0000001F A3[09000000]                mov [b], eax
+    33                                      
+    34                                      ;bitii 0-2 ai lui C sunt bitii 9-11 ai lui B
+    35 00000024 A1[09000000]                mov eax, [b]
+    36 00000029 25000E0000                  and eax, 00000000000000000000111000000000b
+    37 0000002E C1E809                      shr eax, 9 ; eax =  0000 0000 0000 0000 0000 0000 0000 0111b = 00000007h
+    38 00000031 0805[0D000000]              or [c], al
+    39                                      
+    40                                      ;bitii 3-7 ai lui C sunt bitii 20-24 ai lui B
+    41 00000037 A1[09000000]                mov eax, [b]
+    42 0000003C 250000F001                  and eax, 00000001111100000000000000000000b
+    43 00000041 C1C811                      ror eax, 17 ; eax = 0000 0000 0000 0000 0000 0000 1000 1000b= 00000088h
+    44 00000044 0805[0D000000]              or [c], al; 1000 1111b = 8Fh
+    45                                      
+    46                                      
+    47 0000004A 6A00                    push dword 0
+    48 0000004C FF15[00000000]          call [exit]

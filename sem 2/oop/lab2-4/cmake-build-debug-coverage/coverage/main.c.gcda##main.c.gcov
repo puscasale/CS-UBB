@@ -1,0 +1,249 @@
+        -:    0:Source:C:/Users/Ale/Desktop/oop/lab2-4/main.c
+        -:    0:Graph:C:\Users\Ale\Desktop\oop\lab2-4\cmake-build-debug-coverage\CMakeFiles\lab2_4.dir\main.c.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\oop\lab2-4\cmake-build-debug-coverage\CMakeFiles\lab2_4.dir\main.c.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdio.h>
+        -:    2:#include "functions.h"
+        -:    3:#include "functions_test.h"
+        -:    4:#include <stdbool.h>
+        -:    5:
+function print_menu called 1 returned 100% blocks executed 100%
+        1:    6:void print_menu(){
+        1:    7:    printf("1.%s\n2.%s\n3.%s\n4.%s\n5.%s\n6.%s\n7.%s\n", "Afisare medicamente", "Adaugare", "Stergere", "Modificare", "Soartare", "Filtrare", "Iesire");
+        1:    7-block  0
+call    0 returned 1
+        -:    8:
+        1:    9:}
+        -:   10:
+        -:   11:/*
+        -:   12: * Printeaza un medicament dat
+        -:   13: */
+function print_medicament called 0 returned 0% blocks executed 0%
+    #####:   14:void print_medicament(Medicament medicament){
+    #####:   15:    printf("cod: %d | nume: %s | concentratie: %d | cantitate: %d", get_cod(&medicament), get_nume(&medicament),
+    %%%%%:   15-block  0
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+        -:   16:           get_concentratie(&medicament), get_cantitate(&medicament));
+    #####:   17:}
+        -:   18:
+function print_errs called 0 returned 0% blocks executed 0%
+    #####:   19:void print_errs(char err[5][100], int len){
+    #####:   20:    for(int l = 0; l < len; l++){
+    %%%%%:   20-block  0
+    %%%%%:   20-block  1
+branch  0 never executed
+branch  1 never executed (fallthrough)
+    #####:   21:        printf("%s", err[l]);
+    %%%%%:   21-block  0
+call    0 never executed
+        -:   22:    }
+    #####:   23:}
+        -:   24:
+function print_medicamente called 0 returned 0% blocks executed 0%
+    #####:   25:void print_medicamente(Medicament_list medicamente){
+    #####:   26:    if(get_size(&medicamente) > 0)
+    %%%%%:   26-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:   27:        for( int i = 0; i < get_size(&medicamente); i++)
+    %%%%%:   27-block  0
+    %%%%%:   27-block  1
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:   28:            printf("cod: %d | nume: %s | concentratie: %d | cantitate: %d\n", get_cod(&medicamente.nr[i]), get_nume(&medicamente.nr[i]),
+    %%%%%:   28-block  0
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+        -:   29:                   get_concentratie(&medicamente.nr[i]), get_cantitate(&medicamente.nr[i]));
+    #####:   30:    else printf("Nu exista medicamenete\n");
+    %%%%%:   30-block  0
+call    0 never executed
+    #####:   31:}
+        -:   32:
+function add_medicament_ui called 0 returned 0% blocks executed 0%
+    #####:   33:void add_medicament_ui(Medicament_list *medicamente){
+        -:   34:    int cod, concentractie, cantitate, len;
+        -:   35:    char nume[30], err[5][100];
+        -:   36:
+    #####:   37:    printf("Introduceti codul:");
+    %%%%%:   37-block  0
+call    0 never executed
+    #####:   38:    scanf("%d", &cod);
+call    0 never executed
+        -:   39:
+    #####:   40:    printf("Introduceti numele:");
+call    0 never executed
+    #####:   41:    scanf("%s", nume);
+call    0 never executed
+        -:   42:
+    #####:   43:    printf("Introduceti concentratia:");
+call    0 never executed
+    #####:   44:    scanf("%d", &concentractie);
+call    0 never executed
+        -:   45:
+    #####:   46:    printf("Introduceti cantitatea:");
+call    0 never executed
+    #####:   47:    scanf("%d", &cantitate);
+call    0 never executed
+        -:   48:
+    #####:   49:    add_medicament(medicamente, cod, nume, concentractie, cantitate, err, &len);
+call    0 never executed
+    #####:   50:    if(len)
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   51:        print_errs(err, len);
+    %%%%%:   51-block  0
+call    0 never executed
+    #####:   52:}
+        -:   53:
+function delete_medicament_ui called 0 returned 0% blocks executed 0%
+    #####:   54:void delete_medicament_ui(Medicament_list *medicamente){
+        -:   55:    int cod, len;
+        -:   56:    char  err[5][100];
+        -:   57:
+    #####:   58:    printf("Introduceti codul:");
+    %%%%%:   58-block  0
+call    0 never executed
+    #####:   59:    scanf("%d", &cod);
+call    0 never executed
+    #####:   60:    delete_medicament(medicamente, cod, err, &len);
+call    0 never executed
+    #####:   61:    if(len)
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   62:        print_errs(err, len);
+    %%%%%:   62-block  0
+call    0 never executed
+    #####:   63:}
+        -:   64:
+function update_medicament_ui called 0 returned 0% blocks executed 0%
+    #####:   65:void update_medicament_ui(Medicament_list *medicamente){
+        -:   66:    int cod, new_concentratie, len;
+        -:   67:    char new_name[30], err[5][100];
+        -:   68:
+    #####:   69:    printf("Introduceti codul:");
+    %%%%%:   69-block  0
+call    0 never executed
+    #####:   70:    scanf("%d", &cod);
+call    0 never executed
+        -:   71:
+    #####:   72:    printf("Introduceti noul nume:");
+call    0 never executed
+    #####:   73:    scanf("%s", new_name);
+call    0 never executed
+        -:   74:
+    #####:   75:    printf("Introduceti noua concentratie:");
+call    0 never executed
+    #####:   76:    scanf("%d", &new_concentratie);
+call    0 never executed
+        -:   77:
+    #####:   78:    modificare_medicament(medicamente, cod, new_name, new_concentratie, err, &len);
+call    0 never executed
+    #####:   79:    if(len)
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   80:        print_errs(err, len);
+    %%%%%:   80-block  0
+call    0 never executed
+    #####:   81:}
+        -:   82:
+function test_functions called 1 returned 100% blocks executed 100%
+        1:   83:void test_functions(){
+        1:   84:    test_create_list();
+        1:   84-block  0
+call    0 returned 1
+        1:   85:    test_create_medicament();
+call    0 returned 1
+        1:   86:    test_valid();
+call    0 returned 1
+        1:   87:    test_add();
+call    0 returned 1
+        1:   88:    test_delete();
+call    0 returned 1
+        1:   89:    test_add_medicament();
+call    0 returned 1
+        1:   90:    test_delete_medicament();
+call    0 returned 1
+        1:   91:    test_valid_new_concentratie();
+call    0 returned 1
+        1:   92:    test_valid_new_name();
+call    0 returned 1
+        1:   93:    test_modificare_medicament();
+call    0 returned 1
+        1:   94:}
+        -:   95:
+function main called 1 returned 100% blocks executed 36%
+        1:   96:int main() {
+        1:   97:    Medicament_list medicamente = create_list();
+        1:   97-block  0
+call    0 returned 1
+        1:   98:    test_functions();
+call    0 returned 1
+        -:   99:    int option;
+        -:  100:    while(true)
+        -:  101:    {
+        1:  102:        print_menu();
+        1:  102-block  0
+call    0 returned 1
+        1:  103:        printf("Introduceti optiunea:");
+call    0 returned 1
+        1:  104:        scanf("%d", &option);
+call    0 returned 1
+        1:  105:        switch (option) {
+branch  0 taken 0
+branch  1 taken 0
+branch  2 taken 0
+branch  3 taken 0
+branch  4 taken 0
+branch  5 taken 0
+branch  6 taken 1
+branch  7 taken 0
+    #####:  106:            case 1:
+    #####:  107:                print_medicamente(medicamente);
+    %%%%%:  107-block  0
+call    0 never executed
+    #####:  108:                break;
+    #####:  109:            case 2:
+    #####:  110:                add_medicament_ui(&medicamente);
+    %%%%%:  110-block  0
+call    0 never executed
+    #####:  111:                break;
+    #####:  112:            case 3:
+    #####:  113:                delete_medicament_ui(&medicamente);
+    %%%%%:  113-block  0
+call    0 never executed
+    #####:  114:                break;
+    #####:  115:            case 4:
+    #####:  116:                update_medicament_ui(&medicamente);
+    %%%%%:  116-block  0
+call    0 never executed
+    #####:  117:                break;
+    #####:  118:            case 5:
+    #####:  119:                break;
+    %%%%%:  119-block  0
+    #####:  120:            case 6:
+    #####:  121:                break;
+    %%%%%:  121-block  0
+        1:  122:            case 7:
+        1:  123:                return 0;
+        1:  123-block  0
+    #####:  124:            default:
+    #####:  125:                printf("Optiune invaida\n");
+    %%%%%:  125-block  0
+call    0 never executed
+    #####:  126:                break;
+        -:  127:        }
+    #####:  128:        printf("\n");
+    %%%%%:  128-block  0
+call    0 never executed
+        -:  129:    }
+        -:  130:}

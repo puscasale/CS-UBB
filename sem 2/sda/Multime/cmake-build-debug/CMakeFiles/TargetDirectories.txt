@@ -1,0 +1,3 @@
+C:/Users/Ale/Desktop/Year 1/sem 2/sda/Multime/cmake-build-debug/CMakeFiles/Multime.dir
+C:/Users/Ale/Desktop/Year 1/sem 2/sda/Multime/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Ale/Desktop/Year 1/sem 2/sda/Multime/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,170 @@
+        -:    0:Source:C:/Users/Ale/Desktop/oop/lab6_7/Repo.h
+        -:    0:Graph:C:\Users\Ale\Desktop\oop\lab6_7\cmake-build-debug-coverage\CMakeFiles\lab6_7.dir\Repo.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\oop\lab6_7\cmake-build-debug-coverage\CMakeFiles\lab6_7.dir\Repo.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#ifndef LAB6_7_REPO_H
+        -:    2:#define LAB6_7_REPO_H
+        -:    3:#include <vector>
+        -:    4:#include <map>
+        -:    5:#include <random>
+        -:    6:#include "Activity.h"
+        -:    7:#include "DinamicVector.h"
+        -:    8:using std::vector;
+        -:    9:
+        -:   10:class RepoException{
+        -:   11:private:
+        -:   12:    string msg;
+        -:   13:
+        -:   14:public:
+function _ZN13RepoExceptionC1ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 4 returned 100% blocks executed 100%
+        4:   15:     RepoException(string m): msg{m} {};
+        4:   15-block  0
+call    0 returned 4
+        -:   16:     string get_Message() {
+        -:   17:         return this->msg;
+        -:   18:     }
+        -:   19:};
+        -:   20:
+        -:   21:class RepoAbs {
+        -:   22:public:
+        -:   23:    RepoAbs() = default;
+        -:   24:    RepoAbs(const RepoAbs& o) = delete;
+        -:   25:
+        -:   26:    virtual void store(const Activity& o) = 0;
+        -:   27:    virtual void remove(int position) = 0;
+        -:   28:    virtual void modify(int position, const Activity& o) = 0;
+        -:   29:    virtual const Activity& get_activity(int position) = 0;
+        -:   30:    virtual vector<Activity>& get_all() =0;
+        -:   31:    virtual const Activity& find_act_name(string name)= 0;
+        -:   32:    virtual void remove_last() =0;
+        -:   33:
+        -:   34:};
+        -:   35:
+        -:   36:class Repo : public RepoAbs
+        -:   37:{
+        -:   38:
+        -:   39:private:
+        -:   40:    vector<Activity> act;
+        -:   41:
+        -:   42:public:
+        -:   43:    Repo(const Repo& ot) = delete;
+        -:   44:
+        -:   45:    Repo() = default;
+        -:   46:
+        -:   47:    /**
+        -:   48:     * Store/Add the activity in the list of activities
+        -:   49:     * @param activity : the activity that will be added
+        -:   50:     */
+        -:   51:   virtual void store(const Activity &activity);
+        -:   52:
+        -:   53:    /**
+        -:   54:     * Remove the activity at a given postion
+        -:   55:     * @param position : the postion of the search activity
+        -:   56:     */
+        -:   57:    virtual void remove(int position);
+        -:   58:
+        -:   59:    /**
+        -:   60:     * Modify the activity at a given position
+        -:   61:     * @param position : the position of the searched activity
+        -:   62:     * @param newActivity : the new activity
+        -:   63:     */
+        -:   64:    virtual void modify(int position, const Activity& newActivity);
+        -:   65:
+        -:   66:    /**
+        -:   67:     * Get an activity at a given position
+        -:   68:     * @param position : the position of the searched activity
+        -:   69:     * @return activity
+        -:   70:     */
+        -:   71:    const Activity& get_activity(int position);
+        -:   72:
+        -:   73:    /**
+        -:   74:     * Get all activities
+        -:   75:     * @return activities
+        -:   76:     */
+function _ZN4Repo7get_allEv called 32 returned 100% blocks executed 100%
+       32:   77:     vector<Activity>& get_all() {
+       32:   78:        return act;
+       32:   78-block  0
+        -:   79:    }
+        -:   80:
+        -:   81:
+        -:   82:    /**
+        -:   83:     * Find an activity by a given name
+        -:   84:     * @param name : the name of the searched activity
+        -:   85:     * @return the activity
+        -:   86:     */
+        -:   87:    const Activity& find_act_name(string name);
+        -:   88:
+        -:   89:    void remove_last();
+        -:   90:
+        -:   91:};
+        -:   92:
+        -:   93:
+        -:   94:class RepoInFile: public Repo{
+        -:   95:private:
+        -:   96:    string file_name;
+        -:   97:    void write_to_file();
+        -:   98:    void read_from_file();
+        -:   99:
+        -:  100:public:
+        -:  101:    RepoInFile(string file_name) : Repo(), file_name(file_name){
+        -:  102:        read_from_file();
+        -:  103:    }
+        -:  104:    void store(const Activity& activity) override {
+        -:  105:        Repo::store(activity);
+        -:  106:        write_to_file();
+        -:  107:    }
+        -:  108:
+        -:  109:    void remove(int position) override {
+        -:  110:        Repo::remove(position);
+        -:  111:        write_to_file();
+        -:  112:    }
+        -:  113:
+        -:  114:    void modify(int position,const  Activity&a) override{
+        -:  115:        Repo::modify(position,a);
+        -:  116:        write_to_file();
+        -:  117:    }
+        -:  118:
+        -:  119:};
+        -:  120:
+        -:  121:class RepoLab : public RepoAbs {
+        -:  122:private:
+        -:  123:    std::map<int, Activity> activities;
+        -:  124:    double prob;
+        -:  125:    void random_prob();
+        -:  126:
+        -:  127:public:
+        -:  128:
+        -:  129:    ~RepoLab() = default;
+        -:  130:    RepoLab() {
+        -:  131:        std::random_device rd;
+        -:  132:        std::mt19937 gen(rd());
+        -:  133:        std::uniform_real_distribution<double> dis(0.0, 1.0);
+        -:  134:        prob = dis(gen);
+        -:  135:
+        -:  136:    }
+        -:  137:    void set_prob(double probabilitate) {
+        -:  138:        prob = probabilitate;
+        -:  139:    }
+        -:  140:    void store(const Activity& a) override;
+        -:  141:    void remove( int poz) override;
+        -:  142:    void modify(int poz, const Activity& a) override;
+        -:  143:    void remove_last() override;
+        -:  144:    const Activity& get_activity(int position) override;
+        -:  145:    const Activity& find_act_name(string name) override;
+        -:  146:    vector<Activity> all;
+        -:  147:    vector<Activity>& get_all() override;
+        -:  148:
+        -:  149:
+        -:  150:};
+        -:  151:
+        -:  152:class Prob_Exception {
+        -:  153:private:
+        -:  154:    string msg;
+        -:  155:public:
+        -:  156:    Prob_Exception(string msg) : msg(msg) {};
+        -:  157:    string get_message() {
+        -:  158:        return this->msg;
+        -:  159:    }
+        -:  160:};
+        -:  161:#endif //LAB6_7_REPO_H

@@ -1,0 +1,350 @@
+        -:    0:Source:C:/Qt/6.8.0/mingw_64/include/QtWidgets/qtablewidget.h
+        -:    0:Graph:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1:// Copyright (C) 2016 The Qt Company Ltd.
+        -:    2:// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+        -:    3:
+        -:    4:#ifndef QTABLEWIDGET_H
+        -:    5:#define QTABLEWIDGET_H
+        -:    6:
+        -:    7:#include <QtWidgets/qtableview.h>
+        -:    8:#include <QtWidgets/qtwidgetsglobal.h>
+        -:    9:#include <QtCore/qlist.h>
+        -:   10:#include <QtCore/qvariant.h>
+        -:   11:
+        -:   12:QT_REQUIRE_CONFIG(tablewidget);
+        -:   13:
+        -:   14:QT_BEGIN_NAMESPACE
+        -:   15:
+        -:   16:class QTableWidgetSelectionRange
+        -:   17:{
+        -:   18:public:
+        -:   19:    QTableWidgetSelectionRange() = default;
+        -:   20:    QTableWidgetSelectionRange(int top, int left, int bottom, int right)
+        -:   21:      : m_top(top), m_left(left), m_bottom(bottom), m_right(right)
+        -:   22:    {}
+        -:   23:
+        -:   24:    friend bool operator==(const QTableWidgetSelectionRange &lhs,
+        -:   25:                           const QTableWidgetSelectionRange &rhs) noexcept
+        -:   26:    {
+        -:   27:        return lhs.m_top == rhs.m_top && lhs.m_left == rhs.m_left && lhs.m_bottom == rhs.m_bottom
+        -:   28:                && lhs.m_right == rhs.m_right;
+        -:   29:    }
+        -:   30:    friend bool operator!=(const QTableWidgetSelectionRange &lhs,
+        -:   31:                           const QTableWidgetSelectionRange &rhs) noexcept
+        -:   32:    { return !(lhs == rhs); }
+        -:   33:
+        -:   34:    inline int topRow() const { return m_top; }
+        -:   35:    inline int bottomRow() const { return m_bottom; }
+        -:   36:    inline int leftColumn() const { return m_left; }
+        -:   37:    inline int rightColumn() const { return m_right; }
+        -:   38:    inline int rowCount() const { return m_bottom - m_top + 1; }
+        -:   39:    inline int columnCount() const { return m_right - m_left + 1; }
+        -:   40:private:
+        -:   41:    int m_top = -1, m_left = -1, m_bottom = -2, m_right = -2;
+        -:   42:};
+        -:   43:
+        -:   44:class QTableWidget;
+        -:   45:class QTableModel;
+        -:   46:class QWidgetItemData;
+        -:   47:class QTableWidgetItemPrivate;
+        -:   48:
+        -:   49:class Q_WIDGETS_EXPORT QTableWidgetItem
+        -:   50:{
+        -:   51:    friend class QTableWidget;
+        -:   52:    friend class QTableModel;
+        -:   53:public:
+        -:   54:    enum ItemType { Type = 0, UserType = 1000 };
+        -:   55:    explicit QTableWidgetItem(int type = Type);
+        -:   56:    explicit QTableWidgetItem(const QString &text, int type = Type);
+        -:   57:    explicit QTableWidgetItem(const QIcon &icon, const QString &text, int type = Type);
+        -:   58:    QTableWidgetItem(const QTableWidgetItem &other);
+        -:   59:    virtual ~QTableWidgetItem();
+        -:   60:
+        -:   61:    virtual QTableWidgetItem *clone() const;
+        -:   62:
+        -:   63:    inline QTableWidget *tableWidget() const { return view; }
+        -:   64:
+        -:   65:    inline int row() const;
+        -:   66:    inline int column() const;
+        -:   67:
+        -:   68:    void setSelected(bool select);
+        -:   69:    bool isSelected() const;
+        -:   70:
+        -:   71:    inline Qt::ItemFlags flags() const { return itemFlags; }
+        -:   72:    void setFlags(Qt::ItemFlags flags);
+        -:   73:
+function _ZNK16QTableWidgetItem4textEv called 0 returned 0% blocks executed 0%
+    #####:   74:    inline QString text() const
+    #####:   75:        { return data(Qt::DisplayRole).toString(); }
+    %%%%%:   75-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   75-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   75-block  2
+    %%%%%:   75-block  3
+call    6 never executed
+    %%%%%:   75-block  4
+    $$$$$:   75-block  5
+call    7 never executed
+        -:   76:    inline void setText(const QString &text);
+        -:   77:
+        -:   78:    inline QIcon icon() const
+        -:   79:        { return qvariant_cast<QIcon>(data(Qt::DecorationRole)); }
+        -:   80:    inline void setIcon(const QIcon &icon);
+        -:   81:
+        -:   82:    inline QString statusTip() const
+        -:   83:        { return data(Qt::StatusTipRole).toString(); }
+        -:   84:    inline void setStatusTip(const QString &statusTip);
+        -:   85:
+        -:   86:#if QT_CONFIG(tooltip)
+        -:   87:    inline QString toolTip() const
+        -:   88:        { return data(Qt::ToolTipRole).toString(); }
+        -:   89:    inline void setToolTip(const QString &toolTip);
+        -:   90:#endif
+        -:   91:
+        -:   92:#if QT_CONFIG(whatsthis)
+        -:   93:    inline QString whatsThis() const
+        -:   94:        { return data(Qt::WhatsThisRole).toString(); }
+        -:   95:    inline void setWhatsThis(const QString &whatsThis);
+        -:   96:#endif
+        -:   97:
+        -:   98:    inline QFont font() const
+        -:   99:        { return qvariant_cast<QFont>(data(Qt::FontRole)); }
+        -:  100:    inline void setFont(const QFont &font);
+        -:  101:
+        -:  102:#if QT_VERSION < QT_VERSION_CHECK(7, 0, 0)
+        -:  103:    inline int textAlignment() const
+        -:  104:        { return data(Qt::TextAlignmentRole).toInt(); }
+        -:  105:#else
+        -:  106:    inline Qt::Alignment textAlignment() const
+        -:  107:    { return qvariant_cast<Qt::Alignment>(data(Qt::TextAlignmentRole)); }
+        -:  108:#endif
+        -:  109:#if QT_DEPRECATED_SINCE(6, 4)
+        -:  110:    QT_DEPRECATED_VERSION_X_6_4("Use the overload taking Qt::Alignment")
+        -:  111:    inline void setTextAlignment(int alignment)
+        -:  112:        { setData(Qt::TextAlignmentRole, alignment); }
+        -:  113:    inline void setTextAlignment(Qt::AlignmentFlag alignment)
+        -:  114:        { setData(Qt::TextAlignmentRole, QVariant::fromValue(Qt::Alignment(alignment))); }
+        -:  115:#endif
+        -:  116:    inline void setTextAlignment(Qt::Alignment alignment)
+        -:  117:        { setData(Qt::TextAlignmentRole, QVariant::fromValue(alignment)); }
+        -:  118:
+        -:  119:    inline QBrush background() const
+        -:  120:        { return qvariant_cast<QBrush>(data(Qt::BackgroundRole)); }
+        -:  121:    inline void setBackground(const QBrush &brush)
+        -:  122:        { setData(Qt::BackgroundRole, brush.style() != Qt::NoBrush ? QVariant(brush) : QVariant()); }
+        -:  123:
+        -:  124:    inline QBrush foreground() const
+        -:  125:        { return qvariant_cast<QBrush>(data(Qt::ForegroundRole)); }
+        -:  126:    inline void setForeground(const QBrush &brush)
+        -:  127:        { setData(Qt::ForegroundRole, brush.style() != Qt::NoBrush ? QVariant(brush) : QVariant()); }
+        -:  128:
+        -:  129:    inline Qt::CheckState checkState() const
+        -:  130:        { return qvariant_cast<Qt::CheckState>(data(Qt::CheckStateRole)); }
+        -:  131:    inline void setCheckState(Qt::CheckState state)
+        -:  132:        { setData(Qt::CheckStateRole, state); }
+        -:  133:
+        -:  134:    inline QSize sizeHint() const
+        -:  135:        { return qvariant_cast<QSize>(data(Qt::SizeHintRole)); }
+        -:  136:    inline void setSizeHint(const QSize &size)
+        -:  137:        { setData(Qt::SizeHintRole, size.isValid() ? QVariant(size) : QVariant()); }
+        -:  138:
+        -:  139:    virtual QVariant data(int role) const;
+        -:  140:    virtual void setData(int role, const QVariant &value);
+        -:  141:
+        -:  142:    virtual bool operator<(const QTableWidgetItem &other) const;
+        -:  143:
+        -:  144:#ifndef QT_NO_DATASTREAM
+        -:  145:    virtual void read(QDataStream &in);
+        -:  146:    virtual void write(QDataStream &out) const;
+        -:  147:#endif
+        -:  148:    QTableWidgetItem &operator=(const QTableWidgetItem &other);
+        -:  149:
+        -:  150:    inline int type() const { return rtti; }
+        -:  151:
+        -:  152:private:
+        -:  153:    QTableModel *tableModel() const;
+        -:  154:
+        -:  155:private:
+        -:  156:    int rtti;
+        -:  157:    QList<QWidgetItemData> values;
+        -:  158:    QTableWidget *view;
+        -:  159:    QTableWidgetItemPrivate *d;
+        -:  160:    Qt::ItemFlags itemFlags;
+        -:  161:};
+        -:  162:
+        -:  163:inline void QTableWidgetItem::setText(const QString &atext)
+        -:  164:{ setData(Qt::DisplayRole, atext); }
+        -:  165:
+        -:  166:inline void QTableWidgetItem::setIcon(const QIcon &aicon)
+        -:  167:{ setData(Qt::DecorationRole, aicon); }
+        -:  168:
+        -:  169:inline void QTableWidgetItem::setStatusTip(const QString &astatusTip)
+        -:  170:{ setData(Qt::StatusTipRole, astatusTip); }
+        -:  171:
+        -:  172:#if QT_CONFIG(tooltip)
+        -:  173:inline void QTableWidgetItem::setToolTip(const QString &atoolTip)
+        -:  174:{ setData(Qt::ToolTipRole, atoolTip); }
+        -:  175:#endif
+        -:  176:
+        -:  177:#if QT_CONFIG(whatsthis)
+        -:  178:inline void QTableWidgetItem::setWhatsThis(const QString &awhatsThis)
+        -:  179:{ setData(Qt::WhatsThisRole, awhatsThis); }
+        -:  180:#endif
+        -:  181:
+        -:  182:inline void QTableWidgetItem::setFont(const QFont &afont)
+        -:  183:{ setData(Qt::FontRole, afont); }
+        -:  184:
+        -:  185:#ifndef QT_NO_DATASTREAM
+        -:  186:Q_WIDGETS_EXPORT QDataStream &operator>>(QDataStream &in, QTableWidgetItem &item);
+        -:  187:Q_WIDGETS_EXPORT QDataStream &operator<<(QDataStream &out, const QTableWidgetItem &item);
+        -:  188:#endif
+        -:  189:
+        -:  190:class QTableWidgetPrivate;
+        -:  191:
+        -:  192:class Q_WIDGETS_EXPORT QTableWidget : public QTableView
+        -:  193:{
+        -:  194:    Q_OBJECT
+        -:  195:    Q_PROPERTY(int rowCount READ rowCount WRITE setRowCount)
+        -:  196:    Q_PROPERTY(int columnCount READ columnCount WRITE setColumnCount)
+        -:  197:
+        -:  198:    friend class QTableModel;
+        -:  199:public:
+        -:  200:    explicit QTableWidget(QWidget *parent = nullptr);
+        -:  201:    QTableWidget(int rows, int columns, QWidget *parent = nullptr);
+        -:  202:    ~QTableWidget();
+        -:  203:
+        -:  204:    void setRowCount(int rows);
+        -:  205:    int rowCount() const;
+        -:  206:
+        -:  207:    void setColumnCount(int columns);
+        -:  208:    int columnCount() const;
+        -:  209:
+        -:  210:    int row(const QTableWidgetItem *item) const;
+        -:  211:    int column(const QTableWidgetItem *item) const;
+        -:  212:
+        -:  213:    QTableWidgetItem *item(int row, int column) const;
+        -:  214:    void setItem(int row, int column, QTableWidgetItem *item);
+        -:  215:    QTableWidgetItem *takeItem(int row, int column);
+        -:  216:    QList<QTableWidgetItem*> items(const QMimeData *data) const;
+        -:  217:    QModelIndex indexFromItem(const QTableWidgetItem *item) const;
+        -:  218:    QTableWidgetItem *itemFromIndex(const QModelIndex &index) const;
+        -:  219:
+        -:  220:    QTableWidgetItem *verticalHeaderItem(int row) const;
+        -:  221:    void setVerticalHeaderItem(int row, QTableWidgetItem *item);
+        -:  222:    QTableWidgetItem *takeVerticalHeaderItem(int row);
+        -:  223:
+        -:  224:    QTableWidgetItem *horizontalHeaderItem(int column) const;
+        -:  225:    void setHorizontalHeaderItem(int column, QTableWidgetItem *item);
+        -:  226:    QTableWidgetItem *takeHorizontalHeaderItem(int column);
+        -:  227:    void setVerticalHeaderLabels(const QStringList &labels);
+        -:  228:    void setHorizontalHeaderLabels(const QStringList &labels);
+        -:  229:
+        -:  230:    int currentRow() const;
+        -:  231:    int currentColumn() const;
+        -:  232:    QTableWidgetItem *currentItem() const;
+        -:  233:    void setCurrentItem(QTableWidgetItem *item);
+        -:  234:    void setCurrentItem(QTableWidgetItem *item, QItemSelectionModel::SelectionFlags command);
+        -:  235:    void setCurrentCell(int row, int column);
+        -:  236:    void setCurrentCell(int row, int column, QItemSelectionModel::SelectionFlags command);
+        -:  237:
+        -:  238:    void sortItems(int column, Qt::SortOrder order = Qt::AscendingOrder);
+        -:  239:    void setSortingEnabled(bool enable);
+        -:  240:    bool isSortingEnabled() const;
+        -:  241:
+        -:  242:    void editItem(QTableWidgetItem *item);
+        -:  243:    void openPersistentEditor(QTableWidgetItem *item);
+        -:  244:    void closePersistentEditor(QTableWidgetItem *item);
+        -:  245:    using QAbstractItemView::isPersistentEditorOpen;
+        -:  246:    bool isPersistentEditorOpen(QTableWidgetItem *item) const;
+        -:  247:
+        -:  248:    QWidget *cellWidget(int row, int column) const;
+        -:  249:    void setCellWidget(int row, int column, QWidget *widget);
+        -:  250:    inline void removeCellWidget(int row, int column);
+        -:  251:
+        -:  252:    void setRangeSelected(const QTableWidgetSelectionRange &range, bool select);
+        -:  253:
+        -:  254:    QList<QTableWidgetSelectionRange> selectedRanges() const;
+        -:  255:    QList<QTableWidgetItem*> selectedItems() const;
+        -:  256:    QList<QTableWidgetItem*> findItems(const QString &text, Qt::MatchFlags flags) const;
+        -:  257:
+        -:  258:    int visualRow(int logicalRow) const;
+        -:  259:    int visualColumn(int logicalColumn) const;
+        -:  260:
+        -:  261:    QTableWidgetItem *itemAt(const QPoint &p) const;
+        -:  262:    inline QTableWidgetItem *itemAt(int x, int y) const;
+        -:  263:    QRect visualItemRect(const QTableWidgetItem *item) const;
+        -:  264:
+        -:  265:    const QTableWidgetItem *itemPrototype() const;
+        -:  266:    void setItemPrototype(const QTableWidgetItem *item);
+        -:  267:
+        -:  268:public Q_SLOTS:
+        -:  269:    void scrollToItem(const QTableWidgetItem *item, QAbstractItemView::ScrollHint hint = EnsureVisible);
+        -:  270:    void insertRow(int row);
+        -:  271:    void insertColumn(int column);
+        -:  272:    void removeRow(int row);
+        -:  273:    void removeColumn(int column);
+        -:  274:    void clear();
+        -:  275:    void clearContents();
+        -:  276:
+        -:  277:Q_SIGNALS:
+        -:  278:    void itemPressed(QTableWidgetItem *item);
+        -:  279:    void itemClicked(QTableWidgetItem *item);
+        -:  280:    void itemDoubleClicked(QTableWidgetItem *item);
+        -:  281:
+        -:  282:    void itemActivated(QTableWidgetItem *item);
+        -:  283:    void itemEntered(QTableWidgetItem *item);
+        -:  284:    void itemChanged(QTableWidgetItem *item);
+        -:  285:
+        -:  286:    void currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
+        -:  287:    void itemSelectionChanged();
+        -:  288:
+        -:  289:    void cellPressed(int row, int column);
+        -:  290:    void cellClicked(int row, int column);
+        -:  291:    void cellDoubleClicked(int row, int column);
+        -:  292:
+        -:  293:    void cellActivated(int row, int column);
+        -:  294:    void cellEntered(int row, int column);
+        -:  295:    void cellChanged(int row, int column);
+        -:  296:
+        -:  297:    void currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
+        -:  298:
+        -:  299:protected:
+        -:  300:    bool event(QEvent *e) override;
+        -:  301:    virtual QStringList mimeTypes() const;
+        -:  302:    virtual QMimeData *mimeData(const QList<QTableWidgetItem *> &items) const;
+        -:  303:    virtual bool dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action);
+        -:  304:    virtual Qt::DropActions supportedDropActions() const;
+        -:  305:
+        -:  306:protected:
+        -:  307:#if QT_CONFIG(draganddrop)
+        -:  308:    void dropEvent(QDropEvent *event) override;
+        -:  309:#endif
+        -:  310:private:
+        -:  311:    void setModel(QAbstractItemModel *model) override;
+        -:  312:
+        -:  313:    Q_DECLARE_PRIVATE(QTableWidget)
+        -:  314:    Q_DISABLE_COPY(QTableWidget)
+        -:  315:};
+        -:  316:
+        -:  317:inline void QTableWidget::removeCellWidget(int arow, int acolumn)
+        -:  318:{ setCellWidget(arow, acolumn, nullptr); }
+        -:  319:
+        -:  320:inline QTableWidgetItem *QTableWidget::itemAt(int ax, int ay) const
+        -:  321:{ return itemAt(QPoint(ax, ay)); }
+        -:  322:
+        -:  323:inline int QTableWidgetItem::row() const
+        -:  324:{ return (view ? view->row(this) : -1); }
+        -:  325:
+        -:  326:inline int QTableWidgetItem::column() const
+        -:  327:{ return (view ? view->column(this) : -1); }
+        -:  328:
+        -:  329:QT_END_NAMESPACE
+        -:  330:
+        -:  331:#endif // QTABLEWIDGET_H

@@ -1,0 +1,42 @@
+     1                                  bits 32
+     2                                  global start
+     3                                  
+     4                                  extern exit, printf
+     5                                  import exit msvcrt.dll
+     6                                  import printf msvcrt.dll
+     7                                  
+     8                                  
+     9                                  segment data use32 class = data
+    10 00000000 34A2AF510000000011-         arr dq 51AFA234h, 23BC11C537A3F411h, 0FF1Ah, 333D72348h
+    10 00000009 F4A337C511BC231AFF-
+    10 00000012 0000000000004823D7-
+    10 0000001B 3303000000         
+    11 00000020 20000000                    len dd ($ - arr)
+    12                                      
+    13 00000024 25782000                    w_format db "%x ", 0
+    14                                      
+    15                                      
+    16                                  segment code use32 class = code
+    17                                      start:      
+    18 00000000 BE00000000                      mov esi, 0
+    19 00000005 FC                              cld
+    20                                      
+    21                                          rep_1:
+    22 00000006 833D[20000000]00                    cmp dword [len], 0
+    23 0000000D 7423                                je exit_rep_1
+    24                                              
+    25 0000000F B800000000                          mov eax, 0
+    26 00000014 8A86[00000000]                      mov al, [arr + esi]
+    27                                              
+    28 0000001A 50                                  push eax
+    29 0000001B 68[24000000]                        push dword w_format
+    30 00000020 FF15[00000000]                      call [printf]
+    31 00000026 83C408                              add esp, 4 * 2
+    32                                              
+    33 00000029 46                                  inc esi
+    34 0000002A FF0D[20000000]                      dec dword [len]
+    35 00000030 EBD4                                jmp rep_1
+    36                                          
+    37                                          exit_rep_1:
+    38 00000032 6A00                            push dword 0
+    39 00000034 FF15[00000000]                  call [exit]

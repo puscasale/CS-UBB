@@ -1,0 +1,51 @@
+     1                                  bits 32
+     2                                  global start
+     3                                  
+     4                                  extern exit, printf
+     5                                  import exit msvcrt.dll
+     6                                  import printf msvcrt.dll
+     7                                  
+     8                                  
+     9                                  segment data use32 class = data
+    10 00000000 34A2AF510000000015-         arr dq 51AFA234h, 23BC11C537A3F415h, 0FF5h, 333D72348h
+    10 00000009 F4A337C511BC23F50F-
+    10 00000012 0000000000004823D7-
+    10 0000001B 3303000000         
+    11 00000020 10000000                    len dd ($ - arr) / 2
+    12                                      
+    13 00000024 25782000                    w_format db "%x ", 0
+    14                                      
+    15 00000028 00000000<rept>              d times 25 dw 0, 0
+    16                                      k equ 5
+    17 0000008C 0A000000                    ten dd 10
+    18                                      
+    19                                      
+    20                                  segment code use32 class = code
+    21                                      start:      
+    22 00000000 BE[00000000]                    mov esi, arr
+    23 00000005 BF[28000000]                    mov edi, d
+    24 0000000A FC                              cld
+    25                                      
+    26                                          rep_1:
+    27 0000000B 833D[20000000]00                    cmp dword [len], 0
+    28 00000012 7625                                jbe exit_rep_1
+    29                                              
+    30 00000014 B800000000                          mov eax, 0
+    31 00000019 66AD                                lodsw
+    32                                              
+    33 0000001B 89C3                                mov ebx, eax
+    34 0000001D BA00000000                          mov edx, 0
+    35 00000022 F735[8C000000]                      div dword [ten]
+    36 00000028 83FA05                              cmp edx, k
+    37 0000002B 7504                                jne not_eq
+    38                                              
+    39 0000002D 89D8                                mov eax, ebx
+    40 0000002F 66AB                                stosw
+    41                                              
+    42                                              not_eq:
+    43 00000031 FF0D[20000000]                      dec dword [len]
+    44 00000037 EBD2                                jmp rep_1
+    45                                          
+    46                                          exit_rep_1:
+    47 00000039 6A00                            push dword 0
+    48 0000003B FF15[00000000]                  call [exit]

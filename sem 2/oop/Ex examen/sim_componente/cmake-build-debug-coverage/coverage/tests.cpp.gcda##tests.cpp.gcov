@@ -1,0 +1,316 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_componente/tests.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\tests.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\tests.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/21/2024.
+        -:    3://
+        -:    4:
+        -:    5:#include <iostream>
+        -:    6:#include "tests.h"
+        -:    7:#include "assert.h"
+function _Z8testprocv called 1 returned 100% blocks executed 60%
+        1:    8:void testproc(){
+        1:    8-block  0
+        1:    9:    Procesor pr("n", 1, 11, 2);
+        1:    9-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:    9-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:    9-block  2
+call    6 returned 1
+    $$$$$:    9-block  3
+call    7 never executed
+    $$$$$:    9-block  4
+    $$$$$:    9-block  5
+       1*:   10:    assert(pr.getNume() == "n");
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   10-block  0
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   10-block  1
+branch  6 taken 0 (fallthrough)
+branch  7 taken 1
+    %%%%%:   10-block  2
+call    8 never executed
+        1:   10-block  3
+        1:   10-block  4
+branch  9 taken 1 (fallthrough)
+branch 10 taken 0
+        1:   10-block  5
+call   11 returned 1
+    $$$$$:   10-block  6
+branch 12 never executed (fallthrough)
+branch 13 never executed
+    $$$$$:   10-block  7
+call   14 never executed
+    $$$$$:   10-block  8
+       1*:   11:    assert(pr.get_nrT() == 1);
+        1:   11-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   11-block  1
+branch  3 taken 0 (fallthrough)
+branch  4 taken 1
+    %%%%%:   11-block  2
+call    5 never executed
+        1:   11-block  3
+       1*:   12:    assert(pr.get_soclu() == 11);
+        1:   12-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   12-block  1
+branch  3 taken 0 (fallthrough)
+branch  4 taken 1
+    %%%%%:   12-block  2
+call    5 never executed
+        1:   12-block  3
+       1*:   13:    assert(pr.getPret() == 2);
+        1:   13-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   13-block  1
+branch  3 taken 0 (fallthrough)
+branch  4 taken 1
+    %%%%%:   13-block  2
+call    5 never executed
+        1:   13-block  3
+        1:   14:}
+        1:   14-block  0
+call    0 returned 1
+    $$$$$:   14-block  1
+call    1 never executed
+        -:   15:
+function _Z13test_repo_srvv called 1 returned 100% blocks executed 53%
+        1:   16:void test_repo_srv() {
+        1:   16-block  0
+        2:   17:    RepoPlaca placa{R"(C:\Users\Ale\Desktop\sim_componente\test.txt)"};
+        1:   17-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   17-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   17-block  2
+call    6 returned 1
+    $$$$$:   17-block  3
+call    7 never executed
+    $$$$$:   17-block  4
+    $$$$$:   17-block  5
+        1:   18:    RepoProcesoare proc {R"(C:\Users\Ale\Desktop\sim_componente\test.txt)"};
+        1:   18-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   18-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   18-block  2
+call    6 returned 1
+    $$$$$:   18-block  3
+call    7 never executed
+    $$$$$:   18-block  4
+    $$$$$:   18-block  5
+        -:   19:
+        1:   20:    Service srv(proc,placa);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   21:    srv.addPlaca("a",2,3);
+        1:   21-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   21-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   21-block  2
+call    6 returned 1
+    $$$$$:   21-block  3
+call    7 never executed
+    $$$$$:   21-block  4
+    $$$$$:   21-block  5
+       1*:   22:    assert(placa.get_all()[0].get_nume() == "a");
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+branch  3 taken 1 (fallthrough)
+branch  4 taken 0 (throw)
+        1:   22-block  0
+call    5 returned 1
+branch  6 taken 1 (fallthrough)
+branch  7 taken 0 (throw)
+        1:   22-block  1
+branch  8 taken 0 (fallthrough)
+branch  9 taken 1
+    %%%%%:   22-block  2
+call   10 never executed
+        1:   22-block  3
+        1:   22-block  4
+branch 11 taken 1 (fallthrough)
+branch 12 taken 0
+        1:   22-block  5
+call   13 returned 1
+    $$$$$:   22-block  6
+branch 14 never executed (fallthrough)
+branch 15 never executed
+    $$$$$:   22-block  7
+call   16 never executed
+    $$$$$:   22-block  8
+       1*:   23:    assert(proc.sizeProc() == 1);
+        1:   23-block  0
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   23-block  1
+call    3 never executed
+        1:   23-block  2
+       1*:   24:    assert(srv.nrPlaci()== 3);
+        1:   24-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   24-block  1
+branch  3 taken 0 (fallthrough)
+branch  4 taken 1
+    %%%%%:   24-block  2
+call    5 never executed
+        1:   24-block  3
+       1*:   25:    assert(srv.nrProcese() == 1);
+        1:   25-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   25-block  1
+branch  3 taken 0 (fallthrough)
+branch  4 taken 1
+    %%%%%:   25-block  2
+call    5 never executed
+        1:   25-block  3
+        3:   26:    int nr = srv.total(Procesor("a",2,3,4),Placa("a",2,3));
+        1:   26-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   26-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   26-block  2
+call    6 returned 1
+branch  7 taken 1 (fallthrough)
+branch  8 taken 0 (throw)
+        1:   26-block  3
+call    9 returned 1
+branch 10 taken 1 (fallthrough)
+branch 11 taken 0 (throw)
+        1:   26-block  4
+call   12 returned 1
+branch 13 taken 1 (fallthrough)
+branch 14 taken 0 (throw)
+        1:   26-block  5
+call   15 returned 1
+call   16 returned 1
+call   17 returned 1
+call   18 returned 1
+    $$$$$:   26-block  6
+call   19 never executed
+    $$$$$:   26-block  7
+call   20 never executed
+    $$$$$:   26-block  8
+    $$$$$:   26-block  9
+    $$$$$:   26-block 10
+    $$$$$:   26-block 11
+call   21 never executed
+    $$$$$:   26-block 12
+call   22 never executed
+    $$$$$:   26-block 13
+    $$$$$:   26-block 14
+    $$$$$:   26-block 15
+       1*:   27:    assert(nr == 7);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   27-block  0
+call    2 never executed
+        1:   27-block  1
+        1:   28:    vector<Placa> fil;
+        1:   28-block  0
+call    0 returned 1
+        1:   29:    fil = srv.filter(Procesor("a",2,3,4));
+        1:   29-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   29-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   29-block  2
+call    6 returned 1
+branch  7 taken 1 (fallthrough)
+branch  8 taken 0 (throw)
+        1:   29-block  3
+call    9 returned 1
+branch 10 taken 1 (fallthrough)
+branch 11 taken 0 (throw)
+        1:   29-block  4
+call   12 returned 1
+call   13 returned 1
+call   14 returned 1
+    $$$$$:   29-block  5
+call   15 never executed
+    $$$$$:   29-block  6
+call   16 never executed
+    $$$$$:   29-block  7
+call   17 never executed
+    $$$$$:   29-block  8
+    $$$$$:   29-block  9
+    $$$$$:   29-block 10
+    $$$$$:   29-block 11
+       1*:   30:    assert(fil.size() == 0);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   30-block  0
+call    3 never executed
+        1:   30-block  1
+        -:   31:
+        1:   32:}
+        1:   32-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+call    3 returned 1
+    $$$$$:   32-block  1
+call    4 never executed
+    $$$$$:   32-block  2
+call    5 never executed
+    $$$$$:   32-block  3
+call    6 never executed
+    $$$$$:   32-block  4
+call    7 never executed
+        -:   33:
+        -:   34:
+        -:   35:
+function _Z8test_allv called 1 returned 100% blocks executed 100%
+        1:   36:void test_all(){
+        1:   37:    testproc();
+        1:   37-block  0
+call    0 returned 1
+        1:   38:    test_repo_srv();
+call    0 returned 1
+        1:   39:}

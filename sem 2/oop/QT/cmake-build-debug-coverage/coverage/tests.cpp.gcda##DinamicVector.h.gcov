@@ -1,0 +1,379 @@
+        -:    0:Source:C:/Users/Ale/Desktop/QT/DinamicVector.h
+        -:    0:Graph:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\tests.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\tests.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/16/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef QT_DINAMICVECTOR_H
+        -:    6:#define QT_DINAMICVECTOR_H
+        -:    7:#pragma once
+        -:    8:#define CAPACITATE_INITIALA 5
+        -:    9:
+        -:   10:template<typename Element>
+        -:   11:class IteratorVector;
+        -:   12:
+        -:   13:template<typename Element>
+        -:   14:class VectorDinamic {
+        -:   15:private:
+        -:   16:
+        -:   17:    int dimensiune;
+        -:   18:    int capacitate;
+        -:   19:    Element* elemente;
+        -:   20:
+        -:   21:    void asiguraCapacitate();
+        -:   22:
+        -:   23:public:
+        -:   24:
+        -:   25:    /*
+        -:   26:    Constructor default
+        -:   27:    Alocam spatiu pentru 5 elemente
+        -:   28:    */
+        -:   29:    VectorDinamic();
+        -:   30:
+        -:   31:    /*
+        -:   32:    Constructor de copiere
+        -:   33:    rule 1 of 3
+        -:   34:    */
+        -:   35:    VectorDinamic(const VectorDinamic& other);
+        -:   36:
+        -:   37:    /*
+        -:   38:    Eliberam memoria
+        -:   39:    rule 2 of 3
+        -:   40:    */
+        -:   41:    ~VectorDinamic();
+        -:   42:
+        -:   43:    /*
+        -:   44:    Operator de atribuire (elibereaza continutul obiectului curent, aloca spatiu pentru elemente, copiaza elementele din other in this)
+        -:   45:    rule 3 of 3
+        -:   46:    */
+        -:   47:    VectorDinamic& operator=(const VectorDinamic& other);
+        -:   48:
+        -:   49:    /*
+        -:   50:    Constructor de mutare
+        -:   51:    */
+        -:   52:    VectorDinamic(VectorDinamic&& other);
+        -:   53:
+        -:   54:    /*
+        -:   55:    Atribuire prin mutare (folosit la atribuire)
+        -:   56:    */
+        -:   57:    VectorDinamic& operator=(VectorDinamic&& other);
+        -:   58:
+        -:   59:
+        -:   60:    void adauga(const Element& element);
+        -:   61:
+        -:   62:    Element& get(int pozitieElement) const;
+        -:   63:
+        -:   64:    void set(int pozitieElement, const Element& element);
+        -:   65:
+        -:   66:    int size() const noexcept;
+        -:   67:
+        -:   68:    void push_back(const Element& element);
+        -:   69:
+        -:   70:    void pop_back();
+        -:   71:
+        -:   72:    Element& operator[](int index);
+        -:   73:
+        -:   74:    void clear() {
+        -:   75:        // Reset size to 0
+        -:   76:        dimensiune = 0;
+        -:   77:    }
+        -:   78:
+        -:   79:    friend class IteratorVector<Element>;
+        -:   80:
+        -:   81:    //functii care creeaza iteratori
+        -:   82:    IteratorVector<Element> begin() const;
+        -:   83:
+        -:   84:    IteratorVector<Element> end() const;
+        -:   85:
+        -:   86:};
+        -:   87:
+        -:   88:/*
+        -:   89:    Constructor default
+        -:   90:    Alocam spatiu pentru 5 elemente
+        -:   91:*/
+        -:   92:template<typename Element>
+function _ZN13VectorDinamicIiEC1Ev called 2 returned 100% blocks executed 100%
+        4:   93:VectorDinamic<Element>::VectorDinamic() :elemente{ new Element[CAPACITATE_INITIALA] }, capacitate{ CAPACITATE_INITIALA },
+        2:   94:                                         dimensiune{ 0 } {}
+        2:   94-block  0
+call    0 returned 2
+        -:   95:
+        -:   96:/*
+        -:   97:    Constructor de copiere
+        -:   98:*/
+        -:   99:template<typename Element>
+function _ZN13VectorDinamicIiEC1ERKS0_ called 2 returned 100% blocks executed 88%
+        2:  100:VectorDinamic<Element>::VectorDinamic(const VectorDinamic<Element>& other) {
+       2*:  101:    elemente = new Element[other.capacitate];
+        2:  101-block  0
+branch  0 taken 2 (fallthrough)
+branch  1 taken 0
+        2:  101-block  1
+    %%%%%:  101-block  2
+call    2 never executed
+        2:  101-block  3
+call    3 returned 2
+        -:  102:    //copiere elemente
+       14:  103:    for (int i = 0; i < other.dimensiune; i++) {
+       14:  103-block  0
+branch  0 taken 12
+branch  1 taken 2 (fallthrough)
+       12:  104:        elemente[i] = other.elemente[i];
+       12:  104-block  0
+        -:  105:    }
+        2:  106:    dimensiune = other.dimensiune;
+        2:  107:    capacitate = other.capacitate;
+        2:  108:}
+        -:  109:
+        -:  110:/*
+        -:  111:    Eliberam memoria
+        -:  112:*/
+        -:  113:template<typename Element>
+function _ZN13VectorDinamicIiED1Ev called 5 returned 100% blocks executed 100%
+        5:  114:VectorDinamic<Element>::~VectorDinamic() {
+        5:  115:    delete[] elemente;
+        5:  115-block  0
+branch  0 taken 4 (fallthrough)
+branch  1 taken 1
+        4:  115-block  1
+call    2 returned 4
+        5:  116:}
+        -:  117:
+        -:  118:/*
+        -:  119:    Operator de atribuire (elibereaza continutul obiectului curent, aloca spatiu pentru elemente, copiaza elementele din other in this)
+        -:  120:    rule 3 of 3
+        -:  121:*/
+        -:  122:template<typename Element>
+function _ZN13VectorDinamicIiEaSERKS0_ called 1 returned 100% blocks executed 91%
+        1:  123:VectorDinamic<Element>& VectorDinamic<Element>::operator=(const VectorDinamic<Element>& other) {
+        1:  124:    delete[] elemente;
+        1:  124-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  124-block  1
+call    2 returned 1
+       1*:  125:    elemente = new Element[other.capacitate];
+        1:  125-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  125-block  1
+    %%%%%:  125-block  2
+call    2 never executed
+        1:  125-block  3
+call    3 returned 1
+        -:  126:    //copiere elemente
+        8:  127:    for (int i = 0; i < other.dimensiune; i++) {
+        8:  127-block  0
+branch  0 taken 7
+branch  1 taken 1 (fallthrough)
+        7:  128:        elemente[i] = other.elemente[i];
+        7:  128-block  0
+        -:  129:    }
+        1:  130:    dimensiune = other.dimensiune;
+        1:  131:    capacitate = other.capacitate;
+        1:  132:    return *this;
+        1:  132-block  0
+        -:  133:}
+        -:  134:
+        -:  135:/*
+        -:  136:    Constructor de mutare
+        -:  137:*/
+        -:  138:template<typename Element>
+function _ZN13VectorDinamicIiEC1EOS0_ called 1 returned 100% blocks executed 100%
+        1:  139:VectorDinamic<Element>::VectorDinamic(VectorDinamic&& other) {
+        1:  140:    elemente = other.elemente;
+        1:  141:    dimensiune = other.dimensiune;
+        1:  142:    capacitate = other.capacitate;
+        -:  143:
+        1:  144:    other.elemente = nullptr;
+        1:  145:    other.dimensiune = 0;
+        1:  146:    other.capacitate = 0;
+        1:  147:}
+        -:  148:
+        -:  149:/*
+        -:  150:    Atribuire prin mutare (folosit la atribuire)
+        -:  151:*/
+        -:  152:template<typename Element>
+        -:  153:VectorDinamic<Element>& VectorDinamic<Element>::operator=(VectorDinamic<Element>&& other) {
+        -:  154:    if (this == &other) {
+        -:  155:        return *this;
+        -:  156:    }
+        -:  157:    delete[] elemente;
+        -:  158:
+        -:  159:    elemente = other.elemente;
+        -:  160:    dimensiune = other.dimensiune;
+        -:  161:    capacitate = other.capacitate;
+        -:  162:
+        -:  163:    other.elemente = nullptr;
+        -:  164:    other.dimensiune = 0;
+        -:  165:    other.capacitate = 0;
+        -:  166:    return *this;
+        -:  167:}
+        -:  168:
+        -:  169:template<typename Element>
+        -:  170:void VectorDinamic<Element>::adauga(const Element& element) {
+        -:  171:    asiguraCapacitate();
+        -:  172:    elemente[dimensiune++] = element;
+        -:  173:}
+        -:  174:
+        -:  175:template<typename Element>
+function _ZNK13VectorDinamicIiE3getEi called 3 returned 100% blocks executed 100%
+        3:  176:Element& VectorDinamic<Element>::get(int pozitieElement) const {
+        3:  177:    return elemente[pozitieElement];
+        3:  177-block  0
+        -:  178:}
+        -:  179:
+        -:  180:template<typename Element>
+function _ZN13VectorDinamicIiE3setEiRKi called 1 returned 100% blocks executed 100%
+        1:  181:void VectorDinamic<Element>::set(int pozitieElement, const Element& element) {
+        1:  182:    elemente[pozitieElement] = element;
+        1:  183:}
+        -:  184:
+        -:  185:template<typename Element>
+function _ZNK13VectorDinamicIiE4sizeEv called 12 returned 100% blocks executed 100%
+       12:  186:int VectorDinamic<Element>::size() const noexcept {
+       12:  187:    return dimensiune;
+       12:  187-block  0
+        -:  188:}
+        -:  189:
+        -:  190:template<typename Element>
+function _ZN13VectorDinamicIiE17asiguraCapacitateEv called 1 returned 100% blocks executed 90%
+        1:  191:void VectorDinamic<Element>::asiguraCapacitate() {
+        -:  192:
+        1:  193:    capacitate *= 2;
+       1*:  194:    Element* elementeAuxiliar = new Element[capacitate];
+        1:  194-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  194-block  1
+    %%%%%:  194-block  2
+call    2 never executed
+        1:  194-block  3
+call    3 returned 1
+        6:  195:    for (int i = 0; i < dimensiune; i++) {
+        6:  195-block  0
+branch  0 taken 5
+branch  1 taken 1 (fallthrough)
+        5:  196:        elementeAuxiliar[i] = elemente[i];
+        5:  196-block  0
+        -:  197:    }
+        1:  198:    delete[] elemente;
+        1:  198-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  198-block  1
+call    2 returned 1
+        1:  199:    elemente = elementeAuxiliar;
+        1:  200:}
+        -:  201:
+        -:  202:template<typename Element>
+function _ZN13VectorDinamicIiE9push_backERKi called 7 returned 100% blocks executed 100%
+        7:  203:void VectorDinamic<Element>::push_back(const Element& element) {
+        7:  204:    if (dimensiune == capacitate) {
+        7:  204-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 6
+        1:  205:        asiguraCapacitate();
+        1:  205-block  0
+call    0 returned 1
+        -:  206:    }
+        7:  207:    elemente[dimensiune] = element;
+        7:  208:    dimensiune++;
+        7:  209:}
+        -:  210:
+        -:  211:template<typename Element>
+function _ZN13VectorDinamicIiE8pop_backEv called 1 returned 100% blocks executed 100%
+        1:  212:void VectorDinamic<Element>::pop_back() {
+        1:  213:    dimensiune--;
+        1:  214:}
+        -:  215:
+        -:  216:template<typename Element>
+function _ZN13VectorDinamicIiEixEi called 20 returned 100% blocks executed 100%
+       20:  217:Element& VectorDinamic<Element>::operator[](int index) {
+       20:  218:    return elemente[index];
+       20:  218-block  0
+        -:  219:}
+        -:  220:
+        -:  221:template<typename Element>
+        -:  222:IteratorVector<Element> VectorDinamic<Element>::begin() const {
+        -:  223:    return IteratorVector<Element>(*this);
+        -:  224:}
+        -:  225:
+        -:  226:template<typename Element>
+        -:  227:IteratorVector<Element> VectorDinamic<Element>::end() const {
+        -:  228:    return IteratorVector<Element>(*this, dimensiune);
+        -:  229:}
+        -:  230:
+        -:  231:template<typename Element>
+        -:  232:class IteratorVector {
+        -:  233:private:
+        -:  234:
+        -:  235:    const VectorDinamic<Element>& vector;
+        -:  236:    int pozitieElement = 0;
+        -:  237:
+        -:  238:public:
+        -:  239:
+        -:  240:    IteratorVector(const VectorDinamic<Element>& vector) noexcept;
+        -:  241:
+        -:  242:    IteratorVector(const VectorDinamic<Element>& vector, int pozitieElement) noexcept;
+        -:  243:
+        -:  244:    bool valid() const noexcept;
+        -:  245:
+        -:  246:    Element& element() const noexcept;
+        -:  247:
+        -:  248:    void next() noexcept;
+        -:  249:
+        -:  250:    Element& operator*();
+        -:  251:
+        -:  252:    IteratorVector& operator++();
+        -:  253:
+        -:  254:    bool operator==(const IteratorVector& other) noexcept;
+        -:  255:
+        -:  256:    bool operator!=(const IteratorVector& other) noexcept;
+        -:  257:};
+        -:  258:
+        -:  259:template<typename Element>
+        -:  260:IteratorVector<Element>::IteratorVector(const VectorDinamic<Element>& vector) noexcept :vector{ vector } {}
+        -:  261:
+        -:  262:template<typename Element>
+        -:  263:IteratorVector<Element>::IteratorVector(const VectorDinamic<Element>& vector, int pozitieElement) noexcept :vector{
+        -:  264:        vector }, pozitieElement{ pozitieElement } {}
+        -:  265:
+        -:  266:template<typename Element>
+        -:  267:bool IteratorVector<Element>::valid() const noexcept {
+        -:  268:    return pozitieElement < vector.dimensiune;
+        -:  269:}
+        -:  270:
+        -:  271:template<typename Element>
+        -:  272:Element& IteratorVector<Element>::element() const noexcept {
+        -:  273:    return vector.elemente[pozitieElement];
+        -:  274:}
+        -:  275:
+        -:  276:template<typename Element>
+        -:  277:void IteratorVector<Element>::next() noexcept {
+        -:  278:    pozitieElement++;
+        -:  279:}
+        -:  280:
+        -:  281:template<typename Element>
+        -:  282:Element& IteratorVector<Element>::operator*() {
+        -:  283:    return element();
+        -:  284:}
+        -:  285:
+        -:  286:template<typename Element>
+        -:  287:IteratorVector<Element>& IteratorVector<Element>::operator++() {
+        -:  288:    next();
+        -:  289:    return *this;
+        -:  290:}
+        -:  291:
+        -:  292:template<typename Element>
+        -:  293:bool IteratorVector<Element>::operator==(const IteratorVector<Element>& other) noexcept {
+        -:  294:    return pozitieElement == other.pozitieElement;
+        -:  295:}
+        -:  296:
+        -:  297:template<typename Element>
+        -:  298:bool IteratorVector<Element>::operator!=(const IteratorVector<Element>& other) noexcept {
+        -:  299:    return !(*this == other);
+        -:  300:}
+        -:  301:#endif //QT_DINAMICVECTOR_H

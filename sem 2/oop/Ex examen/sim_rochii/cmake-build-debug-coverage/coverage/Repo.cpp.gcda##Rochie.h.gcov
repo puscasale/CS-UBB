@@ -1,0 +1,45 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_rochii/Rochie.h
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_rochii\cmake-build-debug-coverage\CMakeFiles\sim_rochii.dir\Repo.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_rochii\cmake-build-debug-coverage\CMakeFiles\sim_rochii.dir\Repo.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/21/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef SIM_ROCHII_ROCHIE_H
+        -:    6:#define SIM_ROCHII_ROCHIE_H
+        -:    7:#include <string>
+        -:    8:using std::string;
+        -:    9:class Rochie{
+        -:   10:private:
+        -:   11:    int cod;
+        -:   12:    string nume;
+        -:   13:    string marime;
+        -:   14:    int pret;
+        -:   15:    bool disponibil;
+        -:   16:public:
+function _ZN6RochieC1EiNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_ib called 0 returned 0% blocks executed 0%
+    #####:   17:    Rochie(int cod, string nume, string marime, int pret, bool disponibil) : cod(cod), nume(nume), marime(marime), pret(pret), disponibil(disponibil){};
+    %%%%%:   17-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   17-block  1
+    $$$$$:   17-block  2
+call    4 never executed
+        -:   18:
+        -:   19:    //gettere
+        -:   20:    int get_cod() const;
+        -:   21:
+        -:   22:    string get_nume() const;
+        -:   23:
+        -:   24:    string get_marime() const;
+        -:   25:
+        -:   26:    int get_pret() const;
+        -:   27:
+        -:   28:    bool get_dis() const;
+        -:   29:
+        -:   30:    void set_dis(bool dis1) ;
+        -:   31:};
+        -:   32:#endif //SIM_ROCHII_ROCHIE_H

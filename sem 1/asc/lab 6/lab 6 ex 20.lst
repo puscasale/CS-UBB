@@ -1,0 +1,65 @@
+     1                                  bits 32
+     2                                  global start
+     3                                  
+     4                                  extern exit, printf
+     5                                  import exit msvcrt.dll
+     6                                  import printf msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9 00000000 637576616E74206361-     	text db "cuvant capac"
+     9 00000009 706163             
+    10 0000000C <res 00000001>              b resb 1
+    11                                      
+    12                                  ;Se da un sir de octeti reprezentand un text (succesiune de cuvinte separate de spatii). Sa se identifice cuvintele de tip palindrom (ale caror oglindiri sunt similare cu cele de plecare): "cojoc", "capac" etc.
+    13                                  segment code use32 class=code
+    14                                      start:
+    15 00000000 BE[00000000]                    mov esi, text       ; Adresa de început a textului
+    16 00000005 BB00000000                      mov ebx, 0
+    17 0000000A FC                              cld
+    18                                  
+    19                                      find_palindromes:
+    20 0000000B AC                              lodsb               ; Încarcă următorul caracter în AL
+    21 0000000C 3C20                            cmp al, ' '         ; Verifică dacă am găsit un spațiu
+    22 0000000E 7438                            je  next_word
+    23                                  
+    24                                          ; Verificăm dacă cuvântul este palindrom
+    25 00000010 BA00000000                      mov edx, 0
+    26                                  
+    27                                      check_palindrome_loop:
+    28 00000015 89F0                            mov eax, esi        ; Adresa de început a cuvântului
+    29 00000017 01D8                            add eax, ebx        ; Adăugăm offset-ul la adresa de început a cuvântului
+    30 00000019 01D0                            add eax, edx        ; Adăugăm offset-ul în interiorul cuvântului
+    31 0000001B 8A00                            mov al, [eax]       ; Încarcă caracterul curent
+    32                                  
+    33 0000001D 3C20                            cmp al, ' '         ; Verifică dacă am găsit un spațiu (sfârșitul cuvântului curent)
+    34 0000001F 7419                            je  palindrom_found ; Dacă da, este palindrom
+    35                                  
+    36 00000021 8A5C10FF                        mov bl, [eax + edx - 1]   ; Încarcă caracterul corespunzător din oglindă
+    37 00000025 38D8                            cmp al, bl          ; Compară cele două caractere
+    38 00000027 7503                            jne not_palindrome  ; Dacă nu sunt egale, nu este palindrom
+    39                                  
+    40 00000029 42                              inc edx             ; Avansăm în interiorul cuvântului
+    41 0000002A EBE9                            jmp check_palindrome_loop
+    42                                  
+    43                                      not_palindrome:
+    44                                          ; Cuvântul nu este palindrom, trecem la următorul cuvântul
+    45 0000002C B902000000                      mov ecx, 2
+    46 00000031 880D[0C000000]                  mov [b], cl
+    47 00000037 43                              inc ebx
+    48 00000038 EBD1                            jmp find_palindromes
+    49                                  
+    50                                      palindrom_found:
+    51                                          ; Cuvântul este palindrom
+    52 0000003A B901000000                      mov ecx, 1 
+    53 0000003F 880D[0D000000]                  mov [b+1], cl
+    54                                          ; Trecem la următorul cuvânt
+    55 00000045 43                              inc ebx
+    56 00000046 EBC3                            jmp find_palindromes
+    57                                  
+    58                                      next_word:
+    59                                          ; Trecem peste spații
+    60 00000048 EBC1                            jmp find_palindromes
+    61                                  
+    62                                      final:
+    63 0000004A 6A00                            push dword 0
+    64 0000004C FF15[00000000]                  call [exit]

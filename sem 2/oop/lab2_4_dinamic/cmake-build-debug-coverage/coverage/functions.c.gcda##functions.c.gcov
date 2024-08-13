@@ -1,0 +1,273 @@
+        -:    0:Source:C:/Users/Ale/Desktop/oop/lab2_4_dinamic/functions.c
+        -:    0:Graph:C:\Users\Ale\Desktop\oop\lab2_4_dinamic\cmake-build-debug-coverage\CMakeFiles\lab2_4_dinamic.dir\functions.c.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\oop\lab2_4_dinamic\cmake-build-debug-coverage\CMakeFiles\lab2_4_dinamic.dir\functions.c.gcda
+        -:    0:Runs:1
+        -:    1:#include "functions.h"
+        -:    2:#include "customSort.h"
+        -:    3:#include <ctype.h>
+        -:    4:#include <string.h>
+        -:    5:#include <stdio.h>
+        -:    6:
+        -:    7:/*
+        -:    8: * Adauga un medicamnet in lista, daca deja exista un medicamnet cu acest id se updateaza stocul
+        -:    9: * param l: lista
+        -:   10: * param id: id ul medicamnetului (int)
+        -:   11: * param name: numele medicamnetului (char)
+        -:   12: * param concentration: concentratia medicamnetului (int)
+        -:   13: * param stock: stocul medicamnetului (int)
+        -:   14: * return: 1 - date invalide
+        -:   15: *         0 - s a efectuat adaugarea, modificarea stocului
+        -:   16: */
+function add_med called 18 returned 100% blocks executed 100%
+       18:   17:int add_med(List *l, int id, char *name, int concentration, int stock) {
+       31:   18:    for( int i = 0; i < size(l); i ++) {
+       18:   18-block  0
+       13:   18-block  1
+       31:   18-block  2
+call    0 returned 31
+branch  1 taken 14
+branch  2 taken 17 (fallthrough)
+       14:   19:        TElem med = get(l, i);
+       14:   19-block  0
+call    0 returned 14
+       14:   20:        if (id == med.id && concentration != med.concentration && strcmp(name, med.name) != 0) {
+branch  0 taken 2 (fallthrough)
+branch  1 taken 12
+        2:   20-block  0
+branch  2 taken 1 (fallthrough)
+branch  3 taken 1
+        1:   20-block  1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0
+        1:   21:            return 1;
+        1:   21-block  0
+        -:   22:        }
+        -:   23:    }
+        -:   24:
+       17:   25:    Med m = create(id, name, concentration, stock);
+       17:   25-block  0
+call    0 returned 17
+       17:   26:    int valid = validate(m);
+call    0 returned 17
+       17:   27:    if(valid != 0){
+branch  0 taken 1 (fallthrough)
+branch  1 taken 16
+        1:   28:        destroy(&m);
+        1:   28-block  0
+call    0 returned 1
+        1:   29:        return valid;
+        -:   30:    }
+       28:   31:    for( int i = 0; i < size(l); i ++){
+       16:   31-block  0
+       12:   31-block  1
+       28:   31-block  2
+call    0 returned 28
+branch  1 taken 13
+branch  2 taken 15 (fallthrough)
+       13:   32:        TElem existing_med = get(l, i);
+       13:   32-block  0
+call    0 returned 13
+       13:   33:        if(existing_med.id == m.id && existing_med.concentration == m.concentration && strcmp(existing_med.name, m.name) == 0){
+branch  0 taken 1 (fallthrough)
+branch  1 taken 12
+        1:   33-block  0
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0
+        1:   33-block  1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0
+        1:   34:            existing_med.stock = m.stock + existing_med.stock;
+        1:   35:            set(l, i, existing_med);
+        1:   35-block  0
+call    0 returned 1
+        1:   36:            destroy(&m);
+call    0 returned 1
+        1:   37:            return 0;
+        -:   38:        }
+        -:   39:    }
+       15:   40:    add(l, m);
+       15:   40-block  0
+call    0 returned 15
+       15:   41:    return 0;
+        -:   42:}
+        -:   43:
+        -:   44:/*
+        -:   45: * Sterge un medicamnet de pe o pozitie
+        -:   46: * param poz: pozitia medicamnetului pe care vrem sa il stergem
+        -:   47: * return: 0 - stergerea s a efectuat
+        -:   48: *         1 - pozitie invalida
+        -:   49: */
+function delete_med called 2 returned 100% blocks executed 100%
+        2:   50:int delete_med(List *l, int poz){
+        2:   51:    if( poz < 0 || poz >= l->lung)
+        2:   51-block  0
+branch  0 taken 2 (fallthrough)
+branch  1 taken 0
+        2:   51-block  1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 1
+        1:   52:        return 1;
+        1:   52-block  0
+        1:   53:    destroy(&l->elements[poz]);
+        1:   53-block  0
+call    0 returned 1
+        1:   54:    delete(l, poz);
+call    0 returned 1
+        1:   55:    return 0;
+        -:   56:}
+        -:   57:
+        -:   58:/*
+        -:   59: * Modifica numele si concentratia unui medicament
+        -:   60: * param l: lista
+        -:   61: * param poz: pozitai medicamentului (int)
+        -:   62: * param new_name: noul nume ( char)
+        -:   63: * param new_concentration: noua concentratie (int)
+        -:   64: * return: 0 - modificarea sa efectuat
+        -:   65: *         1 - pozitie invalida
+        -:   66: */
+function modify_med called 3 returned 100% blocks executed 100%
+        3:   67:int modify_med(List *l, int poz, char *new_name, int new_concentration){
+        3:   68:    if (poz < 0 || poz >= l->lung)
+        3:   68-block  0
+branch  0 taken 3 (fallthrough)
+branch  1 taken 0
+        3:   68-block  1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 2
+        1:   69:        return 1;
+        1:   69-block  0
+        2:   70:    int id = l->elements[poz].id;
+        2:   71:    int stock = l->elements[poz].stock;
+        2:   72:    Med m = create(id, new_name, new_concentration, stock);
+        2:   72-block  0
+call    0 returned 2
+        2:   73:    int valid = validate(m);
+call    0 returned 2
+        2:   74:    if(valid != 0){
+branch  0 taken 1 (fallthrough)
+branch  1 taken 1
+        1:   75:        destroy(&m);
+        1:   75-block  0
+call    0 returned 1
+        1:   76:        return valid;
+        -:   77:    }
+        1:   78:    modify(l, poz, new_name, new_concentration);
+        1:   78-block  0
+call    0 returned 1
+        1:   79:    destroy(&m);
+call    0 returned 1
+        1:   80:    return 0;
+        -:   81:}
+        -:   82:
+        -:   83:/*
+        -:   84:* Filtreaza lista de medicamente dupa stoc
+        -:   85:* param l: lista
+        -:   86:* param stock: stoc (int)
+        -:   87:* return: lista filtrata care contine elemente care au stocul mai mic decat stocul dat
+        -:   88:*/
+function filter_stock called 1 returned 100% blocks executed 100%
+        1:   89:List filter_stock(List *l, int stock){
+        1:   90:    List rez = create_list();
+        1:   90-block  0
+call    0 returned 1
+        3:   91:    for( int i = 0; i < size(l); i++){
+        2:   91-block  0
+        3:   91-block  1
+call    0 returned 3
+branch  1 taken 2
+branch  2 taken 1 (fallthrough)
+        2:   92:        TElem elem = get(l, i);
+        2:   92-block  0
+call    0 returned 2
+        2:   93:        if(elem.stock < stock)
+branch  0 taken 1 (fallthrough)
+branch  1 taken 1
+        1:   94:            add(&rez, elem);
+        1:   94-block  0
+call    0 returned 1
+        -:   95:    }
+        1:   96:    return rez;
+        1:   96-block  0
+        -:   97:}
+        -:   98:
+        -:   99:/*
+        -:  100:* Filtreaza lista de medicamente dupa nume
+        -:  101:* param l: lista
+        -:  102:* param letter: o listera (char)
+        -:  103:* return: lista filtrata care contine elemente a caror nume incepe cu litera data
+        -:  104:*/
+function filter_name called 1 returned 100% blocks executed 100%
+        1:  105:List filter_name(List *l, char letter){
+        1:  106:    List rez = create_list();
+        1:  106-block  0
+call    0 returned 1
+        1:  107:    letter = tolower(letter);
+        -:  108:
+        3:  109:    for( int i = 0; i < size(l); i++){
+        2:  109-block  0
+        3:  109-block  1
+call    0 returned 3
+branch  1 taken 2
+branch  2 taken 1 (fallthrough)
+        2:  110:        TElem elem = get(l, i);
+        2:  110-block  0
+call    0 returned 2
+        2:  111:        char first_letter = +tolower(elem.name[0]);
+        2:  112:        if(first_letter == letter)
+branch  0 taken 2 (fallthrough)
+branch  1 taken 0
+        2:  113:            add(&rez, elem);
+        2:  113-block  0
+call    0 returned 2
+        -:  114:    }
+        1:  115:    return rez;
+        1:  115-block  0
+        -:  116:}
+        -:  117:
+function cmpName called 3 returned 100% blocks executed 100%
+        3:  118:int cmpName(Med* m1, Med* m2){
+        3:  119:    return strcmp(m1->name, m2->name);
+        3:  119-block  0
+        -:  120:}
+        -:  121:
+function cmpStock called 6 returned 100% blocks executed 100%
+        6:  122:int cmpStock(Med* m1, Med *m2){
+        6:  123:    if(m1->stock == m2->stock)
+        6:  123-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 5
+        1:  124:        return 0;
+        1:  124-block  0
+        5:  125:    if(m1->stock > m2->stock)
+        5:  125-block  0
+branch  0 taken 4 (fallthrough)
+branch  1 taken 1
+        4:  126:        return 1;
+        4:  126-block  0
+        -:  127:    else
+        1:  128:        return -1;
+        1:  128-block  0
+        -:  129:}
+        -:  130:
+function sortStock called 1 returned 100% blocks executed 100%
+        1:  131:List sortStock(List *l){
+        1:  132:    List Stocklst = copy_list(l);
+        1:  132-block  0
+call    0 returned 1
+        1:  133:    sort(&Stocklst, cmpStock);
+call    0 returned 1
+        1:  134:    return Stocklst;
+        -:  135:}
+        -:  136:
+function sortNAme called 1 returned 100% blocks executed 100%
+        1:  137:List sortNAme(List *l){
+        1:  138:    List Namelst = copy_list(l);
+        1:  138-block  0
+call    0 returned 1
+        1:  139:    sort(&Namelst, cmpName);
+call    0 returned 1
+        1:  140:    return Namelst;
+        -:  141:}
+        -:  142:
+        -:  143:
+        -:  144:

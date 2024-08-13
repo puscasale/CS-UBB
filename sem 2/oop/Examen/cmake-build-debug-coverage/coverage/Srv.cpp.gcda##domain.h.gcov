@@ -1,0 +1,56 @@
+        -:    0:Source:C:/Users/Ale/Desktop/untitled1/domain.h
+        -:    0:Graph:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\Srv.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\Srv.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 06/25/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef UNTITLED1_DOMAIN_H
+        -:    6:#define UNTITLED1_DOMAIN_H
+        -:    7:#include <string>
+        -:    8:
+        -:    9:using namespace std;
+        -:   10:
+        -:   11:class Masina{
+        -:   12:private:
+        -:   13:    string nrinmat;
+        -:   14:    string denumire;
+        -:   15:    int an;
+        -:   16:    string tip;
+        -:   17:public:
+        -:   18:    //Constructor
+function _ZN6MasinaC1ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_iS5_ called 0 returned 0% blocks executed 0%
+    #####:   19:    Masina(string nrinmat, string denumire, int an, string tip):nrinmat(nrinmat),denumire(denumire),an(an),tip(tip){};
+    %%%%%:   19-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   19-block  1
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:   19-block  2
+    $$$$$:   19-block  3
+call    7 never executed
+    $$$$$:   19-block  4
+call    8 never executed
+        -:   20:    Masina()=default;
+        -:   21:    /**
+        -:   22:     * Gettere si setere
+        -:   23:     */
+function _ZNK6Masina6get_nrB5cxx11Ev called 0 returned 0% blocks executed 0%
+    #####:   24:    string get_nr() const {return nrinmat;}
+    %%%%%:   24-block  0
+call    0 never executed
+        -:   25:    string get_den() const {return denumire;}
+function _ZNK6Masina6get_anEv called 0 returned 0% blocks executed 0%
+    #####:   26:    int get_an() const {return an;}
+    %%%%%:   26-block  0
+        -:   27:    string get_tip() const {return tip;}
+function _ZN6Masina6set_anEi called 0 returned 0% blocks executed 0%
+    #####:   28:    void set_an(int an_nou){an=an_nou;}
+        -:   29:};
+        -:   30:void test_domain();
+        -:   31:#endif //UNTITLED1_DOMAIN_H

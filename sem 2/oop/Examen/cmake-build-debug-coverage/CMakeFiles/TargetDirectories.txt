@@ -1,0 +1,5 @@
+C:/Users/Ale/Desktop/Year 1/sem 2/oop/untitled1/cmake-build-debug-coverage/CMakeFiles/untitled1.dir
+C:/Users/Ale/Desktop/Year 1/sem 2/oop/untitled1/cmake-build-debug-coverage/CMakeFiles/edit_cache.dir
+C:/Users/Ale/Desktop/Year 1/sem 2/oop/untitled1/cmake-build-debug-coverage/CMakeFiles/rebuild_cache.dir
+C:/Users/Ale/Desktop/Year 1/sem 2/oop/untitled1/cmake-build-debug-coverage/CMakeFiles/untitled1_autogen_timestamp_deps.dir
+C:/Users/Ale/Desktop/Year 1/sem 2/oop/untitled1/cmake-build-debug-coverage/CMakeFiles/untitled1_autogen.dir

@@ -1,0 +1,5 @@
+C:/Users/Ale/Desktop/sim_rochii/cmake-build-debug-coverage/CMakeFiles/sim_rochii.dir
+C:/Users/Ale/Desktop/sim_rochii/cmake-build-debug-coverage/CMakeFiles/edit_cache.dir
+C:/Users/Ale/Desktop/sim_rochii/cmake-build-debug-coverage/CMakeFiles/rebuild_cache.dir
+C:/Users/Ale/Desktop/sim_rochii/cmake-build-debug-coverage/CMakeFiles/sim_rochii_autogen_timestamp_deps.dir
+C:/Users/Ale/Desktop/sim_rochii/cmake-build-debug-coverage/CMakeFiles/sim_rochii_autogen.dir

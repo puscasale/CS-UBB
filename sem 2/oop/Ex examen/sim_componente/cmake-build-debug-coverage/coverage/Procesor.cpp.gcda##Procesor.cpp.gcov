@@ -1,0 +1,34 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_componente/Procesor.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\Procesor.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\Procesor.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/20/2024.
+        -:    3://
+        -:    4:
+        -:    5:#include "Procesor.h"
+        -:    6:
+function _ZNK8Procesor7getNumeB5cxx11Ev called 6 returned 100% blocks executed 100%
+        6:    7:string Procesor::getNume() const {
+        6:    8:    return nume;
+        6:    8-block  0
+call    0 returned 6
+        -:    9:}
+        -:   10:
+function _ZNK8Procesor7get_nrTEv called 6 returned 100% blocks executed 100%
+        6:   11:int Procesor::get_nrT() const {
+        6:   12:    return nrT;
+        6:   12-block  0
+        -:   13:}
+        -:   14:
+function _ZNK8Procesor9get_socluEv called 9 returned 100% blocks executed 100%
+        9:   15:int Procesor::get_soclu() const {
+        9:   16:    return socluProcesor;
+        9:   16-block  0
+        -:   17:}
+        -:   18:
+function _ZNK8Procesor7getPretEv called 7 returned 100% blocks executed 100%
+        7:   19:int Procesor::getPret() const {
+        7:   20:    return pret;
+        7:   20-block  0
+        -:   21:}

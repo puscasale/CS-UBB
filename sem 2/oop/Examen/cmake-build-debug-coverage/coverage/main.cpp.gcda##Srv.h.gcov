@@ -1,0 +1,53 @@
+        -:    0:Source:C:/Users/Ale/Desktop/untitled1/Srv.h
+        -:    0:Graph:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 06/25/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef UNTITLED1_SRV_H
+        -:    6:#define UNTITLED1_SRV_H
+        -:    7:#include "Repo.h"
+        -:    8:
+        -:    9:class Srv{
+        -:   10:private:
+        -:   11:    Repo& rep;
+        -:   12:public:
+        -:   13:    //Constructor
+function _ZN3SrvC1ER4Repo called 2 returned 100% blocks executed 100%
+        2:   14:    Srv(Repo& rep):rep(rep){};
+        -:   15:
+        -:   16:    /**
+        -:   17:     * Sterge o masina din lista
+        -:   18:     * @param m : masia pe o vom sterge
+        -:   19:     */
+        -:   20:    void del(Masina m);
+        -:   21:
+        -:   22:    /**
+        -:   23:     * Sorteaza o lista de masina dupa numarul de inmatriculare
+        -:   24:     * @param lst : lista de sortat
+        -:   25:     * @return : lista sortata
+        -:   26:     */
+        -:   27:    vector<Masina> sort_nr(vector<Masina> lst);
+        -:   28:
+        -:   29:    /**
+        -:   30:     * GEt all
+        -:   31:     * @return: toate emels
+        -:   32:     */
+function _ZN3Srv7get_allEv called 5 returned 100% blocks executed 100%
+        5:   33:    vector<Masina>& get_all() { return rep.get_all();}
+        5:   33-block  0
+call    0 returned 5
+        -:   34:
+        -:   35:    /**
+        -:   36:     * Modifica anul fabricatiei ficerai masini din lista in functie de parametrul op
+        -:   37:     * @param op : "+" sau "-"
+        -:   38:     */
+        -:   39:    void modify(const string& op);
+        -:   40:
+        -:   41:
+        -:   42:};
+        -:   43:
+        -:   44:void test_srv();
+        -:   45:#endif //UNTITLED1_SRV_H

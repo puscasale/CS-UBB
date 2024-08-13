@@ -1,0 +1,868 @@
+        -:    0:Source:C:/Users/Ale/Desktop/QT/Service.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\Service.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\Service.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include "Service.h"
+        -:    2:#include <algorithm>
+        -:    3:#include <random>
+        -:    4:#include <fstream>
+        -:    5:#include <memory>
+        -:    6:
+function _ZN7Service3addENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_S5_i called 21 returned 100% blocks executed 47%
+       21:    7:void Service::add(string name, string description, string type, int time){
+       21:    8:    valid.validateActivity(name,description,type,time);
+       21:    8-block  0
+call    0 returned 21
+branch  1 taken 21 (fallthrough)
+branch  2 taken 0 (throw)
+       21:    8-block  1
+call    3 returned 21
+branch  4 taken 21 (fallthrough)
+branch  5 taken 0 (throw)
+       21:    8-block  2
+call    6 returned 21
+branch  7 taken 21 (fallthrough)
+branch  8 taken 0 (throw)
+       21:    8-block  3
+call    9 returned 21
+branch 10 taken 21 (fallthrough)
+branch 11 taken 0 (throw)
+       21:    8-block  4
+call   12 returned 21
+call   13 returned 21
+call   14 returned 21
+    $$$$$:    8-block  5
+call   15 never executed
+    $$$$$:    8-block  6
+    $$$$$:    8-block  7
+call   16 never executed
+    $$$$$:    8-block  8
+    $$$$$:    8-block  9
+call   17 never executed
+    $$$$$:    8-block 10
+       21:    9:    const Activity& a{name, description, type, time};
+call    0 returned 21
+branch  1 taken 21 (fallthrough)
+branch  2 taken 0 (throw)
+       21:    9-block  0
+call    3 returned 21
+branch  4 taken 21 (fallthrough)
+branch  5 taken 0 (throw)
+       21:    9-block  1
+call    6 returned 21
+branch  7 taken 21 (fallthrough)
+branch  8 taken 0 (throw)
+       21:    9-block  2
+call    9 returned 21
+branch 10 taken 21 (fallthrough)
+branch 11 taken 0 (throw)
+       21:    9-block  3
+call   12 returned 21
+call   13 returned 21
+call   14 returned 21
+    $$$$$:    9-block  4
+call   15 never executed
+    $$$$$:    9-block  5
+    $$$$$:    9-block  6
+call   16 never executed
+    $$$$$:    9-block  7
+    $$$$$:    9-block  8
+call   17 never executed
+    $$$$$:    9-block  9
+       21:   10:    rep.store(a);
+call    0 returned 21
+branch  1 taken 21 (fallthrough)
+branch  2 taken 0 (throw)
+       21:   11:    undo.push_back(make_unique<AddUndo>(rep, a));
+       21:   11-block  0
+call    0 returned 21
+branch  1 taken 21 (fallthrough)
+branch  2 taken 0 (throw)
+       21:   11-block  1
+call    3 returned 21
+call    4 returned 21
+branch  5 taken 21 (fallthrough)
+branch  6 taken 0 (throw)
+       21:   11-block  2
+call    7 returned 21
+call    8 returned 21
+    $$$$$:   11-block  3
+call    9 never executed
+    $$$$$:   11-block  4
+call   10 never executed
+    $$$$$:   11-block  5
+    $$$$$:   11-block  6
+       21:   12:}
+call    0 returned 21
+    $$$$$:   12-block  0
+call    1 never executed
+        -:   13:
+function _ZN7Service3delERK8Activity called 2 returned 100% blocks executed 53%
+        2:   14:void Service::del(const Activity& act){
+        2:   15:    valid.validateActivity(act.get_name(), act.get_description(), act.get_type(), act.get_time());
+        2:   15-block  0
+call    0 returned 2
+call    1 returned 2
+branch  2 taken 2 (fallthrough)
+branch  3 taken 0 (throw)
+        2:   15-block  1
+call    4 returned 2
+branch  5 taken 2 (fallthrough)
+branch  6 taken 0 (throw)
+        2:   15-block  2
+call    7 returned 2
+branch  8 taken 2 (fallthrough)
+branch  9 taken 0 (throw)
+        2:   15-block  3
+call   10 returned 2
+branch 11 taken 2 (fallthrough)
+branch 12 taken 0 (throw)
+        2:   15-block  4
+call   13 returned 2
+call   14 returned 2
+call   15 returned 2
+    $$$$$:   15-block  5
+call   16 never executed
+    $$$$$:   15-block  6
+    $$$$$:   15-block  7
+call   17 never executed
+    $$$$$:   15-block  8
+    $$$$$:   15-block  9
+call   18 never executed
+    $$$$$:   15-block 10
+call   19 never executed
+        2:   16:    rep.remove(act);
+call    0 returned 2
+        2:   17:    undo.push_back(make_unique<DeleteUndo>(rep,act));
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   17-block  0
+call    3 returned 2
+call    4 returned 2
+branch  5 taken 2 (fallthrough)
+branch  6 taken 0 (throw)
+        2:   17-block  1
+call    7 returned 2
+call    8 returned 2
+    $$$$$:   17-block  2
+call    9 never executed
+    $$$$$:   17-block  3
+call   10 never executed
+    $$$$$:   17-block  4
+        2:   18:}
+        -:   19:
+        -:   20:
+function _ZN7Service6modifyERK8ActivityS2_ called 2 returned 100% blocks executed 51%
+        2:   21:void Service::modify(const Activity& act_rm, const Activity& act){
+        2:   22:    valid.validateActivity(act.get_name(), act.get_description(), act.get_type(), act.get_time());
+        2:   22-block  0
+call    0 returned 2
+call    1 returned 2
+branch  2 taken 2 (fallthrough)
+branch  3 taken 0 (throw)
+        2:   22-block  1
+call    4 returned 2
+branch  5 taken 2 (fallthrough)
+branch  6 taken 0 (throw)
+        2:   22-block  2
+call    7 returned 2
+branch  8 taken 2 (fallthrough)
+branch  9 taken 0 (throw)
+        2:   22-block  3
+call   10 returned 2
+branch 11 taken 2 (fallthrough)
+branch 12 taken 0 (throw)
+        2:   22-block  4
+call   13 returned 2
+call   14 returned 2
+call   15 returned 2
+    $$$$$:   22-block  5
+call   16 never executed
+    $$$$$:   22-block  6
+    $$$$$:   22-block  7
+call   17 never executed
+    $$$$$:   22-block  8
+    $$$$$:   22-block  9
+call   18 never executed
+    $$$$$:   22-block 10
+call   19 never executed
+        2:   23:    valid.validateActivity(act_rm.get_name(), act_rm.get_description(), act_rm.get_type(), act_rm.get_time());
+call    0 returned 2
+call    1 returned 2
+branch  2 taken 2 (fallthrough)
+branch  3 taken 0 (throw)
+        2:   23-block  0
+call    4 returned 2
+branch  5 taken 2 (fallthrough)
+branch  6 taken 0 (throw)
+        2:   23-block  1
+call    7 returned 2
+branch  8 taken 2 (fallthrough)
+branch  9 taken 0 (throw)
+        2:   23-block  2
+call   10 returned 2
+branch 11 taken 2 (fallthrough)
+branch 12 taken 0 (throw)
+        2:   23-block  3
+call   13 returned 2
+call   14 returned 2
+call   15 returned 2
+    $$$$$:   23-block  4
+call   16 never executed
+    $$$$$:   23-block  5
+    $$$$$:   23-block  6
+call   17 never executed
+    $$$$$:   23-block  7
+    $$$$$:   23-block  8
+call   18 never executed
+    $$$$$:   23-block  9
+call   19 never executed
+        -:   24:
+        2:   25:    rep.modify(act_rm, act);
+call    0 returned 2
+        2:   26:    undo.push_back(make_unique<ModifyUndo>(rep, act_rm, act));
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   26-block  0
+call    3 returned 2
+call    4 returned 2
+branch  5 taken 2 (fallthrough)
+branch  6 taken 0 (throw)
+        2:   26-block  1
+call    7 returned 2
+call    8 returned 2
+    $$$$$:   26-block  2
+call    9 never executed
+    $$$$$:   26-block  3
+call   10 never executed
+    $$$$$:   26-block  4
+        2:   27:}
+        -:   28:
+        -:   29:
+function _ZN7Service11filter_typeENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERSt6vectorI8ActivitySaIS7_EE called 1 returned 100% blocks executed 82%
+        1:   30:void  Service::filter_type(string type, vector<Activity>& filtered) {
+        1:   31:    const vector<Activity>& all = rep.get_all();
+        1:   31-block  0
+call    0 returned 1
+function _ZZN7Service11filter_typeENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERSt6vectorI8ActivitySaIS7_EEENKUlRKS7_E_clESC_ called 4 returned 100% blocks executed 100%
+        1:   32:    std::copy_if(all.begin(), all.end(), back_inserter(filtered),[type](const Activity& a) {
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   32-block  0
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   32-block  1
+call    6 returned 1
+call    7 returned 1
+call    8 returned 1
+branch  9 taken 1 (fallthrough)
+branch 10 taken 0 (throw)
+        1:   32-block  2
+call   11 returned 1
+    $$$$$:   32-block  3
+call   12 never executed
+        4:   33:        return a.get_type() == type;
+        4:   33-block  0
+call    0 returned 4
+branch  1 taken 4 (fallthrough)
+branch  2 taken 0 (throw)
+        4:   33-block  1
+call    3 returned 4
+call    4 returned 4
+        4:   33-block  2
+        -:   34:    });
+        1:   35:}
+        -:   36:
+function _ZN7Service12filter_descrENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERSt6vectorI8ActivitySaIS7_EE called 2 returned 100% blocks executed 82%
+        2:   37:void Service::filter_descr(string descr, vector<Activity>& filtered) {
+        2:   38:    const vector<Activity>& all = get_all();
+        2:   38-block  0
+call    0 returned 2
+function _ZZN7Service12filter_descrENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERSt6vectorI8ActivitySaIS7_EEENKUlRKS7_E_clESC_ called 8 returned 100% blocks executed 100%
+        2:   39:    std::copy_if(all.begin(), all.end(), back_inserter(filtered),[descr](const Activity& a) {
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   39-block  0
+call    3 returned 2
+branch  4 taken 2 (fallthrough)
+branch  5 taken 0 (throw)
+        2:   39-block  1
+call    6 returned 2
+call    7 returned 2
+call    8 returned 2
+branch  9 taken 2 (fallthrough)
+branch 10 taken 0 (throw)
+        2:   39-block  2
+call   11 returned 2
+    $$$$$:   39-block  3
+call   12 never executed
+        8:   40:        return a.get_description() == descr;
+        8:   40-block  0
+call    0 returned 8
+branch  1 taken 8 (fallthrough)
+branch  2 taken 0 (throw)
+        8:   40-block  1
+call    3 returned 8
+call    4 returned 8
+        8:   40-block  2
+        -:   41:    });
+        2:   42:}
+        -:   43:
+function _Z12compare_nameRK8ActivityS1_ called 10 returned 100% blocks executed 73%
+       10:   44:bool compare_name(const Activity& a1, const Activity& a2) {
+       10:   45:    return a1.get_name() < a2.get_name();
+       10:   45-block  0
+call    0 returned 10
+branch  1 taken 10 (fallthrough)
+branch  2 taken 0 (throw)
+       10:   45-block  1
+call    3 returned 10
+branch  4 taken 10 (fallthrough)
+branch  5 taken 0 (throw)
+       10:   45-block  2
+call    6 returned 10
+call    7 returned 10
+call    8 returned 10
+       10:   45-block  3
+    $$$$$:   45-block  4
+    $$$$$:   45-block  5
+call    9 never executed
+        -:   46:}
+        -:   47:
+function _Z13compare_descrRK8ActivityS1_ called 10 returned 100% blocks executed 73%
+       10:   48:bool compare_descr(const Activity& a1, const Activity& a2) {
+       10:   49:    return a1.get_description() < a2.get_description();
+       10:   49-block  0
+call    0 returned 10
+branch  1 taken 10 (fallthrough)
+branch  2 taken 0 (throw)
+       10:   49-block  1
+call    3 returned 10
+branch  4 taken 10 (fallthrough)
+branch  5 taken 0 (throw)
+       10:   49-block  2
+call    6 returned 10
+call    7 returned 10
+call    8 returned 10
+       10:   49-block  3
+    $$$$$:   49-block  4
+    $$$$$:   49-block  5
+call    9 never executed
+        -:   50:}
+        -:   51:
+function _Z17compare_type_timeRK8ActivityS1_ called 8 returned 100% blocks executed 71%
+        8:   52:bool compare_type_time(const Activity& a1, const Activity& a2) {
+        8:   53:    if(a1.get_type() == a2.get_type())
+        8:   53-block  0
+call    0 returned 8
+branch  1 taken 8 (fallthrough)
+branch  2 taken 0 (throw)
+        8:   53-block  1
+call    3 returned 8
+branch  4 taken 8 (fallthrough)
+branch  5 taken 0 (throw)
+        8:   53-block  2
+call    6 returned 8
+call    7 returned 8
+call    8 returned 8
+branch  9 taken 1 (fallthrough)
+branch 10 taken 7
+    $$$$$:   53-block  3
+    $$$$$:   53-block  4
+call   11 never executed
+    $$$$$:   53-block  5
+call   12 never executed
+        1:   54:        return a1.get_time() < a2.get_time();
+        1:   54-block  0
+call    0 returned 1
+call    1 returned 1
+        7:   55:    return a1.get_type() < a2.get_type();
+        7:   55-block  0
+call    0 returned 7
+branch  1 taken 7 (fallthrough)
+branch  2 taken 0 (throw)
+        7:   55-block  1
+call    3 returned 7
+branch  4 taken 7 (fallthrough)
+branch  5 taken 0 (throw)
+        7:   55-block  2
+call    6 returned 7
+call    7 returned 7
+call    8 returned 7
+    $$$$$:   55-block  3
+    $$$$$:   55-block  4
+call    9 never executed
+        -:   56:}
+        -:   57:
+function _ZN7Service9sort_nameERSt6vectorI8ActivitySaIS1_EE called 1 returned 100% blocks executed 100%
+        1:   58:void Service::sort_name(vector<Activity>& copy) {
+        1:   59:    copy = rep.get_all();
+        1:   59-block  0
+call    0 returned 1
+call    1 returned 1
+        1:   60:    std::sort(copy.begin(), copy.end(), compare_name);
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        1:   61:}
+        -:   62:
+function _ZN7Service10sort_descrERSt6vectorI8ActivitySaIS1_EE called 1 returned 100% blocks executed 100%
+        1:   63:void Service::sort_descr(vector<Activity>& copy) {
+        1:   64:    copy = rep.get_all();
+        1:   64-block  0
+call    0 returned 1
+call    1 returned 1
+        1:   65:    std::sort(copy.begin(), copy.end(), compare_descr);
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        1:   66:}
+        -:   67:
+function _ZN7Service14sort_type_timeERSt6vectorI8ActivitySaIS1_EE called 1 returned 100% blocks executed 100%
+        1:   68:void Service::sort_type_time(vector<Activity>& copy) {
+        1:   69:    copy = rep.get_all();
+        1:   69-block  0
+call    0 returned 1
+call    1 returned 1
+        1:   70:    std::sort(copy.begin(), copy.end(), compare_type_time);
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        1:   71:}
+        -:   72:
+function _ZN7Service12get_activityERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES7_S7_i called 1 returned 100% blocks executed 100%
+        1:   73:const Activity* Service::get_activity(const string& name, const string& descr, const string& type, int time) {
+        1:   74:    return rep.get_activity(name, descr, type, time);
+        1:   74-block  0
+call    0 returned 1
+        -:   75:}
+        -:   76:
+        -:   77:
+function _ZN7Service8add_cartENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 1 returned 100% blocks executed 75%
+        1:   78:void Service::add_cart(string name) {
+        1:   79:    const auto& activity= rep.find_act_name(name);
+        1:   79-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   79-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   79-block  2
+call    6 returned 1
+    $$$$$:   79-block  3
+call    7 never executed
+        1:   80:    cart.add_cart(activity);
+call    0 returned 1
+        1:   81:}
+        -:   82:
+        -:   83:
+function _ZN7Service10add_randomEi called 2 returned 100% blocks executed 82%
+        2:   84:int Service::add_random(int n) {
+        2:   85:    cart.random_activity(n, this->get_all());
+        2:   85-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   85-block  1
+call    3 returned 2
+branch  4 taken 2 (fallthrough)
+branch  5 taken 0 (throw)
+        2:   85-block  2
+call    6 returned 2
+branch  7 taken 2 (fallthrough)
+branch  8 taken 0 (throw)
+        2:   85-block  3
+call    9 returned 2
+    $$$$$:   85-block  4
+call   10 never executed
+        2:   86:    return cart.get_all_cart().size();
+call    0 returned 2
+call    1 returned 2
+        2:   86-block  0
+        -:   87:}
+        -:   88:
+function _ZN7Service10empty_cartEv called 2 returned 100% blocks executed 100%
+        2:   89:void Service::empty_cart() {
+        2:   90:    cart.empty();
+        2:   90-block  0
+call    0 returned 2
+        2:   91:}
+        -:   92:
+function _ZN7Service12get_all_cartEv called 5 returned 100% blocks executed 100%
+        5:   93:const vector<Activity>& Service::get_all_cart() {
+        5:   94:    return cart.get_all_cart();
+        5:   94-block  0
+call    0 returned 5
+        -:   95:}
+        -:   96:
+function _ZNK7Service6raportB5cxx11Ev called 2 returned 100% blocks executed 69%
+        2:   97:std::unordered_map<string ,ActivityCount> Service::raport() const {
+        2:   98:    std::unordered_map<string , ActivityCount> counter;
+        2:   98-block  0
+call    0 returned 2
+        2:   99:    const vector<Activity> activities = rep.get_all();
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   99-block  0
+call    3 returned 2
+branch  4 taken 2 (fallthrough)
+branch  5 taken 0 (throw)
+        -:  100:
+       15:  101:    for(const auto& activity:activities)
+        2:  101-block  0
+call    0 returned 2
+call    1 returned 2
+       13:  101-block  1
+call    2 returned 13
+       15:  101-block  2
+call    3 returned 15
+branch  4 taken 13
+branch  5 taken 2 (fallthrough)
+       13:  102:        counter[activity.get_type()].IncrementCount();
+call    0 returned 13
+branch  1 taken 13 (fallthrough)
+branch  2 taken 0 (throw)
+       13:  102-block  0
+call    3 returned 13
+branch  4 taken 13 (fallthrough)
+branch  5 taken 0 (throw)
+       13:  102-block  1
+call    6 returned 13
+call    7 returned 13
+call    8 returned 13
+    $$$$$:  102-block  2
+call    9 never executed
+    $$$$$:  102-block  3
+        -:  103:
+        4:  104:    return counter;
+        2:  104-block  0
+        2:  104-block  1
+        2:  105:}
+        2:  105-block  0
+call    0 returned 2
+    $$$$$:  105-block  1
+call    1 never executed
+    $$$$$:  105-block  2
+call    2 never executed
+        -:  106:
+function _ZN7Service11export_htmlERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 1 returned 100% blocks executed 85%
+        1:  107:void Service::export_html(const string& file_name) {
+        1:  108:    std::ofstream file(file_name);
+        1:  108-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        -:  109:
+        1:  110:    file << "<html>\n";
+        1:  110-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  111:    file << "<head><title>Export cart</title></head>\n";
+        1:  111-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  112:    file << "<style>\n";
+        1:  112-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  113:    file << "body {";
+        1:  113-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  114:    file << "    background-color: #FCE4EC;";
+        1:  114-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  115:    file << "    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;";
+        1:  115-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  116:    file << "}";
+        1:  116-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  117:    file << "h1 {";
+        1:  117-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  118:    file << "    color: #9C27B0;";
+        1:  118-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  119:    file << "}";
+        1:  119-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  120:    file << "table {";
+        1:  120-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  121:    file << "    border-collapse: collapse;";
+        1:  121-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  122:    file << "    width: 100%;";
+        1:  122-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  123:    file << "    border-radius: 8px;";
+        1:  123-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  124:    file << "}";
+        1:  124-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  125:    file << "th, td {";
+        1:  125-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  126:    file << "    padding: 12px;";
+        1:  126-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  127:    file << "    text-align: left;";
+        1:  127-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  128:    file << "}";
+        1:  128-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  129:    file << "th {";
+        1:  129-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  130:    file << "    background-color: #E1BEE7;";
+        1:  130-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  131:    file << "    color: #9C27B0;";
+        1:  131-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  132:    file << "}";
+        1:  132-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  133:    file << "tr:nth-child(even) {";
+        1:  133-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  134:    file << "    background-color: #F8BBD0;";
+        1:  134-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  135:    file << "}";
+        1:  135-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  136:    file << "tr:hover {";
+        1:  136-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  137:    file << "    background-color: #FFCDD2;";
+        1:  137-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  138:    file << "}";
+        1:  138-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  139:    file << "</style>\n";
+        1:  139-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  140:    file << "<body>\n";
+        1:  140-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  141:    file << "<h1>Shopping cart:</h1>\n";
+        1:  141-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  142:    file << "<table>\n";
+        1:  142-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  143:    file << "<tr><th>Name</th><th>Description</th><th>Type</th><th>Time</th><tr>\n";
+        1:  143-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        -:  144:
+        1:  145:    const vector<Activity>& cart = get_all_cart();
+        1:  145-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  146:    file<<cart.size();
+        1:  146-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+        2:  147:    for(const Activity& a : cart){
+        1:  147-block  0
+call    0 returned 1
+call    1 returned 1
+        1:  147-block  1
+call    2 returned 1
+        2:  147-block  2
+call    3 returned 2
+branch  4 taken 1
+branch  5 taken 1 (fallthrough)
+        1:  148:        file << "<tr><td>" << a.get_name() << "</td><td>" << a.get_description() << "</td><td>" << a.get_type() << "</td><td>" << a.get_time() <<"</td><tr>\n";
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  148-block  0
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:  148-block  1
+call    6 returned 1
+branch  7 taken 1 (fallthrough)
+branch  8 taken 0 (throw)
+        1:  148-block  2
+call    9 returned 1
+branch 10 taken 1 (fallthrough)
+branch 11 taken 0 (throw)
+        1:  148-block  3
+call   12 returned 1
+branch 13 taken 1 (fallthrough)
+branch 14 taken 0 (throw)
+        1:  148-block  4
+call   15 returned 1
+branch 16 taken 1 (fallthrough)
+branch 17 taken 0 (throw)
+        1:  148-block  5
+call   18 returned 1
+branch 19 taken 1 (fallthrough)
+branch 20 taken 0 (throw)
+        1:  148-block  6
+call   21 returned 1
+branch 22 taken 1 (fallthrough)
+branch 23 taken 0 (throw)
+        1:  148-block  7
+call   24 returned 1
+branch 25 taken 1 (fallthrough)
+branch 26 taken 0 (throw)
+        1:  148-block  8
+call   27 returned 1
+branch 28 taken 1 (fallthrough)
+branch 29 taken 0 (throw)
+        1:  148-block  9
+call   30 returned 1
+branch 31 taken 1 (fallthrough)
+branch 32 taken 0 (throw)
+        1:  148-block 10
+call   33 returned 1
+branch 34 taken 1 (fallthrough)
+branch 35 taken 0 (throw)
+        1:  148-block 11
+call   36 returned 1
+branch 37 taken 1 (fallthrough)
+branch 38 taken 0 (throw)
+        1:  148-block 12
+call   39 returned 1
+call   40 returned 1
+call   41 returned 1
+call   42 returned 1
+    $$$$$:  148-block 13
+call   43 never executed
+    $$$$$:  148-block 14
+    $$$$$:  148-block 15
+call   44 never executed
+    $$$$$:  148-block 16
+    $$$$$:  148-block 17
+call   45 never executed
+    $$$$$:  148-block 18
+        -:  149:    }
+        -:  150:
+        1:  151:    file << "</table>\n";
+        1:  151-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  152:    file << "</body>\n";
+        1:  152-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  153:    file << "</html>\n";
+        1:  153-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        -:  154:
+        1:  155:    file.close();
+        1:  155-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  156:}
+        1:  156-block  0
+call    0 returned 1
+    $$$$$:  156-block  1
+call    1 never executed
+        -:  157:
+function _ZN7Service4UndoEv called 7 returned 100% blocks executed 100%
+        7:  158:int Service::Undo() {
+        7:  159:    if(undo.size() <= 0) return -1;
+        7:  159-block  0
+call    0 returned 7
+branch  1 taken 2 (fallthrough)
+branch  2 taken 5
+        2:  159-block  1
+        5:  160:    this->undo.back()->undo();
+        5:  160-block  0
+call    0 returned 5
+call    1 returned 5
+call    2 returned 5
+        5:  161:    this->undo.pop_back();
+call    0 returned 5
+        5:  162:    return 0;
+        -:  163:
+        -:  164:}

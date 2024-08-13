@@ -1,0 +1,593 @@
+        -:    0:Source:C:/Users/Ale/Desktop/QT/Filter.h
+        -:    0:Graph:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/16/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef QT_FILTER_H
+        -:    6:#define QT_FILTER_H
+        -:    7:#include <QtWidgets>
+        -:    8:#include "service.h"
+        -:    9:
+        -:   10:class Filter: public QWidget{
+        -:   11:public:
+function _ZN6FilterC1ER7Service called 1 returned 100% blocks executed 71%
+        1:   12:    explicit Filter(Service& srv) : srv(srv){
+        1:   12-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+        1:   12-block  1
+call    4 returned 1
+branch  5 taken 1 (fallthrough)
+branch  6 taken 0 (throw)
+        1:   12-block  2
+call    7 returned 1
+branch  8 taken 1 (fallthrough)
+branch  9 taken 0 (throw)
+        1:   12-block  3
+call   10 returned 1
+branch 11 taken 1 (fallthrough)
+branch 12 taken 0 (throw)
+        1:   12-block  4
+call   13 returned 1
+branch 14 taken 1 (fallthrough)
+branch 15 taken 0 (throw)
+        1:   12-block  5
+call   16 returned 1
+branch 17 taken 1 (fallthrough)
+branch 18 taken 0 (throw)
+        1:   12-block  6
+call   19 returned 1
+call   20 returned 1
+branch 21 taken 1 (fallthrough)
+branch 22 taken 0 (throw)
+        1:   12-block  7
+call   23 returned 1
+branch 24 taken 1 (fallthrough)
+branch 25 taken 0 (throw)
+        1:   12-block  8
+call   26 returned 1
+branch 27 taken 1 (fallthrough)
+branch 28 taken 0 (throw)
+        1:   12-block  9
+call   29 returned 1
+call   30 returned 1
+branch 31 taken 1 (fallthrough)
+branch 32 taken 0 (throw)
+        1:   12-block 10
+call   33 returned 1
+branch 34 taken 1 (fallthrough)
+branch 35 taken 0 (throw)
+        1:   12-block 11
+call   36 returned 1
+branch 37 taken 1 (fallthrough)
+branch 38 taken 0 (throw)
+        1:   12-block 12
+call   39 returned 1
+branch 40 taken 1 (fallthrough)
+branch 41 taken 0 (throw)
+    $$$$$:   12-block 13
+call   42 never executed
+    $$$$$:   12-block 14
+call   43 never executed
+    $$$$$:   12-block 15
+    $$$$$:   12-block 16
+call   44 never executed
+    $$$$$:   12-block 17
+        1:   13:        initFilter();
+        1:   13-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   14:        initConnect();
+        1:   14-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   15:    };
+        1:   15-block  0
+    $$$$$:   15-block  1
+call    0 never executed
+        -:   16:private:
+        -:   17:    Service& srv;
+        -:   18:
+        -:   19:    QListWidget* list = new QListWidget;
+        -:   20:
+        -:   21:    QPushButton* btnDescription = new QPushButton(" Filter &Description ");
+        -:   22:    QPushButton* btnType = new QPushButton(" Filter &Type ");
+        -:   23:
+        -:   24:    QLineEdit* txtDescription = new QLineEdit;
+        -:   25:    QLineEdit* txtType = new QLineEdit;
+        -:   26:
+function _ZN6Filter10initFilterEv called 1 returned 100% blocks executed 56%
+        1:   27:    void initFilter() {
+        1:   28:        setWindowTitle("Filter activities");
+        1:   28-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   28-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   28-block  2
+call    6 returned 1
+    $$$$$:   28-block  3
+call    7 never executed
+    $$$$$:   28-block  4
+call    8 never executed
+        -:   29:
+        1:   30:        auto* lyMain = new QHBoxLayout;
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   30-block  0
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    $$$$$:   30-block  1
+call    6 never executed
+        1:   31:        setLayout(lyMain);
+        1:   31-block  0
+call    0 returned 1
+        -:   32:
+        1:   33:        auto* lyButton = new QHBoxLayout;
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   33-block  0
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    $$$$$:   33-block  1
+call    6 never executed
+        -:   34:
+        1:   35:        lyButton->addWidget(btnDescription);
+        1:   35-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   35-block  1
+call    4 never executed
+        1:   36:        lyButton->addWidget(btnType);
+        1:   36-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   36-block  1
+call    4 never executed
+        -:   37:
+        1:   38:        auto* lyFields = new QFormLayout;
+        1:   38-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   38-block  1
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    $$$$$:   38-block  2
+call    6 never executed
+        -:   39:
+        1:   40:        lyFields->addRow("Description: ",txtDescription);
+        1:   40-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   40-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   40-block  2
+call    6 returned 1
+    $$$$$:   40-block  3
+call    7 never executed
+    $$$$$:   40-block  4
+call    8 never executed
+        1:   41:        lyFields->addRow("Type: ",txtType);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   41-block  0
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   41-block  1
+call    6 returned 1
+    $$$$$:   41-block  2
+call    7 never executed
+    $$$$$:   41-block  3
+call    8 never executed
+        -:   42:
+        1:   43:        auto* lyRight = new QVBoxLayout;
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   43-block  0
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    $$$$$:   43-block  1
+call    6 never executed
+        -:   44:
+        1:   45:        lyRight->addLayout(lyFields);
+        1:   45-block  0
+call    0 returned 1
+        1:   46:        lyRight->addLayout(lyButton);
+call    0 returned 1
+        -:   47:
+        1:   48:        lyMain->addWidget(list);
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+        1:   49:        lyMain->addLayout(lyRight);
+        1:   49-block  0
+call    0 returned 1
+        1:   50:    }
+        -:   51:
+function _ZN6Filter8loadlistERKSt6vectorI8ActivitySaIS1_EE called 0 returned 0% blocks executed 0%
+    #####:   52:    void loadlist(const vector<Activity>& act) {
+    #####:   53:        list->clear();
+    %%%%%:   53-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   54:        QString name, descr, type, time;
+        -:   55:
+    #####:   56:        for(const auto& a: act){
+    %%%%%:   56-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:   56-block  1
+call    2 never executed
+call    3 never executed
+    %%%%%:   56-block  2
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:   57:            QString e;
+    #####:   58:            name = (QString::fromStdString(a.get_name()));
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   58-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   58-block  1
+call    6 never executed
+call    7 never executed
+call    8 never executed
+    $$$$$:   58-block  2
+call    9 never executed
+    $$$$$:   58-block  3
+    $$$$$:   58-block  4
+    #####:   59:            descr = (QString::fromStdString(a.get_description()));
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   59-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   59-block  1
+call    6 never executed
+call    7 never executed
+call    8 never executed
+    $$$$$:   59-block  2
+call    9 never executed
+    $$$$$:   59-block  3
+    $$$$$:   59-block  4
+    #####:   60:            type = (QString::fromStdString(a.get_type()));
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   60-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   60-block  1
+call    6 never executed
+call    7 never executed
+call    8 never executed
+    $$$$$:   60-block  2
+call    9 never executed
+    $$$$$:   60-block  3
+    $$$$$:   60-block  4
+    #####:   61:            time = (QString::number(a.get_time()));
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   61-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   61-block  1
+call    6 never executed
+call    7 never executed
+    $$$$$:   61-block  2
+        -:   62:
+    #####:   63:            e = name + " | " + descr + " | " + type + " | " + time;
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   63-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   63-block  1
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    %%%%%:   63-block  2
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed (throw)
+    %%%%%:   63-block  3
+call   12 never executed
+branch 13 never executed (fallthrough)
+branch 14 never executed (throw)
+    %%%%%:   63-block  4
+call   15 never executed
+branch 16 never executed (fallthrough)
+branch 17 never executed (throw)
+    %%%%%:   63-block  5
+call   18 never executed
+call   19 never executed
+call   20 never executed
+call   21 never executed
+call   22 never executed
+call   23 never executed
+call   24 never executed
+    $$$$$:   63-block  6
+call   25 never executed
+    $$$$$:   63-block  7
+call   26 never executed
+    $$$$$:   63-block  8
+call   27 never executed
+    $$$$$:   63-block  9
+call   28 never executed
+    $$$$$:   63-block 10
+call   29 never executed
+    $$$$$:   63-block 11
+    $$$$$:   63-block 12
+    $$$$$:   63-block 13
+    $$$$$:   63-block 14
+    $$$$$:   63-block 15
+    $$$$$:   63-block 16
+    #####:   64:            list->addItem(e);
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   65:        }
+    %%%%%:   65-block  0
+call    0 never executed
+    $$$$$:   65-block  1
+call    1 never executed
+    #####:   66:    }
+    %%%%%:   66-block  0
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    $$$$$:   66-block  1
+call    4 never executed
+    $$$$$:   66-block  2
+call    5 never executed
+    $$$$$:   66-block  3
+call    6 never executed
+    $$$$$:   66-block  4
+call    7 never executed
+        -:   67:
+function _ZN6Filter11initConnectEv called 1 returned 100% blocks executed 67%
+        1:   68:    void initConnect() {
+function _ZZN6Filter11initConnectEvENKUlvE_clEv called 0 returned 0% blocks executed 0%
+       1*:   69:        QObject::connect(btnDescription, &QPushButton::clicked, [&](){
+        1:   69-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   69-block  1
+call    3 returned 1
+    $$$$$:   69-block  2
+    $$$$$:   69-block  3
+call    4 never executed
+    #####:   70:            if(txtDescription->text().isEmpty()){
+    %%%%%:   70-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   70-block  1
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed
+    $$$$$:   70-block  2
+    #####:   71:                QMessageBox::critical(this, "Error", "The description cant be empty");
+    %%%%%:   71-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   71-block  1
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:   71-block  2
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    %%%%%:   71-block  3
+call   10 never executed
+call   11 never executed
+    $$$$$:   71-block  4
+call   12 never executed
+    $$$$$:   71-block  5
+    $$$$$:   71-block  6
+call   13 never executed
+    $$$$$:   71-block  7
+    $$$$$:   71-block  8
+    #####:   72:                return;
+        -:   73:            }
+    #####:   74:            vector<Activity> copy;
+    %%%%%:   74-block  0
+call    0 never executed
+    #####:   75:            string descr = txtDescription->text().toStdString();
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   75-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   75-block  1
+call    6 never executed
+    $$$$$:   75-block  2
+call    7 never executed
+    $$$$$:   75-block  3
+    #####:   76:            srv.filter_descr(descr,copy);
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   76-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   76-block  1
+call    6 never executed
+    $$$$$:   76-block  2
+call    7 never executed
+    $$$$$:   76-block  3
+        -:   77:
+    #####:   78:            loadlist(copy);
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:   79:
+    #####:   80:            txtDescription->clear();
+    %%%%%:   80-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   81:            txtType->clear();
+    %%%%%:   81-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   82:        });
+    %%%%%:   82-block  0
+call    0 never executed
+call    1 never executed
+    $$$$$:   82-block  1
+call    2 never executed
+    $$$$$:   82-block  2
+call    3 never executed
+        -:   83:
+function _ZZN6Filter11initConnectEvENKUlvE0_clEv called 0 returned 0% blocks executed 0%
+       1*:   84:        QObject::connect(btnType, &QPushButton::clicked, [&](){
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   84-block  0
+call    3 returned 1
+    $$$$$:   84-block  1
+    #####:   85:            if(txtType->text().isEmpty()){
+    %%%%%:   85-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   85-block  1
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed
+    $$$$$:   85-block  2
+    #####:   86:                QMessageBox::critical(this, "Error","The type cant be empty");
+    %%%%%:   86-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   86-block  1
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:   86-block  2
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    %%%%%:   86-block  3
+call   10 never executed
+call   11 never executed
+    $$$$$:   86-block  4
+call   12 never executed
+    $$$$$:   86-block  5
+    $$$$$:   86-block  6
+call   13 never executed
+    $$$$$:   86-block  7
+    $$$$$:   86-block  8
+    #####:   87:                return;
+        -:   88:            }
+    #####:   89:            vector<Activity> copy;
+    %%%%%:   89-block  0
+call    0 never executed
+    #####:   90:            string type = txtType->text().toStdString();
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   90-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   90-block  1
+call    6 never executed
+    $$$$$:   90-block  2
+call    7 never executed
+    $$$$$:   90-block  3
+    #####:   91:            srv.filter_type(type, copy);
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   91-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   91-block  1
+call    6 never executed
+    $$$$$:   91-block  2
+call    7 never executed
+    $$$$$:   91-block  3
+        -:   92:
+    #####:   93:            loadlist(copy);
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:   94:
+    #####:   95:            txtType->clear();
+    %%%%%:   95-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   96:            txtDescription->clear();
+    %%%%%:   96-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   97:        });
+    %%%%%:   97-block  0
+call    0 never executed
+call    1 never executed
+    $$$$$:   97-block  1
+call    2 never executed
+    $$$$$:   97-block  2
+call    3 never executed
+        1:   98:    }
+        -:   99:};
+        -:  100:#endif //QT_FILTER_H

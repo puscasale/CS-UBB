@@ -1,0 +1,11 @@
+# ninja log v5
+90	698	7375757893674818	CMakeFiles/QT.dir/activity.cpp.obj	e61de028fd778c76
+10	82	7375800279745283	QT_autogen/timestamp	71e6f8473e4f0127
+10	82	7375800279745283	QT_autogen/mocs_compilation.cpp	71e6f8473e4f0127
+5039	5604	7375800333674684	QT.exe	eadecc2b093c7544
+75	887	7375784461030129	CMakeFiles/QT.dir/Repo.cpp.obj	ce61b8fc1e566620
+140	179	7375580748700847	CMakeFiles/QT.dir/QT_autogen/mocs_compilation.cpp.obj	2c634594cc15c40b
+86	5038	7375800329266742	CMakeFiles/QT.dir/main.cpp.obj	290db22fe4c51940
+94	1056	7375757897241089	CMakeFiles/QT.dir/Cart.cpp.obj	37f00cf0bf75c068
+76	979	7375759094521339	CMakeFiles/QT.dir/tests.cpp.obj	12afdf0c27681a42
+87	1229	7375791442851146	CMakeFiles/QT.dir/Service.cpp.obj	8ec7d8b7b9816f2b

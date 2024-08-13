@@ -1,0 +1,954 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_componente/GUI.h
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/20/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef SIM_COMPONENTE_GUI_H
+        -:    6:#define SIM_COMPONENTE_GUI_H
+        -:    7:#include "Service.h"
+        -:    8:#include <qwidget.h>
+        -:    9:#include <qlistwidget.h>
+        -:   10:#include <qpushbutton.h>
+        -:   11:#include <qlineedit.h>
+        -:   12:#include <QHBoxLayout>
+        -:   13:#include <QFormLayout>
+        -:   14:#include <QMessageBox>
+        -:   15:
+        -:   16:class GUI : public QWidget{
+        -:   17:public:
+function _ZN3GUIC1ER7Service called 1 returned 100% blocks executed 67%
+        1:   18:    GUI(Service& srv) : srv{srv}{
+        1:   18-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+        1:   18-block  1
+call    4 returned 1
+branch  5 taken 1 (fallthrough)
+branch  6 taken 0 (throw)
+        1:   18-block  2
+call    7 returned 1
+branch  8 taken 1 (fallthrough)
+branch  9 taken 0 (throw)
+        1:   18-block  3
+call   10 returned 1
+branch 11 taken 1 (fallthrough)
+branch 12 taken 0 (throw)
+        1:   18-block  4
+call   13 returned 1
+branch 14 taken 1 (fallthrough)
+branch 15 taken 0 (throw)
+        1:   18-block  5
+call   16 returned 1
+branch 17 taken 1 (fallthrough)
+branch 18 taken 0 (throw)
+        1:   18-block  6
+call   19 returned 1
+branch 20 taken 1 (fallthrough)
+branch 21 taken 0 (throw)
+        1:   18-block  7
+call   22 returned 1
+branch 23 taken 1 (fallthrough)
+branch 24 taken 0 (throw)
+        1:   18-block  8
+call   25 returned 1
+call   26 returned 1
+branch 27 taken 1 (fallthrough)
+branch 28 taken 0 (throw)
+        1:   18-block  9
+call   29 returned 1
+branch 30 taken 1 (fallthrough)
+branch 31 taken 0 (throw)
+        1:   18-block 10
+call   32 returned 1
+branch 33 taken 1 (fallthrough)
+branch 34 taken 0 (throw)
+        1:   18-block 11
+call   35 returned 1
+call   36 returned 1
+branch 37 taken 1 (fallthrough)
+branch 38 taken 0 (throw)
+        1:   18-block 12
+call   39 returned 1
+branch 40 taken 1 (fallthrough)
+branch 41 taken 0 (throw)
+        1:   18-block 13
+call   42 returned 1
+branch 43 taken 1 (fallthrough)
+branch 44 taken 0 (throw)
+        1:   18-block 14
+call   45 returned 1
+call   46 returned 1
+branch 47 taken 1 (fallthrough)
+branch 48 taken 0 (throw)
+        1:   18-block 15
+call   49 returned 1
+branch 50 taken 1 (fallthrough)
+branch 51 taken 0 (throw)
+        1:   18-block 16
+call   52 returned 1
+branch 53 taken 1 (fallthrough)
+branch 54 taken 0 (throw)
+        1:   18-block 17
+call   55 returned 1
+branch 56 taken 1 (fallthrough)
+branch 57 taken 0 (throw)
+        1:   18-block 18
+call   58 returned 1
+branch 59 taken 1 (fallthrough)
+branch 60 taken 0 (throw)
+        1:   18-block 19
+call   61 returned 1
+branch 62 taken 1 (fallthrough)
+branch 63 taken 0 (throw)
+        1:   18-block 20
+call   64 returned 1
+call   65 returned 1
+    $$$$$:   18-block 21
+call   66 never executed
+    $$$$$:   18-block 22
+call   67 never executed
+    $$$$$:   18-block 23
+    $$$$$:   18-block 24
+call   68 never executed
+    $$$$$:   18-block 25
+    $$$$$:   18-block 26
+call   69 never executed
+    $$$$$:   18-block 27
+        1:   19:        initGUI();
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   20:        loadData();
+        1:   20-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   21:        initConnect();
+        1:   21-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   22:    }
+        1:   22-block  0
+    $$$$$:   22-block  1
+call    0 never executed
+    $$$$$:   22-block  2
+call    1 never executed
+    $$$$$:   22-block  3
+call    2 never executed
+        -:   23:private:
+        -:   24:    Service& srv;
+        -:   25:    QListWidget* lProc = new QListWidget;
+        -:   26:    QListWidget* lPlaci = new QListWidget;
+        -:   27:
+        -:   28:    QPushButton* btnadd = new QPushButton("&add placa");
+        -:   29:    QPushButton* btntot = new QPushButton("&Calc total");
+        -:   30:    QPushButton* btnfilter = new QPushButton("&Filtreaza");
+        -:   31:
+        -:   32:    QLineEdit* txtNume = new QLineEdit;
+        -:   33:    QLineEdit* txtSoclu = new QLineEdit;
+        -:   34:    QLineEdit* txtpret = new QLineEdit;
+        -:   35:
+        -:   36:    string numeProc;
+        -:   37:    int socluProc;
+        -:   38:    int pretProc;
+        -:   39:    int nrTProc;
+        -:   40:
+        -:   41:    string numePlaca;
+        -:   42:    int socluPlaca;
+        -:   43:    int pretPlaca;
+        -:   44:
+function _ZN3GUI7initGUIEv called 1 returned 100% blocks executed 58%
+        1:   45:    void initGUI() {
+        1:   46:        auto* lyMain = new QHBoxLayout;
+        1:   46-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   46-block  1
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    $$$$$:   46-block  2
+call    6 never executed
+        1:   47:        setLayout(lyMain);
+        1:   47-block  0
+call    0 returned 1
+        -:   48:
+        1:   49:        lyMain->addWidget(lProc);
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   49-block  0
+call    4 never executed
+        1:   50:        lyMain->addWidget(lPlaci);
+        1:   50-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   50-block  1
+call    4 never executed
+        -:   51:
+        1:   52:        auto ly = new QVBoxLayout;
+        1:   52-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   52-block  1
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    $$$$$:   52-block  2
+call    6 never executed
+        1:   53:        auto dataly = new QFormLayout;
+        1:   53-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   53-block  1
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    $$$$$:   53-block  2
+call    6 never executed
+        -:   54:
+        1:   55:        dataly->addRow("Nume", txtNume);
+        1:   55-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   55-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   55-block  2
+call    6 returned 1
+    $$$$$:   55-block  3
+call    7 never executed
+    $$$$$:   55-block  4
+call    8 never executed
+        1:   56:        dataly->addRow("Soclu Proc", txtSoclu);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   56-block  0
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   56-block  1
+call    6 returned 1
+    $$$$$:   56-block  2
+call    7 never executed
+    $$$$$:   56-block  3
+call    8 never executed
+        1:   57:        dataly->addRow("Pret", txtpret);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   57-block  0
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   57-block  1
+call    6 returned 1
+    $$$$$:   57-block  2
+call    7 never executed
+    $$$$$:   57-block  3
+call    8 never executed
+        -:   58:
+        1:   59:        ly->addLayout(dataly);
+call    0 returned 1
+        1:   60:        ly->addWidget(btnadd);
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   60-block  0
+call    4 never executed
+        1:   61:        ly->addWidget(btnfilter);
+        1:   61-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   61-block  1
+call    4 never executed
+        1:   62:        ly->addWidget(btntot);
+        1:   62-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+        -:   63:
+        1:   64:        lyMain->addLayout(ly);
+        1:   64-block  0
+call    0 returned 1
+        1:   65:    }
+        -:   66:
+function _ZN3GUI8loadDataEv called 1 returned 100% blocks executed 61%
+        1:   67:    void loadData() {
+        1:   68:        lProc->clear();
+        1:   68-block  0
+call    0 returned 1
+        1:   69:        lPlaci->clear();
+call    0 returned 1
+        6:   70:        for(const auto& el: srv.get_allProcese()){
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        5:   70-block  0
+call    3 returned 5
+call    4 returned 5
+        6:   70-block  1
+call    5 returned 6
+branch  6 taken 5
+branch  7 taken 1 (fallthrough)
+        5:   71:            QString data = "";
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   72:            data += el.getNume();
+        5:   72-block  0
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   72-block  1
+call    3 returned 5
+call    4 returned 5
+branch  5 taken 5 (fallthrough)
+branch  6 taken 0 (throw)
+        5:   72-block  2
+call    7 returned 5
+    $$$$$:   72-block  3
+call    8 never executed
+    $$$$$:   72-block  4
+    $$$$$:   72-block  5
+        5:   73:            data += " - ";
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   74:            data += QString::number(el.get_nrT());
+        5:   74-block  0
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   74-block  1
+call    3 returned 5
+branch  4 taken 5 (fallthrough)
+branch  5 taken 0 (throw)
+        5:   74-block  2
+call    6 returned 5
+branch  7 taken 5 (fallthrough)
+branch  8 taken 0 (throw)
+        5:   74-block  3
+call    9 returned 5
+    $$$$$:   74-block  4
+call   10 never executed
+    $$$$$:   74-block  5
+        -:   75:
+        5:   76:            QListWidgetItem* it = new QListWidgetItem(data);
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   76-block  0
+call    3 returned 5
+branch  4 taken 5 (fallthrough)
+branch  5 taken 0 (throw)
+    $$$$$:   76-block  1
+branch  6 never executed (fallthrough)
+branch  7 never executed
+    $$$$$:   76-block  2
+call    8 never executed
+        5:   77:            it->setData(Qt::UserRole, el.getPret());
+        5:   77-block  0
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   77-block  1
+call    3 returned 5
+call    4 returned 5
+branch  5 taken 5 (fallthrough)
+branch  6 taken 0 (throw)
+        5:   77-block  2
+call    7 returned 5
+    $$$$$:   77-block  3
+call    8 never executed
+    $$$$$:   77-block  4
+        5:   78:            it->setData(Qt::WhatsThisRole, el.get_soclu());
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   78-block  0
+call    3 returned 5
+call    4 returned 5
+branch  5 taken 5 (fallthrough)
+branch  6 taken 0 (throw)
+        5:   78-block  1
+call    7 returned 5
+    $$$$$:   78-block  2
+call    8 never executed
+    $$$$$:   78-block  3
+        -:   79:
+        5:   80:            lProc->addItem(it);
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   81:        }
+        5:   81-block  0
+call    0 returned 5
+    $$$$$:   81-block  1
+call    1 never executed
+        -:   82:
+        6:   83:        for(const auto& el: srv.get_allPlaca()){
+        1:   83-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        5:   83-block  1
+call    3 returned 5
+call    4 returned 5
+        6:   83-block  2
+call    5 returned 6
+branch  6 taken 5
+branch  7 taken 1 (fallthrough)
+        5:   84:            QString data = "";
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   85:            data += el.get_nume();
+        5:   85-block  0
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   85-block  1
+call    3 returned 5
+call    4 returned 5
+branch  5 taken 5 (fallthrough)
+branch  6 taken 0 (throw)
+        5:   85-block  2
+call    7 returned 5
+    $$$$$:   85-block  3
+call    8 never executed
+    $$$$$:   85-block  4
+    $$$$$:   85-block  5
+        -:   86:
+        5:   87:            QListWidgetItem* it = new QListWidgetItem(data);
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   87-block  0
+call    3 returned 5
+branch  4 taken 5 (fallthrough)
+branch  5 taken 0 (throw)
+    $$$$$:   87-block  1
+branch  6 never executed (fallthrough)
+branch  7 never executed
+    $$$$$:   87-block  2
+call    8 never executed
+        5:   88:            it->setData(Qt::UserRole, el.get_pret());
+        5:   88-block  0
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   88-block  1
+call    3 returned 5
+call    4 returned 5
+branch  5 taken 5 (fallthrough)
+branch  6 taken 0 (throw)
+        5:   88-block  2
+call    7 returned 5
+    $$$$$:   88-block  3
+call    8 never executed
+    $$$$$:   88-block  4
+        5:   89:            it->setData(Qt::WhatsThisRole, el.get_soclu());
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   89-block  0
+call    3 returned 5
+call    4 returned 5
+branch  5 taken 5 (fallthrough)
+branch  6 taken 0 (throw)
+        5:   89-block  1
+call    7 returned 5
+    $$$$$:   89-block  2
+call    8 never executed
+    $$$$$:   89-block  3
+        -:   90:
+        5:   91:            lPlaci->addItem(it);
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   92:        }
+        5:   92-block  0
+call    0 returned 5
+    $$$$$:   92-block  1
+call    1 never executed
+        1:   93:    }
+        1:   93-block  0
+        -:   94:
+function _ZN3GUI11initConnectEv called 1 returned 100% blocks executed 57%
+        1:   95:    void initConnect() {
+function _ZZN3GUI11initConnectEvENKUlvE_clEv called 0 returned 0% blocks executed 0%
+       1*:   96:        QObject::connect(btnadd, &QPushButton::clicked, [&](){
+        1:   96-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   96-block  1
+call    3 returned 1
+    $$$$$:   96-block  2
+    $$$$$:   96-block  3
+call    4 never executed
+    #####:   97:            string nume = txtNume->text().toStdString();
+    %%%%%:   97-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   97-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   97-block  2
+call    6 never executed
+    $$$$$:   97-block  3
+call    7 never executed
+    $$$$$:   97-block  4
+    #####:   98:            int soclu = txtSoclu->text().toInt();
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   98-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   98-block  1
+call    6 never executed
+    $$$$$:   98-block  2
+call    7 never executed
+    $$$$$:   98-block  3
+    #####:   99:            int pret = txtpret->text().toInt();
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   99-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   99-block  1
+call    6 never executed
+    $$$$$:   99-block  2
+call    7 never executed
+    $$$$$:   99-block  3
+        -:  100:
+    #####:  101:            srv.addPlaca(nume, soclu,pret);
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  101-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  101-block  1
+call    6 never executed
+    $$$$$:  101-block  2
+call    7 never executed
+    $$$$$:  101-block  3
+    #####:  102:            loadData();
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  103:        });
+    %%%%%:  103-block  0
+call    0 never executed
+    $$$$$:  103-block  1
+call    1 never executed
+        -:  104:
+function _ZZN3GUI11initConnectEvENKUlvE0_clEv called 0 returned 0% blocks executed 0%
+       1*:  105:        QObject::connect(lPlaci, &QListWidget::itemSelectionChanged, [&](){
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  105-block  0
+call    3 returned 1
+    $$$$$:  105-block  1
+    $$$$$:  105-block  2
+call    4 never executed
+    #####:  106:            auto sel = lPlaci->selectedItems();
+    %%%%%:  106-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  107:            if(!sel.empty()){
+    %%%%%:  107-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:  108:                numePlaca = sel.at(0)->text().toStdString();
+    %%%%%:  108-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  108-block  1
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:  108-block  2
+call    7 never executed
+call    8 never executed
+call    9 never executed
+    $$$$$:  108-block  3
+call   10 never executed
+    $$$$$:  108-block  4
+    $$$$$:  108-block  5
+    #####:  109:                socluPlaca = sel.at(0)->data(Qt::WhatsThisRole).toInt();
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  109-block  0
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:  109-block  1
+call    7 never executed
+    $$$$$:  109-block  2
+call    8 never executed
+    $$$$$:  109-block  3
+    #####:  110:                pretPlaca = sel.at(0)->data(Qt::UserRole).toInt();
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  110-block  0
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:  110-block  1
+call    7 never executed
+    $$$$$:  110-block  2
+call    8 never executed
+    $$$$$:  110-block  3
+        -:  111:            }
+    #####:  112:        });
+    %%%%%:  112-block  0
+call    0 never executed
+    $$$$$:  112-block  1
+call    1 never executed
+        -:  113:
+        -:  114:        //??
+function _ZZN3GUI11initConnectEvENKUlvE1_clEv called 0 returned 0% blocks executed 0%
+       1*:  115:        QObject::connect(lProc, &QListWidget::itemSelectionChanged, [&](){
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  115-block  0
+call    3 returned 1
+    $$$$$:  115-block  1
+    $$$$$:  115-block  2
+call    4 never executed
+    #####:  116:            auto sel = lProc->selectedItems();
+    %%%%%:  116-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  117:            if(!sel.empty()){
+    %%%%%:  117-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:  118:                string info = sel.at(0)->text().toStdString();
+    %%%%%:  118-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  118-block  1
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:  118-block  2
+call    7 never executed
+    $$$$$:  118-block  3
+call    8 never executed
+    $$$$$:  118-block  4
+    #####:  119:                socluProc = sel.at(0)->data(Qt::WhatsThisRole).toInt();
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  119-block  0
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:  119-block  1
+call    7 never executed
+    $$$$$:  119-block  2
+call    8 never executed
+    $$$$$:  119-block  3
+    #####:  120:                pretProc = sel.at(0)->data(Qt::UserRole).toInt();
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  120-block  0
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:  120-block  1
+call    7 never executed
+    $$$$$:  120-block  2
+call    8 never executed
+    $$$$$:  120-block  3
+        -:  121:
+    #####:  122:                int found = info.find('-');
+call    0 never executed
+    #####:  123:                numeProc = info.substr(0,found -1);
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  123-block  0
+call    3 never executed
+call    4 never executed
+    $$$$$:  123-block  1
+    #####:  124:                info.erase(info.begin(),info.begin() + found + 1);
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+call    4 never executed
+call    5 never executed
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed (throw)
+    $$$$$:  124-block  0
+    $$$$$:  124-block  1
+    $$$$$:  124-block  2
+    $$$$$:  124-block  3
+    $$$$$:  124-block  4
+    $$$$$:  124-block  5
+        -:  125:                //pretProc = stoi(info);
+    #####:  126:            }
+    %%%%%:  126-block  0
+call    0 never executed
+    $$$$$:  126-block  1
+call    1 never executed
+    #####:  127:        });
+    %%%%%:  127-block  0
+call    0 never executed
+    $$$$$:  127-block  1
+call    1 never executed
+        -:  128:
+function _ZZN3GUI11initConnectEvENKUlvE2_clEv called 0 returned 0% blocks executed 0%
+       1*:  129:        QObject::connect(btntot, &QPushButton::clicked, [&](){
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  129-block  0
+call    3 returned 1
+    $$$$$:  129-block  1
+    $$$$$:  129-block  2
+call    4 never executed
+    #####:  130:            Placa placa(numePlaca, socluPlaca, pretPlaca);
+    %%%%%:  130-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  130-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  130-block  2
+call    6 never executed
+    $$$$$:  130-block  3
+call    7 never executed
+    $$$$$:  130-block  4
+    #####:  131:            Procesor proc(numeProc,nrTProc, socluProc, pretProc);
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  131-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  131-block  1
+call    6 never executed
+    $$$$$:  131-block  2
+call    7 never executed
+    $$$$$:  131-block  3
+        -:  132:
+    #####:  133:            int tot = srv.total(proc, placa);
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  134:
+    #####:  135:            QMessageBox::information(nullptr, "Total", QString::number(tot));
+    %%%%%:  135-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:  135-block  1
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:  135-block  2
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    %%%%%:  135-block  3
+call   10 never executed
+call   11 never executed
+    $$$$$:  135-block  4
+call   12 never executed
+    $$$$$:  135-block  5
+    $$$$$:  135-block  6
+call   13 never executed
+    $$$$$:  135-block  7
+    $$$$$:  135-block  8
+    #####:  136:        });
+call    0 never executed
+call    1 never executed
+    $$$$$:  136-block  0
+call    2 never executed
+    $$$$$:  136-block  1
+call    3 never executed
+        -:  137:
+function _ZZN3GUI11initConnectEvENKUlvE3_clEv called 0 returned 0% blocks executed 0%
+       1*:  138:        QObject::connect(btnfilter, &QPushButton::clicked, [&](){
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:  138-block  0
+call    3 returned 1
+    $$$$$:  138-block  1
+    #####:  139:            Procesor proc{numeProc, nrTProc, socluProc, pretProc};
+    %%%%%:  139-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  139-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:  139-block  2
+call    6 never executed
+    $$$$$:  139-block  3
+call    7 never executed
+    $$$$$:  139-block  4
+    #####:  140:            vector<Placa> lst = srv.filter(proc);
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  141:
+    #####:  142:            lPlaci->clear();
+    %%%%%:  142-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  143:
+    #####:  144:            for(const auto& el : lst){
+    %%%%%:  144-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:  144-block  1
+call    2 never executed
+call    3 never executed
+    %%%%%:  144-block  2
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:  145:                QString data = "";
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:  146:                data += el.get_nume();
+    %%%%%:  146-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  146-block  1
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:  146-block  2
+call    7 never executed
+    $$$$$:  146-block  3
+call    8 never executed
+    $$$$$:  146-block  4
+    $$$$$:  146-block  5
+    #####:  147:                QListWidgetItem* it = new QListWidgetItem(data);
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  147-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    $$$$$:  147-block  1
+branch  6 never executed (fallthrough)
+branch  7 never executed
+    $$$$$:  147-block  2
+call    8 never executed
+    #####:  148:                it->setData(Qt::UserRole, el.get_pret());
+    %%%%%:  148-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  148-block  1
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:  148-block  2
+call    7 never executed
+    $$$$$:  148-block  3
+call    8 never executed
+    $$$$$:  148-block  4
+    #####:  149:                it->setData(Qt::WhatsThisRole, el.get_soclu());
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:  149-block  0
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:  149-block  1
+call    7 never executed
+    $$$$$:  149-block  2
+call    8 never executed
+    $$$$$:  149-block  3
+        -:  150:
+    #####:  151:                lPlaci->addItem(it);
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  152:
+    #####:  153:            }
+    %%%%%:  153-block  0
+call    0 never executed
+    $$$$$:  153-block  1
+call    1 never executed
+    #####:  154:        });
+    %%%%%:  154-block  0
+call    0 never executed
+call    1 never executed
+    $$$$$:  154-block  1
+call    2 never executed
+    $$$$$:  154-block  2
+call    3 never executed
+        1:  155:    }
+        -:  156:
+        -:  157:};
+        -:  158:
+        -:  159:#endif //SIM_COMPONENTE_GUI_H

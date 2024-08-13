@@ -1,0 +1,1083 @@
+        -:    0:Source:C:/Qt/6.8.0/mingw_64/include/QtCore/qlist.h
+        -:    0:Graph:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1:// Copyright (C) 2020 The Qt Company Ltd.
+        -:    2:// Copyright (C) 2019 Intel Corporation
+        -:    3:// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+        -:    4:
+        -:    5:#ifndef QLIST_H
+        -:    6:#define QLIST_H
+        -:    7:
+        -:    8:#include <QtCore/qarraydatapointer.h>
+        -:    9:#include <QtCore/qnamespace.h>
+        -:   10:#include <QtCore/qhashfunctions.h>
+        -:   11:#include <QtCore/qiterator.h>
+        -:   12:#include <QtCore/qcontainertools_impl.h>
+        -:   13:#include <QtCore/qnamespace.h>
+        -:   14:
+        -:   15:#include <functional>
+        -:   16:#include <limits>
+        -:   17:#include <initializer_list>
+        -:   18:#include <type_traits>
+        -:   19:
+        -:   20:class tst_QList;
+        -:   21:
+        -:   22:QT_BEGIN_NAMESPACE
+        -:   23:
+        -:   24:namespace QtPrivate {
+        -:   25:   template <typename V, typename U> qsizetype indexOf(const QList<V> &list, const U &u, qsizetype from) noexcept;
+        -:   26:   template <typename V, typename U> qsizetype lastIndexOf(const QList<V> &list, const U &u, qsizetype from) noexcept;
+        -:   27:}
+        -:   28:
+        -:   29:template <typename T> struct QListSpecialMethodsBase
+        -:   30:{
+        -:   31:protected:
+        -:   32:    ~QListSpecialMethodsBase() = default;
+        -:   33:
+        -:   34:    using Self = QList<T>;
+        -:   35:    Self *self() { return static_cast<Self *>(this); }
+        -:   36:    const Self *self() const { return static_cast<const Self *>(this); }
+        -:   37:
+        -:   38:public:
+        -:   39:    template <typename AT = T>
+        -:   40:    qsizetype indexOf(const AT &t, qsizetype from = 0) const noexcept;
+        -:   41:    template <typename AT = T>
+        -:   42:    qsizetype lastIndexOf(const AT &t, qsizetype from = -1) const noexcept;
+        -:   43:
+        -:   44:    template <typename AT = T>
+        -:   45:    bool contains(const AT &t) const noexcept
+        -:   46:    {
+        -:   47:        return self()->indexOf(t) != -1;
+        -:   48:    }
+        -:   49:};
+        -:   50:template <typename T> struct QListSpecialMethods : QListSpecialMethodsBase<T>
+        -:   51:{
+        -:   52:protected:
+        -:   53:    ~QListSpecialMethods() = default;
+        -:   54:public:
+        -:   55:    using QListSpecialMethodsBase<T>::indexOf;
+        -:   56:    using QListSpecialMethodsBase<T>::lastIndexOf;
+        -:   57:    using QListSpecialMethodsBase<T>::contains;
+        -:   58:};
+        -:   59:template <> struct QListSpecialMethods<QByteArray>;
+        -:   60:template <> struct QListSpecialMethods<QString>;
+        -:   61:
+        -:   62:#if !defined(QT_STRICT_QLIST_ITERATORS) && (QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)) && !defined(Q_OS_WIN)
+        -:   63:#define QT_STRICT_QLIST_ITERATORS
+        -:   64:#endif
+        -:   65:
+        -:   66:#ifdef Q_QDOC // define QVector for QDoc
+        -:   67:template<typename T> class QVector : public QList<T> {};
+        -:   68:#endif
+        -:   69:
+        -:   70:template <typename T>
+        -:   71:class QList
+        -:   72:#ifndef Q_QDOC
+        -:   73:    : public QListSpecialMethods<T>
+        -:   74:#endif
+        -:   75:{
+        -:   76:    using Data = QTypedArrayData<T>;
+        -:   77:    using DataOps = QArrayDataOps<T>;
+        -:   78:    using DataPointer = QArrayDataPointer<T>;
+        -:   79:    class DisableRValueRefs {};
+        -:   80:
+        -:   81:    friend class ::tst_QList;
+        -:   82:
+        -:   83:    DataPointer d;
+        -:   84:
+        -:   85:    template <typename V, typename U> friend qsizetype QtPrivate::indexOf(const QList<V> &list, const U &u, qsizetype from) noexcept;
+        -:   86:    template <typename V, typename U> friend qsizetype QtPrivate::lastIndexOf(const QList<V> &list, const U &u, qsizetype from) noexcept;
+        -:   87:    // This alias prevents the QtPrivate namespace from being exposed into the docs.
+        -:   88:    template <typename InputIterator>
+        -:   89:    using if_input_iterator = QtPrivate::IfIsInputIterator<InputIterator>;
+        -:   90:
+        -:   91:public:
+        -:   92:    using Type = T;
+        -:   93:    using value_type = T;
+        -:   94:    using pointer = T *;
+        -:   95:    using const_pointer = const T *;
+        -:   96:    using reference = T &;
+        -:   97:    using const_reference = const T &;
+        -:   98:    using size_type = qsizetype;
+        -:   99:    using difference_type = qptrdiff;
+        -:  100:#ifndef Q_QDOC
+        -:  101:    using parameter_type = typename DataPointer::parameter_type;
+        -:  102:    using rvalue_ref = typename std::conditional<DataPointer::pass_parameter_by_value, DisableRValueRefs, T &&>::type;
+        -:  103:#else  // simplified aliases for QDoc
+        -:  104:    using parameter_type = const T &;
+        -:  105:    using rvalue_ref = T &&;
+        -:  106:#endif
+        -:  107:
+        -:  108:    class const_iterator;
+        -:  109:    class iterator {
+        -:  110:        friend class QList<T>;
+        -:  111:        friend class const_iterator;
+        -:  112:        T *i = nullptr;
+        -:  113:#ifdef QT_STRICT_QLIST_ITERATORS
+        -:  114:        inline constexpr explicit iterator(T *n) : i(n) {}
+        -:  115:#endif
+        -:  116:
+        -:  117:    public:
+        -:  118:        using difference_type = qsizetype;
+        -:  119:        using value_type = T;
+        -:  120:#ifdef QT_COMPILER_HAS_LWG3346
+        -:  121:        using iterator_concept = std::contiguous_iterator_tag;
+        -:  122:        using element_type = value_type;
+        -:  123:#endif
+        -:  124:        using iterator_category = std::random_access_iterator_tag;
+        -:  125:        using pointer = T *;
+        -:  126:        using reference = T &;
+        -:  127:
+        -:  128:        inline constexpr iterator() = default;
+        -:  129:#ifndef QT_STRICT_QLIST_ITERATORS
+function _ZN5QListI7QStringE8iteratorC1EPS0_ called 8 returned 100% blocks executed 100%
+        8:  130:        inline constexpr explicit iterator(T *n) : i(n) {}
+        -:  131:#endif
+function _ZNK5QListI7QStringE8iteratordeEv called 4 returned 100% blocks executed 100%
+        4:  132:        inline T &operator*() const { return *i; }
+        4:  132-block  0
+        -:  133:        inline T *operator->() const { return i; }
+        -:  134:        inline T &operator[](qsizetype j) const { return *(i + j); }
+        -:  135:        inline constexpr bool operator==(iterator o) const { return i == o.i; }
+        -:  136:        inline constexpr bool operator!=(iterator o) const { return i != o.i; }
+        -:  137:        inline constexpr bool operator<(iterator other) const { return i < other.i; }
+        -:  138:        inline constexpr bool operator<=(iterator other) const { return i <= other.i; }
+        -:  139:        inline constexpr bool operator>(iterator other) const { return i > other.i; }
+        -:  140:        inline constexpr bool operator>=(iterator other) const { return i >= other.i; }
+        -:  141:        inline constexpr bool operator==(const_iterator o) const { return i == o.i; }
+        -:  142:        inline constexpr bool operator!=(const_iterator o) const { return i != o.i; }
+        -:  143:        inline constexpr bool operator<(const_iterator other) const { return i < other.i; }
+        -:  144:        inline constexpr bool operator<=(const_iterator other) const { return i <= other.i; }
+        -:  145:        inline constexpr bool operator>(const_iterator other) const { return i > other.i; }
+        -:  146:        inline constexpr bool operator>=(const_iterator other) const { return i >= other.i; }
+        -:  147:        inline constexpr bool operator==(pointer p) const { return i == p; }
+        -:  148:        inline constexpr bool operator!=(pointer p) const { return i != p; }
+        -:  149:        inline iterator &operator++() { ++i; return *this; }
+        -:  150:        inline iterator operator++(int) { auto copy = *this; ++*this; return copy; }
+        -:  151:        inline iterator &operator--() { --i; return *this; }
+        -:  152:        inline iterator operator--(int) { auto copy = *this; --*this; return copy; }
+        -:  153:        inline qsizetype operator-(iterator j) const { return i - j.i; }
+        -:  154:#if QT_DEPRECATED_SINCE(6, 3) && !defined(QT_STRICT_QLIST_ITERATORS)
+        -:  155:        QT_DEPRECATED_VERSION_X_6_3("Use operator* or operator-> rather than relying on "
+        -:  156:                                    "the implicit conversion between a QList/QVector::iterator "
+        -:  157:                                    "and a raw pointer")
+        -:  158:        inline operator T*() const { return i; }
+        -:  159:
+        -:  160:        template <typename Int> std::enable_if_t<std::is_integral_v<Int>, iterator>
+        -:  161:        &operator+=(Int j) { i+=j; return *this; }
+        -:  162:        template <typename Int> std::enable_if_t<std::is_integral_v<Int>, iterator>
+        -:  163:        &operator-=(Int j) { i-=j; return *this; }
+        -:  164:        template <typename Int> std::enable_if_t<std::is_integral_v<Int>, iterator>
+        -:  165:        operator+(Int j) const { return iterator(i+j); }
+        -:  166:        template <typename Int> std::enable_if_t<std::is_integral_v<Int>, iterator>
+function _ZNK5QListI7QStringE8iteratormiIiEENSt9enable_ifIX13is_integral_vIT_EES2_E4typeES5_ called 4 returned 100% blocks executed 100%
+        4:  167:        operator-(Int j) const { return iterator(i-j); }
+        4:  167-block  0
+call    0 returned 4
+        4:  167-block  1
+        -:  168:        template <typename Int> friend std::enable_if_t<std::is_integral_v<Int>, iterator>
+        -:  169:        operator+(Int j, iterator k) { return k + j; }
+        -:  170:#else
+        -:  171:        inline iterator &operator+=(qsizetype j) { i += j; return *this; }
+        -:  172:        inline iterator &operator-=(qsizetype j) { i -= j; return *this; }
+        -:  173:        inline iterator operator+(qsizetype j) const { return iterator(i + j); }
+        -:  174:        inline iterator operator-(qsizetype j) const { return iterator(i - j); }
+        -:  175:        friend inline iterator operator+(qsizetype j, iterator k) { return k + j; }
+        -:  176:#endif
+        -:  177:    };
+        -:  178:
+        -:  179:    class const_iterator {
+        -:  180:        friend class QList<T>;
+        -:  181:        friend class iterator;
+        -:  182:        const T *i = nullptr;
+        -:  183:#ifdef QT_STRICT_QLIST_ITERATORS
+        -:  184:        inline constexpr explicit const_iterator(const T *n) : i(n) {}
+        -:  185:#endif
+        -:  186:
+        -:  187:    public:
+        -:  188:        using difference_type = qsizetype;
+        -:  189:        using value_type = T;
+        -:  190:#ifdef QT_COMPILER_HAS_LWG3346
+        -:  191:        using iterator_concept = std::contiguous_iterator_tag;
+        -:  192:        using element_type = const value_type;
+        -:  193:#endif
+        -:  194:        using iterator_category = std::random_access_iterator_tag;
+        -:  195:        using pointer = const T *;
+        -:  196:        using reference = const T &;
+        -:  197:
+        -:  198:        inline constexpr const_iterator() = default;
+        -:  199:#ifndef QT_STRICT_QLIST_ITERATORS
+        -:  200:        inline constexpr explicit const_iterator(const T *n) : i(n) {}
+        -:  201:#endif
+        -:  202:        inline constexpr const_iterator(iterator o): i(o.i) {}
+        -:  203:        inline const T &operator*() const { return *i; }
+        -:  204:        inline const T *operator->() const { return i; }
+        -:  205:        inline const T &operator[](qsizetype j) const { return *(i + j); }
+        -:  206:        inline constexpr bool operator==(const_iterator o) const { return i == o.i; }
+        -:  207:        inline constexpr bool operator!=(const_iterator o) const { return i != o.i; }
+        -:  208:        inline constexpr bool operator<(const_iterator other) const { return i < other.i; }
+        -:  209:        inline constexpr bool operator<=(const_iterator other) const { return i <= other.i; }
+        -:  210:        inline constexpr bool operator>(const_iterator other) const { return i > other.i; }
+        -:  211:        inline constexpr bool operator>=(const_iterator other) const { return i >= other.i; }
+        -:  212:        inline constexpr bool operator==(iterator o) const { return i == o.i; }
+        -:  213:        inline constexpr bool operator!=(iterator o) const { return i != o.i; }
+        -:  214:        inline constexpr bool operator<(iterator other) const { return i < other.i; }
+        -:  215:        inline constexpr bool operator<=(iterator other) const { return i <= other.i; }
+        -:  216:        inline constexpr bool operator>(iterator other) const { return i > other.i; }
+        -:  217:        inline constexpr bool operator>=(iterator other) const { return i >= other.i; }
+        -:  218:        inline constexpr bool operator==(pointer p) const { return i == p; }
+        -:  219:        inline constexpr bool operator!=(pointer p) const { return i != p; }
+        -:  220:        inline const_iterator &operator++() { ++i; return *this; }
+        -:  221:        inline const_iterator operator++(int) { auto copy = *this; ++*this; return copy; }
+        -:  222:        inline const_iterator &operator--() { --i; return *this; }
+        -:  223:        inline const_iterator operator--(int) { auto copy = *this; --*this; return copy; }
+        -:  224:        inline qsizetype operator-(const_iterator j) const { return i - j.i; }
+        -:  225:#if QT_DEPRECATED_SINCE(6, 3) && !defined(QT_STRICT_QLIST_ITERATORS)
+        -:  226:        QT_DEPRECATED_VERSION_X_6_3("Use operator* or operator-> rather than relying on "
+        -:  227:                                    "the implicit conversion between a QList/QVector::const_iterator "
+        -:  228:                                    "and a raw pointer")
+        -:  229:        inline operator const T*() const { return i; }
+        -:  230:
+        -:  231:        template <typename Int> std::enable_if_t<std::is_integral_v<Int>, const_iterator>
+        -:  232:        &operator+=(Int j) { i+=j; return *this; }
+        -:  233:        template <typename Int> std::enable_if_t<std::is_integral_v<Int>, const_iterator>
+        -:  234:        &operator-=(Int j) { i-=j; return *this; }
+        -:  235:        template <typename Int> std::enable_if_t<std::is_integral_v<Int>, const_iterator>
+        -:  236:        operator+(Int j) const { return const_iterator(i+j); }
+        -:  237:        template <typename Int> std::enable_if_t<std::is_integral_v<Int>, const_iterator>
+        -:  238:        operator-(Int j) const { return const_iterator(i-j); }
+        -:  239:        template <typename Int> friend std::enable_if_t<std::is_integral_v<Int>, const_iterator>
+        -:  240:        operator+(Int j, const_iterator k) { return k + j; }
+        -:  241:#else
+        -:  242:        inline const_iterator &operator+=(qsizetype j) { i += j; return *this; }
+        -:  243:        inline const_iterator &operator-=(qsizetype j) { i -= j; return *this; }
+        -:  244:        inline const_iterator operator+(qsizetype j) const { return const_iterator(i + j); }
+        -:  245:        inline const_iterator operator-(qsizetype j) const { return const_iterator(i - j); }
+        -:  246:        friend inline const_iterator operator+(qsizetype j, const_iterator k) { return k + j; }
+        -:  247:#endif
+        -:  248:    };
+        -:  249:    using Iterator = iterator;
+        -:  250:    using ConstIterator = const_iterator;
+        -:  251:    using reverse_iterator = std::reverse_iterator<iterator>;
+        -:  252:    using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+        -:  253:
+        -:  254:private:
+        -:  255:    void resize_internal(qsizetype i);
+        -:  256:    bool isValidIterator(const_iterator i) const
+        -:  257:    {
+        -:  258:        const std::less<const T*> less = {};
+        -:  259:        return !less(d->end(), i.i) && !less(i.i, d->begin());
+        -:  260:    }
+        -:  261:
+        -:  262:    void verify([[maybe_unused]] qsizetype pos = 0, [[maybe_unused]] qsizetype n = 1) const
+        -:  263:    {
+        -:  264:        Q_ASSERT(pos >= 0);
+        -:  265:        Q_ASSERT(pos <= size());
+        -:  266:        Q_ASSERT(n >= 0);
+        -:  267:        Q_ASSERT(n <= size() - pos);
+        -:  268:    }
+        -:  269:public:
+        -:  270:    QList(DataPointer dd) noexcept
+        -:  271:        : d(dd)
+        -:  272:    {
+        -:  273:    }
+        -:  274:
+        -:  275:public:
+        -:  276:    QList() = default;
+        -:  277:    explicit QList(qsizetype size)
+        -:  278:        : d(size)
+        -:  279:    {
+        -:  280:        if (size)
+        -:  281:            d->appendInitialize(size);
+        -:  282:    }
+        -:  283:    QList(qsizetype size, parameter_type t)
+        -:  284:        : d(size)
+        -:  285:    {
+        -:  286:        if (size)
+        -:  287:            d->copyAppend(size, t);
+        -:  288:    }
+        -:  289:
+        -:  290:    inline QList(std::initializer_list<T> args)
+        -:  291:        : d(qsizetype(args.size()))
+        -:  292:    {
+        -:  293:        if (args.size())
+        -:  294:            d->copyAppend(args.begin(), args.end());
+        -:  295:    }
+        -:  296:
+        -:  297:    QList<T> &operator=(std::initializer_list<T> args)
+        -:  298:    {
+        -:  299:        return assign(args);
+        -:  300:    }
+        -:  301:
+        -:  302:    template <typename InputIterator, if_input_iterator<InputIterator> = true>
+        -:  303:    QList(InputIterator i1, InputIterator i2)
+        -:  304:    {
+        -:  305:        if constexpr (!std::is_convertible_v<typename std::iterator_traits<InputIterator>::iterator_category, std::forward_iterator_tag>) {
+        -:  306:            std::copy(i1, i2, std::back_inserter(*this));
+        -:  307:        } else {
+        -:  308:            const auto distance = std::distance(i1, i2);
+        -:  309:            if (distance) {
+        -:  310:                d = DataPointer(qsizetype(distance));
+        -:  311:                // appendIteratorRange can deal with contiguous iterators on its own,
+        -:  312:                // this is an optimization for C++17 code.
+        -:  313:                if constexpr (std::is_same_v<std::decay_t<InputIterator>, iterator> ||
+        -:  314:                              std::is_same_v<std::decay_t<InputIterator>, const_iterator>) {
+        -:  315:                    d->copyAppend(i1.i, i2.i);
+        -:  316:                } else {
+        -:  317:                    d->appendIteratorRange(i1, i2);
+        -:  318:               }
+        -:  319:            }
+        -:  320:        }
+        -:  321:    }
+        -:  322:
+        -:  323:    // This constructor is here for compatibility with QStringList in Qt 5, that has a QStringList(const QString &) constructor
+        -:  324:    template<typename String, typename = std::enable_if_t<std::is_same_v<T, QString> && std::is_convertible_v<String, QString>>>
+        -:  325:    inline explicit QList(const String &str)
+        -:  326:    { append(str); }
+        -:  327:
+        -:  328:    QList(qsizetype size, Qt::Initialization)
+        -:  329:        : d(size)
+        -:  330:    {
+        -:  331:        if (size)
+        -:  332:            d->appendUninitialized(size);
+        -:  333:    }
+        -:  334:
+        -:  335:    // compiler-generated special member functions are fine!
+        -:  336:
+        -:  337:    void swap(QList &other) noexcept { d.swap(other.d); }
+        -:  338:
+        -:  339:#ifndef Q_QDOC
+        -:  340:    template <typename U = T>
+        -:  341:    QTypeTraits::compare_eq_result_container<QList, U> operator==(const QList &other) const
+        -:  342:    {
+        -:  343:        if (size() != other.size())
+        -:  344:            return false;
+        -:  345:        if (begin() == other.begin())
+        -:  346:            return true;
+        -:  347:
+        -:  348:        // do element-by-element comparison
+        -:  349:        return d->compare(data(), other.data(), size());
+        -:  350:    }
+        -:  351:    template <typename U = T>
+        -:  352:    QTypeTraits::compare_eq_result_container<QList, U> operator!=(const QList &other) const
+        -:  353:    {
+        -:  354:        return !(*this == other);
+        -:  355:    }
+        -:  356:
+        -:  357:    template <typename U = T>
+        -:  358:    QTypeTraits::compare_lt_result_container<QList, U> operator<(const QList &other) const
+        -:  359:        noexcept(noexcept(std::lexicographical_compare<typename QList<U>::const_iterator,
+        -:  360:                                                       typename QList::const_iterator>(
+        -:  361:                            std::declval<QList<U>>().begin(), std::declval<QList<U>>().end(),
+        -:  362:                            other.begin(), other.end())))
+        -:  363:    {
+        -:  364:        return std::lexicographical_compare(begin(), end(),
+        -:  365:                                            other.begin(), other.end());
+        -:  366:    }
+        -:  367:
+        -:  368:    template <typename U = T>
+        -:  369:    QTypeTraits::compare_lt_result_container<QList, U> operator>(const QList &other) const
+        -:  370:        noexcept(noexcept(other < std::declval<QList<U>>()))
+        -:  371:    {
+        -:  372:        return other < *this;
+        -:  373:    }
+        -:  374:
+        -:  375:    template <typename U = T>
+        -:  376:    QTypeTraits::compare_lt_result_container<QList, U> operator<=(const QList &other) const
+        -:  377:        noexcept(noexcept(other < std::declval<QList<U>>()))
+        -:  378:    {
+        -:  379:        return !(other < *this);
+        -:  380:    }
+        -:  381:
+        -:  382:    template <typename U = T>
+        -:  383:    QTypeTraits::compare_lt_result_container<QList, U> operator>=(const QList &other) const
+        -:  384:        noexcept(noexcept(std::declval<QList<U>>() < other))
+        -:  385:    {
+        -:  386:        return !(*this < other);
+        -:  387:    }
+        -:  388:#else
+        -:  389:    bool operator==(const QList &other) const;
+        -:  390:    bool operator!=(const QList &other) const;
+        -:  391:    bool operator<(const QList &other) const;
+        -:  392:    bool operator>(const QList &other) const;
+        -:  393:    bool operator<=(const QList &other) const;
+        -:  394:    bool operator>=(const QList &other) const;
+        -:  395:#endif // Q_QDOC
+        -:  396:
+        -:  397:    qsizetype size() const noexcept { return d->size; }
+        -:  398:    qsizetype count() const noexcept { return size(); }
+        -:  399:    qsizetype length() const noexcept { return size(); }
+        -:  400:
+        -:  401:    inline bool isEmpty() const noexcept { return d->size == 0; }
+        -:  402:
+        -:  403:    void resize(qsizetype size)
+        -:  404:    {
+        -:  405:        resize_internal(size);
+        -:  406:        if (size > this->size())
+        -:  407:            d->appendInitialize(size);
+        -:  408:    }
+        -:  409:    void resize(qsizetype size, parameter_type c)
+        -:  410:    {
+        -:  411:        resize_internal(size);
+        -:  412:        if (size > this->size())
+        -:  413:            d->copyAppend(size - this->size(), c);
+        -:  414:    }
+        -:  415:    void resizeForOverwrite(qsizetype size)
+        -:  416:    {
+        -:  417:        resize_internal(size);
+        -:  418:        if (size > this->size())
+        -:  419:            d->appendUninitialized(size);
+        -:  420:    }
+        -:  421:
+        -:  422:    inline qsizetype capacity() const { return qsizetype(d->constAllocatedCapacity()); }
+        -:  423:    void reserve(qsizetype size);
+        -:  424:    inline void squeeze();
+        -:  425:
+function _ZN5QListI7QStringE6detachEv called 4 returned 100% blocks executed 100%
+        4:  426:    void detach() { d.detach(); }
+        4:  426-block  0
+call    0 returned 4
+        -:  427:    bool isDetached() const noexcept { return !d->isShared(); }
+        -:  428:
+        -:  429:    inline bool isSharedWith(const QList<T> &other) const { return d == other.d; }
+        -:  430:
+function _ZN5QListI7QStringE4dataEv called 0 returned 0% blocks executed 0%
+    #####:  431:    pointer data() { detach(); return d->data(); }
+    %%%%%:  431-block  0
+call    0 never executed
+call    1 never executed
+call    2 never executed
+        -:  432:    const_pointer data() const noexcept { return d->data(); }
+        -:  433:    const_pointer constData() const noexcept { return d->data(); }
+        -:  434:    void clear() {
+        -:  435:        if (!size())
+        -:  436:            return;
+        -:  437:        if (d->needsDetach()) {
+        -:  438:            // must allocate memory
+        -:  439:            DataPointer detached(d.allocatedCapacity());
+        -:  440:            d.swap(detached);
+        -:  441:        } else {
+        -:  442:            d->truncate(0);
+        -:  443:        }
+        -:  444:    }
+        -:  445:
+        -:  446:    const_reference at(qsizetype i) const noexcept
+        -:  447:    {
+        -:  448:        Q_ASSERT_X(size_t(i) < size_t(d->size), "QList::at", "index out of range");
+        -:  449:        return data()[i];
+        -:  450:    }
+function _ZN5QListI7QStringEixEx called 0 returned 0% blocks executed 0%
+    #####:  451:    reference operator[](qsizetype i)
+        -:  452:    {
+    #####:  453:        Q_ASSERT_X(size_t(i) < size_t(d->size), "QList::operator[]", "index out of range");
+    %%%%%:  453-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    %%%%%:  453-block  1
+call    3 never executed
+        -:  454:        // don't detach() here, we detach in data below:
+    #####:  455:        return data()[i];
+    %%%%%:  455-block  0
+call    0 never executed
+        -:  456:    }
+        -:  457:    const_reference operator[](qsizetype i) const noexcept { return at(i); }
+        -:  458:    void append(parameter_type t) { emplaceBack(t); }
+        -:  459:    void append(const_iterator i1, const_iterator i2);
+function _ZN5QListI7QStringE6appendEOS0_ called 4 returned 100% blocks executed 100%
+        4:  460:    void append(rvalue_ref t)
+        -:  461:    {
+        -:  462:        if constexpr (DataPointer::pass_parameter_by_value) {
+        -:  463:            Q_UNUSED(t);
+        -:  464:        } else {
+        4:  465:            emplaceBack(std::move(t));
+        4:  465-block  0
+call    0 returned 4
+call    1 returned 4
+        -:  466:        }
+        4:  467:    }
+        -:  468:    void append(const QList<T> &l)
+        -:  469:    {
+        -:  470:        append(l.constBegin(), l.constEnd());
+        -:  471:    }
+        -:  472:    void append(QList<T> &&l);
+        -:  473:    void prepend(rvalue_ref t) {
+        -:  474:        if constexpr (DataPointer::pass_parameter_by_value) {
+        -:  475:            Q_UNUSED(t);
+        -:  476:        } else {
+        -:  477:            emplaceFront(std::move(t));
+        -:  478:        }
+        -:  479:    }
+        -:  480:    void prepend(parameter_type t) { emplaceFront(t); }
+        -:  481:
+        -:  482:    template<typename... Args>
+        -:  483:    inline reference emplaceBack(Args &&... args);
+        -:  484:
+        -:  485:    template <typename ...Args>
+        -:  486:    inline reference emplaceFront(Args&&... args);
+        -:  487:
+        -:  488:    iterator insert(qsizetype i, parameter_type t)
+        -:  489:    { return emplace(i, t); }
+        -:  490:    iterator insert(qsizetype i, qsizetype n, parameter_type t);
+        -:  491:    iterator insert(const_iterator before, parameter_type t)
+        -:  492:    {
+        -:  493:        Q_ASSERT_X(isValidIterator(before),  "QList::insert", "The specified iterator argument 'before' is invalid");
+        -:  494:        return insert(before, 1, t);
+        -:  495:    }
+        -:  496:    iterator insert(const_iterator before, qsizetype n, parameter_type t)
+        -:  497:    {
+        -:  498:        Q_ASSERT_X(isValidIterator(before),  "QList::insert", "The specified iterator argument 'before' is invalid");
+        -:  499:        return insert(std::distance(constBegin(), before), n, t);
+        -:  500:    }
+        -:  501:    iterator insert(const_iterator before, rvalue_ref t)
+        -:  502:    {
+        -:  503:        Q_ASSERT_X(isValidIterator(before),  "QList::insert", "The specified iterator argument 'before' is invalid");
+        -:  504:        return insert(std::distance(constBegin(), before), std::move(t));
+        -:  505:    }
+        -:  506:    iterator insert(qsizetype i, rvalue_ref t) {
+        -:  507:        if constexpr (DataPointer::pass_parameter_by_value) {
+        -:  508:            Q_UNUSED(i);
+        -:  509:            Q_UNUSED(t);
+        -:  510:            return end();
+        -:  511:        } else {
+        -:  512:            return emplace(i, std::move(t));
+        -:  513:        }
+        -:  514:    }
+        -:  515:
+        -:  516:    QList &assign(qsizetype n, parameter_type t)
+        -:  517:    {
+        -:  518:        Q_ASSERT(n >= 0);
+        -:  519:        return fill(t, n);
+        -:  520:    }
+        -:  521:
+        -:  522:    template <typename InputIterator, if_input_iterator<InputIterator> = true>
+        -:  523:    QList &assign(InputIterator first, InputIterator last)
+        -:  524:    { d.assign(first, last); return *this; }
+        -:  525:
+        -:  526:    QList &assign(std::initializer_list<T> l)
+        -:  527:    { return assign(l.begin(), l.end()); }
+        -:  528:
+        -:  529:    template <typename ...Args>
+        -:  530:    iterator emplace(const_iterator before, Args&&... args)
+        -:  531:    {
+        -:  532:        Q_ASSERT_X(isValidIterator(before),  "QList::emplace", "The specified iterator argument 'before' is invalid");
+        -:  533:        return emplace(std::distance(constBegin(), before), std::forward<Args>(args)...);
+        -:  534:    }
+        -:  535:
+        -:  536:    template <typename ...Args>
+        -:  537:    iterator emplace(qsizetype i, Args&&... args);
+        -:  538:#if 0
+        -:  539:    template< class InputIt >
+        -:  540:    iterator insert( const_iterator pos, InputIt first, InputIt last );
+        -:  541:    iterator insert( const_iterator pos, std::initializer_list<T> ilist );
+        -:  542:#endif
+        -:  543:    void replace(qsizetype i, parameter_type t)
+        -:  544:    {
+        -:  545:        Q_ASSERT_X(i >= 0 && i < d->size, "QList<T>::replace", "index out of range");
+        -:  546:        DataPointer oldData;
+        -:  547:        d.detach(&oldData);
+        -:  548:        d.data()[i] = t;
+        -:  549:    }
+        -:  550:    void replace(qsizetype i, rvalue_ref t)
+        -:  551:    {
+        -:  552:        if constexpr (DataPointer::pass_parameter_by_value) {
+        -:  553:            Q_UNUSED(i);
+        -:  554:            Q_UNUSED(t);
+        -:  555:        } else {
+        -:  556:            Q_ASSERT_X(i >= 0 && i < d->size, "QList<T>::replace", "index out of range");
+        -:  557:            DataPointer oldData;
+        -:  558:            d.detach(&oldData);
+        -:  559:            d.data()[i] = std::move(t);
+        -:  560:        }
+        -:  561:    }
+        -:  562:
+        -:  563:    void remove(qsizetype i, qsizetype n = 1);
+        -:  564:    void removeFirst() noexcept;
+        -:  565:    void removeLast() noexcept;
+        -:  566:    value_type takeFirst() { Q_ASSERT(!isEmpty()); value_type v = std::move(first()); d->eraseFirst(); return v; }
+        -:  567:    value_type takeLast() { Q_ASSERT(!isEmpty()); value_type v = std::move(last()); d->eraseLast(); return v; }
+        -:  568:
+        -:  569:    QList<T> &fill(parameter_type t, qsizetype size = -1);
+        -:  570:
+        -:  571:#ifndef Q_QDOC
+        -:  572:    using QListSpecialMethods<T>::contains;
+        -:  573:    using QListSpecialMethods<T>::indexOf;
+        -:  574:    using QListSpecialMethods<T>::lastIndexOf;
+        -:  575:#else
+        -:  576:    template <typename AT>
+        -:  577:    qsizetype indexOf(const AT &t, qsizetype from = 0) const noexcept;
+        -:  578:    template <typename AT>
+        -:  579:    qsizetype lastIndexOf(const AT &t, qsizetype from = -1) const noexcept;
+        -:  580:    template <typename AT>
+        -:  581:    bool contains(const AT &t) const noexcept;
+        -:  582:#endif
+        -:  583:
+        -:  584:    template <typename AT = T>
+        -:  585:    qsizetype count(const AT &t) const noexcept
+        -:  586:    {
+        -:  587:        return qsizetype(std::count(data(), data() + size(), t));
+        -:  588:    }
+        -:  589:
+        -:  590:    void removeAt(qsizetype i) { remove(i); }
+        -:  591:    template <typename AT = T>
+        -:  592:    qsizetype removeAll(const AT &t)
+        -:  593:    {
+        -:  594:        return QtPrivate::sequential_erase_with_copy(*this, t);
+        -:  595:    }
+        -:  596:
+        -:  597:    template <typename AT = T>
+        -:  598:    bool removeOne(const AT &t)
+        -:  599:    {
+        -:  600:        return QtPrivate::sequential_erase_one(*this, t);
+        -:  601:    }
+        -:  602:
+        -:  603:    template <typename Predicate>
+        -:  604:    qsizetype removeIf(Predicate pred)
+        -:  605:    {
+        -:  606:        return QtPrivate::sequential_erase_if(*this, pred);
+        -:  607:    }
+        -:  608:
+        -:  609:    T takeAt(qsizetype i) { T t = std::move((*this)[i]); remove(i); return t; }
+        -:  610:    void move(qsizetype from, qsizetype to)
+        -:  611:    {
+        -:  612:        Q_ASSERT_X(from >= 0 && from < size(), "QList::move(qsizetype, qsizetype)", "'from' is out-of-range");
+        -:  613:        Q_ASSERT_X(to >= 0 && to < size(), "QList::move(qsizetype, qsizetype)", "'to' is out-of-range");
+        -:  614:        if (from == to) // don't detach when no-op
+        -:  615:            return;
+        -:  616:        detach();
+        -:  617:        T * const b = d->begin();
+        -:  618:        if (from < to)
+        -:  619:            std::rotate(b + from, b + from + 1, b + to + 1);
+        -:  620:        else
+        -:  621:            std::rotate(b + to, b + from, b + from + 1);
+        -:  622:    }
+        -:  623:
+        -:  624:    // STL-style
+        -:  625:    iterator begin() { detach(); return iterator(d->begin()); }
+function _ZN5QListI7QStringE3endEv called 4 returned 100% blocks executed 100%
+        4:  626:    iterator end() { detach(); return iterator(d->end()); }
+        4:  626-block  0
+call    0 returned 4
+call    1 returned 4
+call    2 returned 4
+call    3 returned 4
+        4:  626-block  1
+        -:  627:
+        -:  628:    const_iterator begin() const noexcept { return const_iterator(d->constBegin()); }
+        -:  629:    const_iterator end() const noexcept { return const_iterator(d->constEnd()); }
+        -:  630:    const_iterator cbegin() const noexcept { return const_iterator(d->constBegin()); }
+        -:  631:    const_iterator cend() const noexcept { return const_iterator(d->constEnd()); }
+        -:  632:    const_iterator constBegin() const noexcept { return const_iterator(d->constBegin()); }
+        -:  633:    const_iterator constEnd() const noexcept { return const_iterator(d->constEnd()); }
+        -:  634:    reverse_iterator rbegin() { return reverse_iterator(end()); }
+        -:  635:    reverse_iterator rend() { return reverse_iterator(begin()); }
+        -:  636:    const_reverse_iterator rbegin() const noexcept { return const_reverse_iterator(end()); }
+        -:  637:    const_reverse_iterator rend() const noexcept { return const_reverse_iterator(begin()); }
+        -:  638:    const_reverse_iterator crbegin() const noexcept { return const_reverse_iterator(end()); }
+        -:  639:    const_reverse_iterator crend() const noexcept { return const_reverse_iterator(begin()); }
+        -:  640:
+        -:  641:    iterator erase(const_iterator begin, const_iterator end);
+        -:  642:    inline iterator erase(const_iterator pos) { return erase(pos, pos+1); }
+        -:  643:
+        -:  644:    // more Qt
+        -:  645:    inline T& first() { Q_ASSERT(!isEmpty()); return *begin(); }
+        -:  646:    inline const T &first() const noexcept { Q_ASSERT(!isEmpty()); return *begin(); }
+        -:  647:    inline const T &constFirst() const noexcept { Q_ASSERT(!isEmpty()); return *begin(); }
+        -:  648:    inline T& last() { Q_ASSERT(!isEmpty()); return *(end()-1); }
+        -:  649:    inline const T &last() const noexcept { Q_ASSERT(!isEmpty()); return *(end()-1); }
+        -:  650:    inline const T &constLast() const noexcept { Q_ASSERT(!isEmpty()); return *(end()-1); }
+        -:  651:    inline bool startsWith(parameter_type t) const { return !isEmpty() && first() == t; }
+        -:  652:    inline bool endsWith(parameter_type t) const { return !isEmpty() && last() == t; }
+        -:  653:    QList<T> mid(qsizetype pos, qsizetype len = -1) const;
+        -:  654:
+        -:  655:    QList<T> first(qsizetype n) const
+        -:  656:    { verify(0, n); return QList<T>(begin(), begin() + n); }
+        -:  657:    QList<T> last(qsizetype n) const
+        -:  658:    { verify(0, n); return QList<T>(end() - n, end()); }
+        -:  659:    QList<T> sliced(qsizetype pos) const
+        -:  660:    { verify(pos, 0); return QList<T>(begin() + pos, end()); }
+        -:  661:    QList<T> sliced(qsizetype pos, qsizetype n) const
+        -:  662:    { verify(pos, n); return QList<T>(begin() + pos, begin() + pos + n); }
+        -:  663:
+        -:  664:    T value(qsizetype i) const { return value(i, T()); }
+        -:  665:    T value(qsizetype i, parameter_type defaultValue) const;
+        -:  666:
+        -:  667:    void swapItemsAt(qsizetype i, qsizetype j) {
+        -:  668:        Q_ASSERT_X(i >= 0 && i < size() && j >= 0 && j < size(),
+        -:  669:                    "QList<T>::swap", "index out of range");
+        -:  670:        detach();
+        -:  671:        qSwap(d->begin()[i], d->begin()[j]);
+        -:  672:    }
+        -:  673:
+        -:  674:    // STL compatibility
+        -:  675:    inline void push_back(parameter_type t) { append(t); }
+        -:  676:    void push_back(rvalue_ref t) { append(std::move(t)); }
+        -:  677:    void push_front(rvalue_ref t) { prepend(std::move(t)); }
+        -:  678:    inline void push_front(parameter_type t) { prepend(t); }
+        -:  679:    void pop_back() noexcept { removeLast(); }
+        -:  680:    void pop_front() noexcept { removeFirst(); }
+        -:  681:
+        -:  682:    template <typename ...Args>
+        -:  683:    reference emplace_back(Args&&... args) { return emplaceBack(std::forward<Args>(args)...); }
+        -:  684:
+        -:  685:    inline bool empty() const noexcept
+        -:  686:    { return d->size == 0; }
+        -:  687:    inline reference front() { return first(); }
+        -:  688:    inline const_reference front() const noexcept { return first(); }
+        -:  689:    inline reference back() { return last(); }
+        -:  690:    inline const_reference back() const noexcept { return last(); }
+        -:  691:    void shrink_to_fit() { squeeze(); }
+        -:  692:    static qsizetype max_size() noexcept
+        -:  693:    {
+        -:  694:        return Data::max_size();
+        -:  695:    }
+        -:  696:
+        -:  697:    // comfort
+        -:  698:    QList<T> &operator+=(const QList<T> &l) { append(l); return *this; }
+        -:  699:    QList<T> &operator+=(QList<T> &&l) { append(std::move(l)); return *this; }
+        -:  700:    inline QList<T> operator+(const QList<T> &l) const &
+        -:  701:    { QList n = *this; n += l; return n; }
+        -:  702:    QList<T> operator+(const QList<T> &l) &&
+        -:  703:    { return std::move(*this += l); }
+        -:  704:    inline QList<T> operator+(QList<T> &&l) const &
+        -:  705:    { QList n = *this; n += std::move(l); return n; }
+        -:  706:    QList<T> operator+(QList<T> &&l) &&
+        -:  707:    { return std::move(*this += std::move(l)); }
+        -:  708:    inline QList<T> &operator+=(parameter_type t)
+        -:  709:    { append(t); return *this; }
+        -:  710:    inline QList<T> &operator<< (parameter_type t)
+        -:  711:    { append(t); return *this; }
+        -:  712:    inline QList<T> &operator<<(const QList<T> &l)
+        -:  713:    { *this += l; return *this; }
+        -:  714:    inline QList<T> &operator<<(QList<T> &&l)
+        -:  715:    { *this += std::move(l); return *this; }
+        -:  716:    inline QList<T> &operator+=(rvalue_ref t)
+        -:  717:    { append(std::move(t)); return *this; }
+function _ZN5QListI7QStringElsEOS0_ called 4 returned 100% blocks executed 100%
+        4:  718:    inline QList<T> &operator<<(rvalue_ref t)
+        4:  719:    { append(std::move(t)); return *this; }
+        4:  719-block  0
+call    0 returned 4
+call    1 returned 4
+        -:  720:
+        -:  721:    // Consider deprecating in 6.4 or later
+        -:  722:    static QList<T> fromList(const QList<T> &list) noexcept { return list; }
+        -:  723:    QList<T> toList() const noexcept { return *this; }
+        -:  724:
+        -:  725:    static inline QList<T> fromVector(const QList<T> &vector) noexcept { return vector; }
+        -:  726:    inline QList<T> toVector() const noexcept { return *this; }
+        -:  727:
+        -:  728:    template<qsizetype N>
+        -:  729:    static QList<T> fromReadOnlyData(const T (&t)[N]) noexcept
+        -:  730:    {
+        -:  731:        return QList<T>({ nullptr, const_cast<T *>(t), N });
+        -:  732:    }
+        -:  733:};
+        -:  734:
+        -:  735:template <typename InputIterator,
+        -:  736:          typename ValueType = typename std::iterator_traits<InputIterator>::value_type,
+        -:  737:          QtPrivate::IfIsInputIterator<InputIterator> = true>
+        -:  738:QList(InputIterator, InputIterator) -> QList<ValueType>;
+        -:  739:
+        -:  740:template <typename T>
+        -:  741:inline void QList<T>::resize_internal(qsizetype newSize)
+        -:  742:{
+        -:  743:    Q_ASSERT(newSize >= 0);
+        -:  744:
+        -:  745:    if (d->needsDetach() || newSize > capacity() - d.freeSpaceAtBegin()) {
+        -:  746:        d.detachAndGrow(QArrayData::GrowsAtEnd, newSize - d.size, nullptr, nullptr);
+        -:  747:    } else if (newSize < size()) {
+        -:  748:        d->truncate(newSize);
+        -:  749:    }
+        -:  750:}
+        -:  751:
+        -:  752:template <typename T>
+        -:  753:void QList<T>::reserve(qsizetype asize)
+        -:  754:{
+        -:  755:    // capacity() == 0 for immutable data, so this will force a detaching below
+        -:  756:    if (asize <= capacity() - d.freeSpaceAtBegin()) {
+        -:  757:        if (d->flags() & Data::CapacityReserved)
+        -:  758:            return;  // already reserved, don't shrink
+        -:  759:        if (!d->isShared()) {
+        -:  760:            // accept current allocation, don't shrink
+        -:  761:            d->setFlag(Data::CapacityReserved);
+        -:  762:            return;
+        -:  763:        }
+        -:  764:    }
+        -:  765:
+        -:  766:    DataPointer detached(qMax(asize, size()));
+        -:  767:    detached->copyAppend(d->begin(), d->end());
+        -:  768:    if (detached.d_ptr())
+        -:  769:        detached->setFlag(Data::CapacityReserved);
+        -:  770:    d.swap(detached);
+        -:  771:}
+        -:  772:
+        -:  773:template <typename T>
+        -:  774:inline void QList<T>::squeeze()
+        -:  775:{
+        -:  776:    if (!d.isMutable())
+        -:  777:        return;
+        -:  778:    if (d->needsDetach() || size() < capacity()) {
+        -:  779:        // must allocate memory
+        -:  780:        DataPointer detached(size());
+        -:  781:        if (size()) {
+        -:  782:            if (d.needsDetach())
+        -:  783:                detached->copyAppend(d.data(), d.data() + d.size);
+        -:  784:            else
+        -:  785:                detached->moveAppend(d.data(), d.data() + d.size);
+        -:  786:        }
+        -:  787:        d.swap(detached);
+        -:  788:    }
+        -:  789:    // We're detached so this is fine
+        -:  790:    d->clearFlag(Data::CapacityReserved);
+        -:  791:}
+        -:  792:
+        -:  793:template <typename T>
+        -:  794:inline void QList<T>::remove(qsizetype i, qsizetype n)
+        -:  795:{
+        -:  796:    Q_ASSERT_X(size_t(i) + size_t(n) <= size_t(d->size), "QList::remove", "index out of range");
+        -:  797:    Q_ASSERT_X(n >= 0, "QList::remove", "invalid count");
+        -:  798:
+        -:  799:    if (n == 0)
+        -:  800:        return;
+        -:  801:
+        -:  802:    d.detach();
+        -:  803:    d->erase(d->begin() + i, n);
+        -:  804:}
+        -:  805:
+        -:  806:template <typename T>
+        -:  807:inline void QList<T>::removeFirst() noexcept
+        -:  808:{
+        -:  809:    Q_ASSERT(!isEmpty());
+        -:  810:    d.detach();
+        -:  811:    d->eraseFirst();
+        -:  812:}
+        -:  813:
+        -:  814:template <typename T>
+        -:  815:inline void QList<T>::removeLast() noexcept
+        -:  816:{
+        -:  817:    Q_ASSERT(!isEmpty());
+        -:  818:    d.detach();
+        -:  819:    d->eraseLast();
+        -:  820:}
+        -:  821:
+        -:  822:
+        -:  823:template<typename T>
+        -:  824:inline T QList<T>::value(qsizetype i, parameter_type defaultValue) const
+        -:  825:{
+        -:  826:    return size_t(i) < size_t(d->size) ? at(i) : defaultValue;
+        -:  827:}
+        -:  828:
+        -:  829:template <typename T>
+        -:  830:inline void QList<T>::append(const_iterator i1, const_iterator i2)
+        -:  831:{
+        -:  832:    d->growAppend(i1.i, i2.i);
+        -:  833:}
+        -:  834:
+        -:  835:template <typename T>
+        -:  836:inline void QList<T>::append(QList<T> &&other)
+        -:  837:{
+        -:  838:    Q_ASSERT(&other != this);
+        -:  839:    if (other.isEmpty())
+        -:  840:        return;
+        -:  841:    if (other.d->needsDetach() || !std::is_nothrow_move_constructible_v<T>)
+        -:  842:        return append(other);
+        -:  843:
+        -:  844:    // due to precondition &other != this, we can unconditionally modify 'this'
+        -:  845:    d.detachAndGrow(QArrayData::GrowsAtEnd, other.size(), nullptr, nullptr);
+        -:  846:    Q_ASSERT(d.freeSpaceAtEnd() >= other.size());
+        -:  847:    d->moveAppend(other.d->begin(), other.d->end());
+        -:  848:}
+        -:  849:
+        -:  850:template<typename T>
+        -:  851:template<typename... Args>
+        -:  852:inline typename QList<T>::reference QList<T>::emplaceFront(Args &&... args)
+        -:  853:{
+        -:  854:    d->emplace(0, std::forward<Args>(args)...);
+        -:  855:    return *d.begin();
+        -:  856:}
+        -:  857:
+        -:  858:
+        -:  859:template <typename T>
+        -:  860:inline typename QList<T>::iterator
+        -:  861:QList<T>::insert(qsizetype i, qsizetype n, parameter_type t)
+        -:  862:{
+        -:  863:    Q_ASSERT_X(size_t(i) <= size_t(d->size), "QList<T>::insert", "index out of range");
+        -:  864:    Q_ASSERT_X(n >= 0, "QList::insert", "invalid count");
+        -:  865:    if (Q_LIKELY(n))
+        -:  866:        d->insert(i, n, t);
+        -:  867:    return begin() + i;
+        -:  868:}
+        -:  869:
+        -:  870:template <typename T>
+        -:  871:template <typename ...Args>
+        -:  872:typename QList<T>::iterator
+        -:  873:QList<T>::emplace(qsizetype i, Args&&... args)
+        -:  874:{
+        -:  875:    Q_ASSERT_X(i >= 0 && i <= d->size, "QList<T>::insert", "index out of range");
+        -:  876:    d->emplace(i, std::forward<Args>(args)...);
+        -:  877:    return begin() + i;
+        -:  878:}
+        -:  879:
+        -:  880:template<typename T>
+        -:  881:template<typename... Args>
+function _ZN5QListI7QStringE11emplaceBackIJS0_EEERS0_DpOT_ called 4 returned 100% blocks executed 91%
+        4:  882:inline typename QList<T>::reference QList<T>::emplaceBack(Args &&... args)
+        -:  883:{
+        4:  884:    d->emplace(d->size, std::forward<Args>(args)...);
+        4:  884-block  0
+call    0 returned 4
+call    1 returned 4
+call    2 returned 4
+call    3 returned 4
+        4:  885:    return *(end() - 1);
+call    0 returned 4
+branch  1 taken 4 (fallthrough)
+branch  2 taken 0 (throw)
+        4:  885-block  0
+call    3 returned 4
+call    4 returned 4
+        4:  885-block  1
+    $$$$$:  885-block  2
+        -:  886:}
+        -:  887:
+        -:  888:template <typename T>
+        -:  889:typename QList<T>::iterator QList<T>::erase(const_iterator abegin, const_iterator aend)
+        -:  890:{
+        -:  891:    Q_ASSERT_X(isValidIterator(abegin), "QList::erase", "The specified iterator argument 'abegin' is invalid");
+        -:  892:    Q_ASSERT_X(isValidIterator(aend), "QList::erase", "The specified iterator argument 'aend' is invalid");
+        -:  893:    Q_ASSERT(aend >= abegin);
+        -:  894:
+        -:  895:    qsizetype i = std::distance(constBegin(), abegin);
+        -:  896:    qsizetype n = std::distance(abegin, aend);
+        -:  897:    remove(i, n);
+        -:  898:
+        -:  899:    return begin() + i;
+        -:  900:}
+        -:  901:
+        -:  902:template <typename T>
+        -:  903:inline QList<T> &QList<T>::fill(parameter_type t, qsizetype newSize)
+        -:  904:{
+        -:  905:    if (newSize == -1)
+        -:  906:        newSize = size();
+        -:  907:    if (d->needsDetach() || newSize > capacity()) {
+        -:  908:        // must allocate memory
+        -:  909:        DataPointer detached(d->detachCapacity(newSize));
+        -:  910:        detached->copyAppend(newSize, t);
+        -:  911:        d.swap(detached);
+        -:  912:    } else {
+        -:  913:        // we're detached
+        -:  914:        const T copy(t);
+        -:  915:        d->assign(d.begin(), d.begin() + qMin(size(), newSize), t);
+        -:  916:        if (newSize > size()) {
+        -:  917:            d->copyAppend(newSize - size(), copy);
+        -:  918:        } else if (newSize < size()) {
+        -:  919:            d->truncate(newSize);
+        -:  920:        }
+        -:  921:    }
+        -:  922:    return *this;
+        -:  923:}
+        -:  924:
+        -:  925:namespace QtPrivate {
+        -:  926:template <typename T, typename U>
+        -:  927:qsizetype indexOf(const QList<T> &vector, const U &u, qsizetype from) noexcept
+        -:  928:{
+        -:  929:    if (from < 0)
+        -:  930:        from = qMax(from + vector.size(), qsizetype(0));
+        -:  931:    if (from < vector.size()) {
+        -:  932:        auto n = vector.begin() + from - 1;
+        -:  933:        auto e = vector.end();
+        -:  934:        while (++n != e)
+        -:  935:            if (*n == u)
+        -:  936:                return qsizetype(n - vector.begin());
+        -:  937:    }
+        -:  938:    return -1;
+        -:  939:}
+        -:  940:
+        -:  941:template <typename T, typename U>
+        -:  942:qsizetype lastIndexOf(const QList<T> &vector, const U &u, qsizetype from) noexcept
+        -:  943:{
+        -:  944:    if (from < 0)
+        -:  945:        from += vector.d->size;
+        -:  946:    else if (from >= vector.size())
+        -:  947:        from = vector.size() - 1;
+        -:  948:    if (from >= 0) {
+        -:  949:        auto b = vector.begin();
+        -:  950:        auto n = vector.begin() + from + 1;
+        -:  951:        while (n != b) {
+        -:  952:            if (*--n == u)
+        -:  953:                return qsizetype(n - b);
+        -:  954:        }
+        -:  955:    }
+        -:  956:    return -1;
+        -:  957:}
+        -:  958:}
+        -:  959:
+        -:  960:template <typename T>
+        -:  961:template <typename AT>
+        -:  962:qsizetype QListSpecialMethodsBase<T>::indexOf(const AT &t, qsizetype from) const noexcept
+        -:  963:{
+        -:  964:    return QtPrivate::indexOf(*self(), t, from);
+        -:  965:}
+        -:  966:
+        -:  967:template <typename T>
+        -:  968:template <typename AT>
+        -:  969:qsizetype QListSpecialMethodsBase<T>::lastIndexOf(const AT &t, qsizetype from) const noexcept
+        -:  970:{
+        -:  971:    return QtPrivate::lastIndexOf(*self(), t, from);
+        -:  972:}
+        -:  973:
+        -:  974:template <typename T>
+        -:  975:inline QList<T> QList<T>::mid(qsizetype pos, qsizetype len) const
+        -:  976:{
+        -:  977:    qsizetype p = pos;
+        -:  978:    qsizetype l = len;
+        -:  979:    using namespace QtPrivate;
+        -:  980:    switch (QContainerImplHelper::mid(d.size, &p, &l)) {
+        -:  981:    case QContainerImplHelper::Null:
+        -:  982:    case QContainerImplHelper::Empty:
+        -:  983:        return QList();
+        -:  984:    case QContainerImplHelper::Full:
+        -:  985:        return *this;
+        -:  986:    case QContainerImplHelper::Subset:
+        -:  987:        break;
+        -:  988:    }
+        -:  989:
+        -:  990:    // Allocate memory
+        -:  991:    DataPointer copied(l);
+        -:  992:    copied->copyAppend(data() + p, data() + p + l);
+        -:  993:    return copied;
+        -:  994:}
+        -:  995:
+        -:  996:Q_DECLARE_SEQUENTIAL_ITERATOR(List)
+        -:  997:Q_DECLARE_MUTABLE_SEQUENTIAL_ITERATOR(List)
+        -:  998:
+        -:  999:template <typename T>
+        -: 1000:size_t qHash(const QList<T> &key, size_t seed = 0)
+        -: 1001:    noexcept(noexcept(qHashRange(key.cbegin(), key.cend(), seed)))
+        -: 1002:{
+        -: 1003:    return qHashRange(key.cbegin(), key.cend(), seed);
+        -: 1004:}
+        -: 1005:
+        -: 1006:template <typename T, typename AT>
+        -: 1007:qsizetype erase(QList<T> &list, const AT &t)
+        -: 1008:{
+        -: 1009:    return QtPrivate::sequential_erase(list, t);
+        -: 1010:}
+        -: 1011:
+        -: 1012:template <typename T, typename Predicate>
+        -: 1013:qsizetype erase_if(QList<T> &list, Predicate pred)
+        -: 1014:{
+        -: 1015:    return QtPrivate::sequential_erase_if(list, pred);
+        -: 1016:}
+        -: 1017:
+        -: 1018:// ### Qt 7 char32_t
+        -: 1019:QList<uint> QStringView::toUcs4() const { return QtPrivate::convertToUcs4(*this); }
+        -: 1020:
+        -: 1021:QT_END_NAMESPACE
+        -: 1022:
+        -: 1023:#include <QtCore/qbytearraylist.h>
+        -: 1024:#include <QtCore/qstringlist.h>
+        -: 1025:
+        -: 1026:#endif // QLIST_H

@@ -1,0 +1,49 @@
+        -:    0:Source:C:/Users/Ale/Desktop/QT/Cart.h
+        -:    0:Graph:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/16/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef QT_CART_H
+        -:    6:#define QT_CART_H
+        -:    7:#include "Activity.h"
+        -:    8:#include <vector>
+        -:    9:using std::vector;
+        -:   10:class Cart{
+        -:   11:private:
+        -:   12:    vector<Activity> cart;
+        -:   13:public:
+        -:   14:    /**
+        -:   15:     * Constructor
+        -:   16:     */
+function _ZN4CartC1Ev called 10 returned 100% blocks executed 100%
+       10:   17:    Cart() =default;
+       10:   17-block  0
+call    0 returned 10
+        -:   18:
+        -:   19:    /**
+        -:   20:     * Adds an ativity to the cart
+        -:   21:     * @param a : the activity
+        -:   22:     */
+        -:   23:    void add_cart(const Activity& a);
+        -:   24:
+        -:   25:    /**
+        -:   26:     * Empties the cart
+        -:   27:     */
+        -:   28:    void empty();
+        -:   29:
+        -:   30:    /**
+        -:   31:     * Adds a random amount of activities to the cart
+        -:   32:     * @param n : the number
+        -:   33:     * @param activity : a vector of all the activities
+        -:   34:     */
+        -:   35:    void random_activity(int n, vector<Activity> activity);
+        -:   36:
+        -:   37:    /**
+        -:   38:     * Returns all the activities from the cart
+        -:   39:     */
+        -:   40:    const vector<Activity>& get_all_cart();
+        -:   41:};
+        -:   42:#endif //QT_CART_H

@@ -1,0 +1,264 @@
+        -:    0:Source:C:/Users/Ale/Desktop/untitled1/Srv.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\Srv.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\Srv.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 06/25/2024.
+        -:    3://
+        -:    4:
+        -:    5:#include <algorithm>
+        -:    6:#include <iostream>
+        -:    7:#include "Srv.h"
+        -:    8:#include "assert.h"
+        -:    9:
+function _ZN3Srv7sort_nrESt6vectorI6MasinaSaIS1_EE called 2 returned 100% blocks executed 100%
+        2:   10:vector<Masina> Srv::sort_nr(vector<Masina> lst) {
+function _ZZN3Srv7sort_nrESt6vectorI6MasinaSaIS1_EEENKUlS1_S1_E_clES1_S1_ called 16 returned 100% blocks executed 73%
+        2:   11:    std::sort(lst.begin(),lst.end(),[](Masina m1, Masina m2){
+        2:   11-block  0
+call    0 returned 2
+call    1 returned 2
+call    2 returned 2
+       16:   12:        return m1.get_nr() > m2.get_nr();
+       16:   12-block  0
+call    0 returned 16
+branch  1 taken 16 (fallthrough)
+branch  2 taken 0 (throw)
+       16:   12-block  1
+call    3 returned 16
+branch  4 taken 16 (fallthrough)
+branch  5 taken 0 (throw)
+       16:   12-block  2
+call    6 returned 16
+call    7 returned 16
+call    8 returned 16
+       16:   12-block  3
+    $$$$$:   12-block  4
+    $$$$$:   12-block  5
+call    9 never executed
+        -:   13:    });
+        2:   14:    return lst;
+call    0 returned 2
+        -:   15:}
+        -:   16:
+function _ZN3Srv3delE6Masina called 1 returned 100% blocks executed 71%
+        1:   17:void Srv::del(Masina m) {
+        1:   18:    rep.del(m);
+        1:   18-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   18-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   18-block  2
+call    6 returned 1
+    $$$$$:   18-block  3
+call    7 never executed
+        -:   19:
+        1:   20:}
+        -:   21:
+function _ZN3Srv6modifyERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 2 returned 100% blocks executed 100%
+        2:   22:void Srv::modify(const string& op) {
+        2:   23:    if(op == "-"){
+        2:   23-block  0
+call    0 returned 2
+branch  1 taken 1 (fallthrough)
+branch  2 taken 1
+        2:   24:        for(auto& e : rep.get_all()){
+        1:   24-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        1:   24-block  1
+call    3 returned 1
+call    4 returned 1
+        2:   24-block  2
+call    5 returned 2
+branch  6 taken 1
+branch  7 taken 1 (fallthrough)
+        1:   25:            int an = e.get_an()-1;
+call    0 returned 1
+        1:   26:            e.set_an(an);
+call    0 returned 1
+        -:   27:        }
+        -:   28:    }
+        2:   29:    if(op=="+"){
+        2:   29-block  0
+call    0 returned 2
+branch  1 taken 1 (fallthrough)
+branch  2 taken 1
+        2:   30:        for(auto& e : rep.get_all()){
+        1:   30-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        1:   30-block  1
+call    3 returned 1
+call    4 returned 1
+        2:   30-block  2
+call    5 returned 2
+branch  6 taken 1
+branch  7 taken 1 (fallthrough)
+        1:   31:            e.set_an(e.get_an()+1);
+call    0 returned 1
+call    1 returned 1
+        -:   32:        }
+        -:   33:    }
+        2:   34:}
+        -:   35:
+        -:   36:
+        -:   37:
+function _Z8test_srvv called 1 returned 100% blocks executed 55%
+        1:   38:void test_srv(){
+        1:   38-block  0
+        1:   39:    Repo rep(R"(C:\Users\Ale\Desktop\untitled1\test.txt)");
+        1:   39-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   39-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   39-block  2
+call    6 returned 1
+    $$$$$:   39-block  3
+call    7 never executed
+    $$$$$:   39-block  4
+    $$$$$:   39-block  5
+        1:   40:    vector<Masina> aux = rep.get_all();
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+        1:   41:    Srv srv(rep);
+        1:   41-block  0
+call    0 returned 1
+        1:   42:    srv.modify("+");
+        1:   42-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   42-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   42-block  2
+call    6 returned 1
+    $$$$$:   42-block  3
+call    7 never executed
+    $$$$$:   42-block  4
+    $$$$$:   42-block  5
+       1*:   43:    assert(srv.get_all()[0].get_an() == 2003);
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+branch  3 taken 0 (fallthrough)
+branch  4 taken 1
+    %%%%%:   43-block  0
+call    5 never executed
+        1:   43-block  1
+        1:   44:    srv.modify("-");
+        1:   44-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   44-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   44-block  2
+call    6 returned 1
+    $$$$$:   44-block  3
+call    7 never executed
+    $$$$$:   44-block  4
+    $$$$$:   44-block  5
+       1*:   45:    assert(srv.get_all()[0].get_an() == 2002);
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+branch  3 taken 0 (fallthrough)
+branch  4 taken 1
+    %%%%%:   45-block  0
+call    5 never executed
+        1:   45-block  1
+        5:   46:    Masina m("nr1","audi",2002,"van");
+        1:   46-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   46-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   46-block  2
+call    6 returned 1
+branch  7 taken 1 (fallthrough)
+branch  8 taken 0 (throw)
+        1:   46-block  3
+call    9 returned 1
+branch 10 taken 1 (fallthrough)
+branch 11 taken 0 (throw)
+        1:   46-block  4
+call   12 returned 1
+call   13 returned 1
+call   14 returned 1
+    $$$$$:   46-block  5
+call   15 never executed
+    $$$$$:   46-block  6
+    $$$$$:   46-block  7
+    $$$$$:   46-block  8
+call   16 never executed
+    $$$$$:   46-block  9
+    $$$$$:   46-block 10
+    $$$$$:   46-block 11
+call   17 never executed
+    $$$$$:   46-block 12
+    $$$$$:   46-block 13
+        1:   47:    srv.del(m);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   47-block  0
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   47-block  1
+call    6 returned 1
+    $$$$$:   47-block  2
+call    7 never executed
+    $$$$$:   47-block  3
+       1*:   48:    assert(srv.get_all().size() == 0);
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    %%%%%:   48-block  0
+call    4 never executed
+        1:   48-block  1
+        1:   49:    rep.write_to_file(aux);
+        1:   49-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   49-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   49-block  2
+call    6 returned 1
+    $$$$$:   49-block  3
+call    7 never executed
+    $$$$$:   49-block  4
+        1:   50:}
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+    $$$$$:   50-block  0
+call    3 never executed
+    $$$$$:   50-block  1
+call    4 never executed
+    $$$$$:   50-block  2
+call    5 never executed

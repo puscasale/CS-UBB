@@ -1,0 +1,5 @@
+C:/Users/Ale/Desktop/sim_componente/cmake-build-debug-coverage/CMakeFiles/sim_componente.dir
+C:/Users/Ale/Desktop/sim_componente/cmake-build-debug-coverage/CMakeFiles/edit_cache.dir
+C:/Users/Ale/Desktop/sim_componente/cmake-build-debug-coverage/CMakeFiles/rebuild_cache.dir
+C:/Users/Ale/Desktop/sim_componente/cmake-build-debug-coverage/CMakeFiles/sim_componente_autogen_timestamp_deps.dir
+C:/Users/Ale/Desktop/sim_componente/cmake-build-debug-coverage/CMakeFiles/sim_componente_autogen.dir

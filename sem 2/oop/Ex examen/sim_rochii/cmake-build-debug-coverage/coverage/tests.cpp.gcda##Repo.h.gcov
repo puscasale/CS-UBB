@@ -1,0 +1,53 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_rochii/Repo.h
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_rochii\cmake-build-debug-coverage\CMakeFiles\sim_rochii.dir\tests.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_rochii\cmake-build-debug-coverage\CMakeFiles\sim_rochii.dir\tests.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/21/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef SIM_ROCHII_REPO_H
+        -:    6:#define SIM_ROCHII_REPO_H
+        -:    7:#include "Rochie.h"
+        -:    8:#include <vector>
+        -:    9:using std::vector;
+        -:   10:
+        -:   11:class Repo{
+        -:   12:private:
+        -:   13:    vector<Rochie> rochii;
+        -:   14:    string file_name;
+        -:   15:public:
+function _ZN4RepoC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   16:    explicit Repo(const string& file_name) : file_name(file_name){
+    %%%%%:   16-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    #####:   17:        load_from_file();
+    %%%%%:   17-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   18:    };
+    %%%%%:   18-block  0
+    $$$$$:   18-block  1
+call    0 never executed
+    $$$$$:   18-block  2
+call    1 never executed
+        -:   19:    /**
+        -:   20:     * incarca din fis
+        -:   21:     */
+        -:   22:    void load_from_file();
+        -:   23:
+        -:   24:    /**
+        -:   25:     * Get all
+        -:   26:     * @return: all
+        -:   27:     */
+        -:   28:    vector<Rochie>& get_all() {
+        -:   29:        return rochii;
+        -:   30:    }
+        -:   31:
+        -:   32:
+        -:   33:};
+        -:   34:#endif //SIM_ROCHII_REPO_H

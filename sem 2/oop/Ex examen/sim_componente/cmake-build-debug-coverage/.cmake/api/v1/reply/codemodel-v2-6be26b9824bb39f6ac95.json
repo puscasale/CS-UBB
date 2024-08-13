@@ -1,0 +1,78 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "sim_componente",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "sim_componente::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-sim_componente-Debug-b462fba5096effe4bc11.json",
+					"name" : "sim_componente",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "sim_componente_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-sim_componente_autogen-Debug-3e3c90804d0cb2d34730.json",
+					"name" : "sim_componente_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "sim_componente_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-sim_componente_autogen_timestamp_deps-Debug-9be37e7e96a24c847235.json",
+					"name" : "sim_componente_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/Ale/Desktop/sim_componente/cmake-build-debug-coverage",
+		"source" : "C:/Users/Ale/Desktop/sim_componente"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

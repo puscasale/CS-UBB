@@ -1,0 +1,5 @@
+# ninja log v5
+3	76	7320286194948744	CMakeFiles/lab2_4.dir/functions.c.obj	acf983a5d4e890d8
+8	76	7320277614253655	CMakeFiles/lab2_4.dir/main.c.obj	e1a8a109c66a3d59
+77	141	7320286195560092	lab2_4.exe	5ebd7924b7be6124
+5	74	7320277614222638	CMakeFiles/lab2_4.dir/functions_test.c.obj	c9a788bf0acc9b2f

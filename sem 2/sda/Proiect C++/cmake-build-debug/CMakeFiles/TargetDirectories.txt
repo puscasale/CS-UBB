@@ -1,0 +1,3 @@
+C:/Users/Ale/Desktop/Proiect C++/cmake-build-debug/CMakeFiles/Proiect_C__.dir
+C:/Users/Ale/Desktop/Proiect C++/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Ale/Desktop/Proiect C++/cmake-build-debug/CMakeFiles/rebuild_cache.dir

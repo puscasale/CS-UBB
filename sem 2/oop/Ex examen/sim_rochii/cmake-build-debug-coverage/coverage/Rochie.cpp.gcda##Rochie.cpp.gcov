@@ -1,0 +1,48 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_rochii/Rochie.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_rochii\cmake-build-debug-coverage\CMakeFiles\sim_rochii.dir\Rochie.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_rochii\cmake-build-debug-coverage\CMakeFiles\sim_rochii.dir\Rochie.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/21/2024.
+        -:    3://
+        -:    4:
+        -:    5:#include "Rochie.h"
+        -:    6:
+function _ZNK6Rochie7get_codEv called 4 returned 100% blocks executed 100%
+        4:    7:int Rochie::get_cod() const {
+        4:    8:    return cod;
+        4:    8-block  0
+        -:    9:}
+        -:   10:
+function _ZNK6Rochie8get_numeB5cxx11Ev called 4 returned 100% blocks executed 100%
+        4:   11:string Rochie::get_nume() const {
+        4:   12:    return nume;
+        4:   12-block  0
+call    0 returned 4
+        -:   13:}
+        -:   14:
+function _ZNK6Rochie10get_marimeB5cxx11Ev called 13 returned 100% blocks executed 100%
+       13:   15:string Rochie::get_marime() const {
+       13:   16:    return marime;
+       13:   16-block  0
+call    0 returned 13
+        -:   17:}
+        -:   18:
+function _ZNK6Rochie8get_pretEv called 17 returned 100% blocks executed 100%
+       17:   19:int Rochie::get_pret() const {
+       17:   20:    return pret;
+       17:   20-block  0
+        -:   21:}
+        -:   22:
+function _ZNK6Rochie7get_disEv called 9 returned 100% blocks executed 100%
+        9:   23:bool Rochie::get_dis() const {
+        9:   24:    return disponibil;
+        9:   24-block  0
+        -:   25:}
+        -:   26:
+function _ZN6Rochie7set_disEb called 1 returned 100% blocks executed 100%
+        1:   27:void Rochie::set_dis(bool dis1) {
+        1:   28:    this->disponibil = dis1;
+        1:   29:}
+        -:   30:
+        -:   31:

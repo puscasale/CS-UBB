@@ -1,0 +1,7 @@
+tit1, art1, Pop, 13
+tit2, art2, Pop, 132
+tit3, art3, Jazz, 234
+tit4, art4, Pop, 987
+tit5, art5, Altele, 23
+tit3, art1, Jazz, 264
+tit2, art2, Rock, 255

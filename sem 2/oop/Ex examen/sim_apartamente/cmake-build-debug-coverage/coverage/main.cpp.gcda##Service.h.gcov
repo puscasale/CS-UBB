@@ -1,0 +1,57 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_apartamente/Service.h
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_apartamente\cmake-build-debug-coverage\CMakeFiles\sim_apartamente.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_apartamente\cmake-build-debug-coverage\CMakeFiles\sim_apartamente.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/19/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef SIM_APARTAMENTE_SERVICE_H
+        -:    6:#define SIM_APARTAMENTE_SERVICE_H
+        -:    7:#include "Repo.h"
+        -:    8:
+        -:    9:class Service {
+        -:   10:private:
+        -:   11:    Repo& rep;
+        -:   12:public:
+function _ZN7ServiceC1ER4Repo called 3 returned 100% blocks executed 100%
+        3:   13:    Service(Repo &rep): rep{rep}{};
+        -:   14:
+        -:   15:    /**
+        -:   16:     * Adauga un apartament
+        -:   17:     * @param str : strada
+        -:   18:     * @param sup : suprafta
+        -:   19:     * @param pret : pretul
+        -:   20:     */
+        -:   21:    void add(string str, int sup, int pret);
+        -:   22:
+        -:   23:    /**
+        -:   24:     * Sterge apartamenul
+        -:   25:     * @param a : apartamenul pe care vrem sa il stergem
+        -:   26:     */
+        -:   27:    void del(const Apartamente& a);
+        -:   28:
+        -:   29:    /**
+        -:   30:     * Filtreaza apartamentele care sunt intre doua suprafte
+        -:   31:     * @param sup1 : suprafata unu
+        -:   32:     * @param sup2 : suprafta 2
+        -:   33:     * @param fil : vectorul de apartamente
+        -:   34:     */
+        -:   35:    void filter_sup(int sup1, int sup2, vector<Apartamente>& fil);
+        -:   36:
+        -:   37:    /**
+        -:   38:     * Filtreaz ap care sunt intre doua preturi
+        -:   39:     * @param pret1 : pret 1
+        -:   40:     * @param pret2 : pret 2
+        -:   41:     * @param fil : vectorul de ap
+        -:   42:     */
+        -:   43:    void filter_pret(int pret1, int pret2, vector<Apartamente>& fil);
+        -:   44:
+function _ZN7Service7get_allEv called 3 returned 100% blocks executed 100%
+        3:   45:    const vector<Apartamente>& get_all(){
+        3:   46:        return rep.get_all();
+        3:   46-block  0
+call    0 returned 3
+        -:   47:    }
+        -:   48:};
+        -:   49:#endif //SIM_APARTAMENTE_SERVICE_H

@@ -1,0 +1,97 @@
+     1                                  bits 32
+     2                                  global start
+     3                                  extern exit, fopen, fclose, fread, fwrite, fprintf
+     4                                  import exit msvcrt.dll
+     5                                  import fopen msvcrt.dll
+     6                                  import fclose msvcrt.dll
+     7                                  import fread msvcrt.dll
+     8                                  import fwrite msvcrt.dll
+     9                                  import fprintf msvcrt.dll
+    10                                  
+    11                                  section data use32 class=data 
+    12 00000000 433A5C55736572735C-         nume_fisier db "C:\Users\Ale\Desktop\asc lab\lab8p2.txt", 0
+    12 00000009 416C655C4465736B74-
+    12 00000012 6F705C617363206C61-
+    12 0000001B 625C6C61623870322E-
+    12 00000024 74787400           
+    13 00000028 7200                        mod_acces_r db "r", 0
+    14 0000002A 6100                        mod_acces_a db "a", 0 ; Modul de adăugare și citire
+    15 0000002C FFFFFFFF                    descriptor_citire dd -1
+    16 00000030 FFFFFFFF                    descriptor_scriere dd -1
+    17                                      len equ 20
+    18 00000034 00<rept>                    text times (len+1) db 0
+    19 00000049 54657874756C207472-         format db "Textul transformt este: %s", 0
+    19 00000052 616E73666F726D7420-
+    19 0000005B 657374653A20257300 
+    20                                      
+    21                                  segment code use32 class=code
+    22                                  start:
+    23                                      ; Deschide fisierul în modul de citire
+    24 00000000 68[28000000]                push dword mod_acces_r
+    25 00000005 68[00000000]                push dword nume_fisier
+    26 0000000A FF15[00000000]              call [fopen]
+    27 00000010 83C408                      add esp, 4*2
+    28                                      
+    29 00000013 A3[2C000000]                mov [descriptor_citire], eax
+    30                                      
+    31 00000018 83F800                      cmp eax, 0
+    32 0000001B 0F8489000000                je final
+    33                                      
+    34                                      ; Citeste continutul fisierului in text
+    35 00000021 FF35[2C000000]              push dword [descriptor_citire]
+    36 00000027 6A14                        push dword len
+    37 00000029 6A01                        push dword 1
+    38 0000002B 68[34000000]                push dword text
+    39 00000030 FF15[00000000]              call [fread]
+    40 00000036 83C410                      add esp, 4*4
+    41                                      
+    42                                      ; Inchide fisierul de citire
+    43 00000039 FF35[2C000000]              push dword [descriptor_citire]
+    44 0000003F FF15[00000000]              call [fclose]
+    45 00000045 83C404                      add esp, 4*1
+    46                                      
+    47                                      ; Deschide fisierul în modul de adăugare și citire
+    48 00000048 68[2A000000]                push dword mod_acces_a
+    49 0000004D 68[00000000]                push dword nume_fisier
+    50 00000052 FF15[00000000]              call [fopen]
+    51 00000058 83C408                      add esp, 4*2
+    52                                      
+    53 0000005B A3[30000000]                mov [descriptor_scriere], eax
+    54                                      
+    55 00000060 83F800                      cmp eax, 0
+    56 00000063 7445                        je final
+    57                                      
+    58                                      ; Transforma literele mici în litere mari
+    59 00000065 BE[34000000]                mov esi, text
+    60                                      transformare:
+    61 0000006A AC                              lodsb
+    62 0000006B 3C61                            cmp al, 'a'
+    63 0000006D 7206                            jb  nu_lit_mica
+    64 0000006F 3C7A                            cmp al, 'z'
+    65 00000071 7702                            ja  nu_lit_mica
+    66 00000073 2C20                            sub al, 32 ; face conversia la litere mari
+    67                                      nu_lit_mica:
+    68 00000075 AA                              stosb
+    69 00000076 3C00                            cmp al, 0
+    70 00000078 75F0                            jne transformare
+    71                                      
+    72                                      ; Scrie textul transformat în fisier (adică adaugă la sfârșitul fișierului)
+    73 0000007A FF35[30000000]              push dword [descriptor_scriere]
+    74 00000080 68[49000000]                push dword format ; Formatul este pus pe stivă
+    75 00000085 68[34000000]                push dword text
+    76 0000008A FF15[00000000]              call [fprintf]
+    77 00000090 83C40C                      add esp, 4*3
+    78                                      
+    79                                      ; Inchide fisierul de scriere
+    80 00000093 FF35[30000000]              push dword [descriptor_scriere]
+    81 00000099 FF15[00000000]              call [fclose]
+    82 0000009F 83C404                      add esp, 4*1
+    83                                      
+    84                                      ; Ieșire din program
+    85 000000A2 6A00                        push dword 0
+    86 000000A4 FF15[00000000]              call [exit]
+    87                                  
+    88                                  final:
+    89                                      ; Ieșire din program în cazul în care nu s-a putut deschide fisierul
+    90 000000AA 6A00                        push dword 0
+    91 000000AC FF15[00000000]              call [exit]

@@ -1,0 +1,52 @@
+        -:    0:Source:C:/Users/Ale/Desktop/QT/Validator.h
+        -:    0:Graph:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/16/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef QT_VALIDATOR_H
+        -:    6:#define QT_VALIDATOR_H
+        -:    7:#include <string>
+        -:    8:using namespace std;
+        -:    9:
+        -:   10:class Exception{
+        -:   11:private:
+        -:   12:    string msg;
+        -:   13:public:
+        -:   14:    Exception(string m) : msg{m} {};
+function _ZN9Exception10getMessageB5cxx11Ev called 1 returned 100% blocks executed 100%
+        1:   15:    string getMessage() {
+        1:   16:        return this->msg;
+        1:   16-block  0
+call    0 returned 1
+        -:   17:    }
+        -:   18:};
+        -:   19:
+        -:   20:class Validator{
+        -:   21:public:
+        -:   22:    Validator(const Validator&o) = delete;
+        -:   23:    Validator() =default;
+        -:   24:    bool valid_string(string& str) {
+        -:   25:        if(str.size() == 0) return false;
+        -:   26:        for( int i = 0; i <str.size(); i++) {
+        -:   27:            if(!(str.at(i) >= 'a' && str.at(i) <= 'z') || (str.at(i) >= 'A' && str.at(i) <= 'Z') || str.at(i) == ' ') return false;
+        -:   28:        }
+        -:   29:        return true;
+        -:   30:    }
+        -:   31:
+        -:   32:    void validateActivity(std::string name, std::string description, std::string type, int time) {
+        -:   33:        string err;
+        -:   34:
+        -:   35:        if(!valid_string(name)) err.append("Invalid name\n");
+        -:   36:        if(!valid_string(description)) err.append("Invalid description\n");
+        -:   37:        if(!valid_string(type)) err.append("Invalid type\n");
+        -:   38:        if(time <= 0) err.append("Invalid time\n");
+        -:   39:        if( err.size() != 0) throw Exception(err);
+        -:   40:    }
+        -:   41:
+        -:   42:};
+        -:   43:
+        -:   44:
+        -:   45:#endif //QT_VALIDATOR_H

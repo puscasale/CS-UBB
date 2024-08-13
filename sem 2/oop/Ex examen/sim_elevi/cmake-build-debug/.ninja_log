@@ -1,0 +1,11 @@
+# ninja log v5
+2	113	7379356733094368	sim_elevi_autogen/timestamp	99b4e2b8a6f97e93
+2	113	7379356733094368	sim_elevi_autogen/mocs_compilation.cpp	99b4e2b8a6f97e93
+115	176	7379356733959558	CMakeFiles/sim_elevi.dir/sim_elevi_autogen/mocs_compilation.cpp.obj	cec18aa08d9e71bd
+122	639	7379356738586294	CMakeFiles/sim_elevi.dir/Service.cpp.obj	14859cced98ccca9
+2	113	7379356733094368	C:/Users/Ale/Desktop/sim_elevi/cmake-build-debug/sim_elevi_autogen/timestamp	99b4e2b8a6f97e93
+2	113	7379356733094368	C:/Users/Ale/Desktop/sim_elevi/cmake-build-debug/sim_elevi_autogen/mocs_compilation.cpp	99b4e2b8a6f97e93
+119	446	7379356736660704	CMakeFiles/sim_elevi.dir/Elevi.cpp.obj	60068830e38023bd
+117	632	7379356738511096	CMakeFiles/sim_elevi.dir/Repo.cpp.obj	46958f2690062d9d
+113	4391	7379356776069489	CMakeFiles/sim_elevi.dir/main.cpp.obj	bb087cddebea1c31
+4394	4684	7379356777892146	sim_elevi.exe	fcee7284099fa75e

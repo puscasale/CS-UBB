@@ -1,0 +1,78 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "sim_apartamente",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "sim_apartamente::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-sim_apartamente-Debug-23291b706f84f9aa30bc.json",
+					"name" : "sim_apartamente",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "sim_apartamente_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-sim_apartamente_autogen-Debug-4e15a23680e20f7a2e1b.json",
+					"name" : "sim_apartamente_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "sim_apartamente_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-sim_apartamente_autogen_timestamp_deps-Debug-c58bcaff29e3c454e5f8.json",
+					"name" : "sim_apartamente_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/Ale/Desktop/sim_apartamente/cmake-build-debug",
+		"source" : "C:/Users/Ale/Desktop/sim_apartamente"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

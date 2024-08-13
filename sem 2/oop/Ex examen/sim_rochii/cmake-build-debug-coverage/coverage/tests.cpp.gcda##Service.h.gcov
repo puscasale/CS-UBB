@@ -1,0 +1,44 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_rochii/Service.h
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_rochii\cmake-build-debug-coverage\CMakeFiles\sim_rochii.dir\tests.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_rochii\cmake-build-debug-coverage\CMakeFiles\sim_rochii.dir\tests.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/21/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef SIM_ROCHII_SERVICE_H
+        -:    6:#define SIM_ROCHII_SERVICE_H
+        -:    7:#include "Repo.h"
+        -:    8:
+        -:    9:class Service{
+        -:   10:private:
+        -:   11:    Repo& rep;
+        -:   12:public:
+function _ZN7ServiceC1ER4Repo called 0 returned 0% blocks executed 0%
+    #####:   13:    explicit Service(Repo& rep) : rep{rep}{};
+        -:   14:    /**
+        -:   15:     * Get all
+        -:   16:     * @return : all
+        -:   17:     */
+        -:   18:    vector<Rochie>& get_all() {
+        -:   19:        return rep.get_all();
+        -:   20:    }
+        -:   21:    /**
+        -:   22:     * Sorteada lisat dupa marime
+        -:   23:     * @param copy : lista sortata
+        -:   24:     */
+        -:   25:
+        -:   26:    void sort_marime(vector<Rochie>& copy);
+        -:   27:    /**
+        -:   28:     * Sorteada lisat dupa pret
+        -:   29:     * @param copy : lista sortata
+        -:   30:     */
+        -:   31:    void sort_pret(vector<Rochie>& copy);
+        -:   32:
+        -:   33:    /**
+        -:   34:     * Schimba disponibilitatea la fals daca a fost inchiriata rochia respectiva
+        -:   35:     * @param r : rochia care se vrea inchiriata
+        -:   36:     */
+        -:   37:    void inchiriere( Rochie& r);
+        -:   38:};
+        -:   39:#endif //SIM_ROCHII_SERVICE_H

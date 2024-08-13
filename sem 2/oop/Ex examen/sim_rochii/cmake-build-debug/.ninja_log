@@ -1,0 +1,11 @@
+# ninja log v5
+82	1760	7380074061582990	CMakeFiles/sim_rochii.dir/main.cpp.obj	b945e31e01f8d9f2
+6	78	7380074044779491	sim_rochii_autogen/timestamp	feeea252cd44e90d
+6	78	7380074044779491	sim_rochii_autogen/mocs_compilation.cpp	feeea252cd44e90d
+80	488	7380065418941485	CMakeFiles/sim_rochii.dir/Service.cpp.obj	6af4ed3d8a849107
+6	78	7380074044779491	C:/Users/Ale/Desktop/sim_rochii/cmake-build-debug/sim_rochii_autogen/timestamp	feeea252cd44e90d
+6	78	7380074044779491	C:/Users/Ale/Desktop/sim_rochii/cmake-build-debug/sim_rochii_autogen/mocs_compilation.cpp	feeea252cd44e90d
+116	168	7380060933983212	CMakeFiles/sim_rochii.dir/sim_rochii_autogen/mocs_compilation.cpp.obj	18043b2667095dba
+122	412	7380060936430864	CMakeFiles/sim_rochii.dir/Rochie.cpp.obj	35a2f2e90d3b328d
+82	516	7380065419242890	CMakeFiles/sim_rochii.dir/Repo.cpp.obj	ed5a6605d91f252
+1760	2036	7380074062971961	sim_rochii.exe	ff75f27a1c206602

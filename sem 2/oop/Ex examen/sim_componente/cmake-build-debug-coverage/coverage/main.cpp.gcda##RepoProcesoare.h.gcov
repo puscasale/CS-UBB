@@ -1,0 +1,46 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_componente/RepoProcesoare.h
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/20/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef SIM_COMPONENTE_REPOPROCESOARE_H
+        -:    6:#define SIM_COMPONENTE_REPOPROCESOARE_H
+        -:    7:#include "Procesor.h"
+        -:    8:#include <vector>
+        -:    9:using std::vector;
+        -:   10:
+        -:   11:class RepoProcesoare{
+        -:   12:private:
+        -:   13:    string file_name;
+        -:   14:    vector<Procesor> procesoare;
+        -:   15:public:
+function _ZN14RepoProcesoareC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 2 returned 100% blocks executed 62%
+        2:   16:    RepoProcesoare(const string& file_name) : file_name{file_name}{
+        2:   16-block  0
+call    0 returned 2
+call    1 returned 2
+        2:   17:        load_from_file();
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   18:    };
+        2:   18-block  0
+    $$$$$:   18-block  1
+call    0 never executed
+    $$$$$:   18-block  2
+call    1 never executed
+        -:   19:
+        -:   20:    void load_from_file();
+function _ZN14RepoProcesoare7get_allEv called 1 returned 100% blocks executed 100%
+        1:   21:    const vector<Procesor>& get_all(){
+        1:   22:        return procesoare;
+        1:   22-block  0
+        -:   23:    }
+        -:   24:    int sizeProc() {
+        -:   25:        return procesoare.size();
+        -:   26:    }
+        -:   27:};
+        -:   28:#endif //SIM_COMPONENTE_REPOPROCESOARE_H

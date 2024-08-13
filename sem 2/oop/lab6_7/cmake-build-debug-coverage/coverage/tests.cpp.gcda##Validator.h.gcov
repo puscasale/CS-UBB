@@ -1,0 +1,157 @@
+        -:    0:Source:C:/Users/Ale/Desktop/oop/lab6_7/Validator.h
+        -:    0:Graph:C:\Users\Ale\Desktop\oop\lab6_7\cmake-build-debug-coverage\CMakeFiles\lab6_7.dir\tests.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\oop\lab6_7\cmake-build-debug-coverage\CMakeFiles\lab6_7.dir\tests.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#ifndef LAB6_7_VALIDATOR_H
+        -:    2:#define LAB6_7_VALIDATOR_H
+        -:    3:#include <string>
+        -:    4:using namespace std;
+        -:    5:
+        -:    6:class Exception{
+        -:    7:private:
+        -:    8:    string msg;
+        -:    9:public:
+function _ZN9ExceptionC1ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   10:    Exception(string m) : msg{m} {};
+    %%%%%:   10-block  0
+call    0 never executed
+function _ZN9Exception10getMessageB5cxx11Ev called 0 returned 0% blocks executed 0%
+    #####:   11:    string getMessage() {
+    #####:   12:        return this->msg;
+    %%%%%:   12-block  0
+call    0 never executed
+        -:   13:    }
+        -:   14:};
+        -:   15:
+        -:   16:class Validator{
+        -:   17:public:
+        -:   18:    Validator(const Validator&o) = delete;
+        -:   19:    Validator() =default;
+function _ZN9Validator12valid_stringERNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 0 returned 0% blocks executed 0%
+    #####:   20:    bool valid_string(string& str) {
+    #####:   21:        if(str.size() == 0) return false;
+    %%%%%:   21-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    %%%%%:   21-block  1
+    #####:   22:        for( int i = 0; i <str.size(); i++) {
+    %%%%%:   22-block  0
+    %%%%%:   22-block  1
+    %%%%%:   22-block  2
+call    0 never executed
+branch  1 never executed
+branch  2 never executed (fallthrough)
+    #####:   23:            if(!(str.at(i) >= 'a' && str.at(i) <= 'z') || (str.at(i) >= 'A' && str.at(i) <= 'Z') || str.at(i) == ' ') return false;
+    %%%%%:   23-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    %%%%%:   23-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    %%%%%:   23-block  2
+call    6 never executed
+branch  7 never executed (fallthrough)
+branch  8 never executed
+    %%%%%:   23-block  3
+call    9 never executed
+branch 10 never executed (fallthrough)
+branch 11 never executed
+    %%%%%:   23-block  4
+call   12 never executed
+branch 13 never executed (fallthrough)
+branch 14 never executed
+    %%%%%:   23-block  5
+    %%%%%:   23-block  6
+    %%%%%:   23-block  7
+branch 15 never executed (fallthrough)
+branch 16 never executed
+    %%%%%:   23-block  8
+        -:   24:        }
+    #####:   25:        return true;
+    %%%%%:   25-block  0
+        -:   26:    }
+        -:   27:
+function _ZN9Validator16validateActivityENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEES5_S5_i called 0 returned 0% blocks executed 0%
+    #####:   28:    void validateActivity(std::string name, std::string description, std::string type, int time) {
+    #####:   29:        string err;
+    %%%%%:   29-block  0
+call    0 never executed
+        -:   30:
+    #####:   31:        if(!valid_string(name)) err.append("Invalid name\n");
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   31-block  0
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    %%%%%:   31-block  1
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    #####:   32:        if(!valid_string(description)) err.append("Invalid description\n");
+    %%%%%:   32-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   32-block  1
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    %%%%%:   32-block  2
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    #####:   33:        if(!valid_string(type)) err.append("Invalid type\n");
+    %%%%%:   33-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   33-block  1
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    %%%%%:   33-block  2
+call    5 never executed
+branch  6 never executed (fallthrough)
+branch  7 never executed (throw)
+    #####:   34:        if(time <= 0) err.append("Invalid time\n");
+    %%%%%:   34-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:   34-block  1
+call    2 never executed
+branch  3 never executed (fallthrough)
+branch  4 never executed (throw)
+    #####:   35:        if( err.size() != 0) throw Exception(err);
+    %%%%%:   35-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    %%%%%:   35-block  1
+call    3 never executed
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    %%%%%:   35-block  2
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    %%%%%:   35-block  3
+call   10 never executed
+call   11 never executed
+    $$$$$:   35-block  4
+call   12 never executed
+    $$$$$:   35-block  5
+    $$$$$:   35-block  6
+call   13 never executed
+    #####:   36:    }
+    %%%%%:   36-block  0
+call    0 never executed
+    $$$$$:   36-block  1
+call    1 never executed
+        -:   37:
+        -:   38:};
+        -:   39:
+        -:   40:
+        -:   41:#endif //LAB6_7_VALIDATOR_H

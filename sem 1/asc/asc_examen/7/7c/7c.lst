@@ -1,0 +1,80 @@
+     1                                  bits 32
+     2                                  global start
+     3                                  
+     4                                  extern exit, fopen, fclose, fprintf, printf
+     5                                  import exit msvcrt.dll
+     6                                  import fopen msvcrt.dll
+     7                                  import fclose msvcrt.dll
+     8                                  import fprintf msvcrt.dll
+     9                                  import printf msvcrt.dll
+    10                                  
+    11                                  
+    12                                  segment data use32 class = data
+    13 00000000 34A2AF510000000015-         arr dq 51AFA234h, 23BC11C537A3F415h, 0FF5h, 333D72348h
+    13 00000009 F4A337C511BC23F50F-
+    13 00000012 0000000000004823D7-
+    13 0000001B 3303000000         
+    14 00000020 08000000                    len dd ($ - arr) / 4
+    15 00000024 00000000                    counter dd 0
+    16                                      
+    17 00000028 6965736972652E7478-         file_name db "iesire.txt", 0
+    17 00000031 7400               
+    18 00000033 7700                        file_mode db "w", 0
+    19 00000035 FFFFFFFF                    file_descr dd -1
+    20                                      
+    21 00000039 25782000                    w_format_hex db "%x ", 0
+    22 0000003D 25642000                    w_format_dec db "%d ", 0
+    23                                      
+    24                                      
+    25                                  segment code use32 class = code
+    26                                      start:      
+    27 00000000 68[33000000]                    push dword file_mode
+    28 00000005 68[28000000]                    push dword file_name
+    29 0000000A FF15[00000000]                  call [fopen]
+    30 00000010 83C408                          add esp, 4 * 2
+    31                                          
+    32 00000013 A3[35000000]                    mov [file_descr], eax
+    33 00000018 83F800                          cmp eax, 0
+    34 0000001B 746A                            je final
+    35                                      
+    36 0000001D BE[00000000]                    mov esi, arr
+    37 00000022 FC                              cld
+    38                                      
+    39                                          rep_1:
+    40 00000023 833D[20000000]00                    cmp dword [len], 0
+    41 0000002A 7632                                jbe exit_rep_1
+    42                                              
+    43 0000002C AD                                  lodsd
+    44                                              
+    45 0000002D 3DAA0A0000                          cmp eax, 0AAAh
+    46 00000032 7222                                jb not_good
+    47                                              
+    48 00000034 3DFFFF0000                          cmp eax, 0FFFFh
+    49 00000039 771B                                ja not_good
+    50                                              
+    51 0000003B FF05[24000000]                      inc dword [counter]
+    52                                              
+    53 00000041 50                                  push eax
+    54 00000042 68[39000000]                        push dword w_format_hex
+    55 00000047 FF35[35000000]                      push dword [file_descr]
+    56 0000004D FF15[00000000]                      call [fprintf]
+    57 00000053 83C40C                              add esp, 4 * 3
+    58                                              
+    59                                              not_good:
+    60 00000056 FF0D[20000000]                      dec dword [len]
+    61 0000005C EBC5                                jmp rep_1
+    62                                          
+    63                                          exit_rep_1:
+    64 0000005E FF35[24000000]                  push dword [counter]
+    65 00000064 68[3D000000]                    push dword w_format_dec
+    66 00000069 FF35[35000000]                  push dword [file_descr]
+    67 0000006F FF15[00000000]                  call [fprintf]
+    68 00000075 83C40C                          add esp, 4 * 3
+    69                                          
+    70 00000078 FF35[35000000]                  push dword [file_descr]
+    71 0000007E FF15[00000000]                  call [fclose]
+    72 00000084 83C404                          add esp, 4 * 1
+    73                                          
+    74                                          final:
+    75 00000087 6A00                            push dword 0
+    76 00000089 FF15[00000000]                  call [exit]

@@ -1,0 +1,7 @@
+art1, tit1, Pop, 2011
+art2, tit2, Pop, 2022
+art3, tit3, Jazz, 2008
+art4, tit4, Pop, 2006
+art5, tit5, Altele, 2003
+art1, tit3, Jazz, 2004
+art2, tit2, Rock, 1992

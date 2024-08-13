@@ -1,0 +1,179 @@
+        -:    0:Source:C:/Users/Ale/Desktop/QT/Service.h
+        -:    0:Graph:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/16/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef QT_SERVICE_H
+        -:    6:#define QT_SERVICE_H
+        -:    7:#include <string>
+        -:    8:#include "Activity.h"
+        -:    9:#include "Repo.h"
+        -:   10:#include "DinamicVector.h"
+        -:   11:#include "Validator.h"
+        -:   12:#include "Cart.h"
+        -:   13:#include <functional>
+        -:   14:#include "Undo.h"
+        -:   15:#include <memory>
+        -:   16:using std::string;
+        -:   17:
+        -:   18:class ActivityCount {
+        -:   19:private:
+        -:   20:    int count;
+        -:   21:    string type;
+        -:   22:public:
+        -:   23:    /**
+        -:   24:     * Constructor
+        -:   25:     */
+        -:   26:    ActivityCount() =default;
+        -:   27:
+        -:   28:    /**
+        -:   29:     * Increments the count
+        -:   30:     */
+        -:   31:    void IncrementCount() {
+        -:   32:        count++;
+        -:   33:    }
+        -:   34:
+        -:   35:    /**
+        -:   36:     * Returns the count
+        -:   37:     */
+function _ZNK13ActivityCount9get_countEv called 7 returned 100% blocks executed 100%
+        7:   38:    int get_count() const{
+        7:   39:        return count;
+        7:   39-block  0
+        -:   40:    }
+        -:   41:};
+        -:   42:
+        -:   43:
+        -:   44:class Service
+        -:   45:{
+        -:   46:private:
+        -:   47:    RepoAbs& rep;
+        -:   48:    Validator& valid;
+        -:   49:    Cart cart;
+        -:   50:    vector<unique_ptr<Undo>> undo;
+        -:   51:public:
+        -:   52:    //Service() = default;
+        -:   53:
+function _ZN7ServiceC1ER7RepoAbsR9Validator called 9 returned 100% blocks executed 100%
+        9:   54:    explicit Service(RepoAbs &rep, Validator &valid) : rep{rep }, valid{valid}{};
+        9:   54-block  0
+call    0 returned 9
+call    1 returned 9
+        -:   55:
+        -:   56:
+        -:   57:    /**
+        -:   58:     * Adds an activity
+        -:   59:     * @param name : the name of the activity (string)
+        -:   60:     * @param description : the description of the activity (string)
+        -:   61:     * @param type : the type of the activity (string)
+        -:   62:     * @param time : the time of the activity (int)
+        -:   63:     */
+        -:   64:    void add(string name, string description, string type, int time);
+        -:   65:
+        -:   66:    /**
+        -:   67:     * Delets an activity by a given index
+        -:   68:     * @param index: the given index
+        -:   69:     */
+        -:   70:    void del(const Activity& act);
+        -:   71:
+        -:   72:    /***
+        -:   73:     * Modifies an anctivity by a given index
+        -:   74:     * @param new_name : the new name
+        -:   75:     * @param new_description : the new description
+        -:   76:     * @param new_type : the new type
+        -:   77:     * @param new_time : the new time
+        -:   78:     * @param index : the given index
+        -:   79:     */
+        -:   80:    void modify(const Activity& act_rm, const Activity& act);
+        -:   81:
+        -:   82:    /***
+        -:   83:     * Filters the list by a given type
+        -:   84:     * @param type : the given type
+        -:   85:     * @return : the filtered list
+        -:   86:     */
+        -:   87:    void filter_type(string type, vector<Activity>& filtered);
+        -:   88:
+        -:   89:    /***
+        -:   90:     * Filters the list by a vigen description
+        -:   91:     * @param descr : the given description
+        -:   92:     * @return : the filtered list
+        -:   93:     */
+        -:   94:    void filter_descr(string descr, vector<Activity>& filtered);
+        -:   95:
+        -:   96:    /***
+        -:   97:     * Sorts the list by name
+        -:   98:     * @return : the sorted list
+        -:   99:     */
+        -:  100:    void sort_name(vector<Activity>& copy);
+        -:  101:
+        -:  102:    /***
+        -:  103:     * Sorts the list by description
+        -:  104:     * @return : the sorted list
+        -:  105:     */
+        -:  106:    void  sort_descr(vector<Activity> & copy);
+        -:  107:
+        -:  108:    /**
+        -:  109:     * Sorts the list by type & time
+        -:  110:     * @return : the sorted list
+        -:  111:     */
+        -:  112:    void sort_type_time(vector<Activity> & copy);
+        -:  113:
+        -:  114:    /***
+        -:  115:     * Gets an anctivity by a given index
+        -:  116:     * @param index : the given index
+        -:  117:     * @return : the activity
+        -:  118:     */
+        -:  119:    const Activity* get_activity(const string& name, const string& descr, const string& type, int time);
+        -:  120:
+        -:  121:    /**
+        -:  122:     * Returns all the activities
+        -:  123:     */
+function _ZN7Service7get_allEv called 11 returned 100% blocks executed 100%
+       11:  124:    const vector<Activity>& get_all() {
+       11:  125:        return rep.get_all();
+       11:  125-block  0
+call    0 returned 11
+        -:  126:    }
+        -:  127:
+        -:  128:
+        -:  129:    /**
+        -:  130:     * Adds an anctivity with a given name in the cart
+        -:  131:     * @param name : the name of the activity
+        -:  132:     */
+        -:  133:    void add_cart(string name);
+        -:  134:
+        -:  135:    /**
+        -:  136:     * Adds a random amount of activities in the cart
+        -:  137:     * @param n : how many activities to add
+        -:  138:     * @return : the number of activities added
+        -:  139:     */
+        -:  140:    int add_random(int n);
+        -:  141:
+        -:  142:    /**
+        -:  143:     * Empties all the activities form the cart
+        -:  144:     */
+        -:  145:    void empty_cart();
+        -:  146:
+        -:  147:    /**
+        -:  148:     * Gets all the activities form the cart
+        -:  149:     * @return
+        -:  150:     */
+        -:  151:    const vector<Activity>& get_all_cart();
+        -:  152:
+        -:  153:    /**
+        -:  154:     * Makes a raport of all the activities
+        -:  155:     * @return : the raport
+        -:  156:     */
+        -:  157:    std::unordered_map<string ,ActivityCount> raport() const;
+        -:  158:
+        -:  159:    void export_html(const string& file_name);
+        -:  160:
+        -:  161:    int Undo();
+        -:  162:
+        -:  163:    //~Service() = default;
+        -:  164:
+        -:  165:};
+        -:  166:#endif //QT_SERVICE_H

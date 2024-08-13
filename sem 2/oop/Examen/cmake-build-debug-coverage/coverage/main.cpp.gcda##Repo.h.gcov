@@ -1,0 +1,67 @@
+        -:    0:Source:C:/Users/Ale/Desktop/untitled1/Repo.h
+        -:    0:Graph:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 06/25/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef UNTITLED1_REPO_H
+        -:    6:#define UNTITLED1_REPO_H
+        -:    7:#include "domain.h"
+        -:    8:#include "vector"
+        -:    9:
+        -:   10:class Repo{
+        -:   11:private:
+        -:   12:    vector<Masina> masini;
+        -:   13:    string file_name;
+        -:   14:public:
+        -:   15:    //Constructor
+function _ZN4RepoC1ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 3 returned 100% blocks executed 62%
+        3:   16:    Repo(string file_name):file_name(file_name){
+        3:   16-block  0
+call    0 returned 3
+call    1 returned 3
+branch  2 taken 3 (fallthrough)
+branch  3 taken 0 (throw)
+        3:   17:        load_from_file();
+        3:   17-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        3:   18:    }
+        3:   18-block  0
+    $$$$$:   18-block  1
+call    0 never executed
+    $$$$$:   18-block  2
+call    1 never executed
+        -:   19:    /**
+        -:   20:     * Ia datele din fisier
+        -:   21:     */
+        -:   22:    void load_from_file();
+        -:   23:
+        -:   24:    /**
+        -:   25:     * Scrie datele in fisier
+        -:   26:     * @param lst : lista de scris in fisier
+        -:   27:     */
+        -:   28:    void write_to_file(vector<Masina> lst);
+        -:   29:
+        -:   30:    /**
+        -:   31:     * Sterge Masina
+        -:   32:     * @param m : masina de sters
+        -:   33:     */
+        -:   34:    void del(Masina m);
+        -:   35:
+        -:   36:    /**
+        -:   37:     * GEt all
+        -:   38:     * @return: toate masinile
+        -:   39:     */
+function _ZN4Repo7get_allEv called 12 returned 100% blocks executed 100%
+       12:   40:    vector<Masina>& get_all() { return masini;}
+       12:   40-block  0
+        -:   41:
+        -:   42:
+        -:   43:};
+        -:   44:
+        -:   45:void test_repo();
+        -:   46:#endif //UNTITLED1_REPO_H

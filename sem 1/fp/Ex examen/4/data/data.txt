@@ -1,0 +1,6 @@
+nume1, tip1, 1, desc1
+nume2, tip2, 2, desc2
+nume3, tip3, 2, desc3
+nume4, tip4, 1, desc4
+nume5, tip5, 2, desc5
+nume6, tip6, 1, desc6

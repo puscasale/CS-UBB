@@ -1,0 +1,43 @@
+     1                                  bits 32
+     2                                  global start
+     3                                  extern exit
+     4                                  import exit msvcrt.dll
+     5                                  
+     6                                  segment data use32 class=data 
+     7 00000000 010A0309                    s db 1,10,3,9
+     8 00000004 05060708                    f db 5,6, 7, 8
+     9                                      l equ ($-s)/2
+    10 00000008 <res 00000004>              d resb l
+    11                                  ;Se dau doua siruri de octeti S1 si S2 de aceeasi lungime. Sa se construiasca sirul D astfel: fiecare element de pe pozitiile pare din D este suma elementelor de pe pozitiile corespunzatoare din S1 si S2, iar fiecar
+    12                                  segment code use32 class=code
+    13                                  start:
+    14 00000000 B904000000                  mov ecx, l
+    15 00000005 BE00000000                  mov esi, 0
+    16 0000000A E330                        jecxz final
+    17                                  
+    18                                  start_loop:
+    19 0000000C B302                        mov bl, 2
+    20 0000000E 89F0                        mov eax, esi
+    21 00000010 F6F3                        div bl 
+    22 00000012 80FC00                      cmp ah, 0
+    23 00000015 7402                        jz par
+    24 00000017 EB0E                        jmp impar
+    25                                  
+    26                                  par:
+    27 00000019 8A9E[00000000]              mov bl, [s + esi]
+    28 0000001F 029E[04000000]              add bl, [f + esi]
+    29 00000025 EB0C                        jmp adaugare
+    30                                  
+    31                                  impar:
+    32 00000027 8A9E[00000000]              mov bl, [s + esi]
+    33 0000002D 2A9E[04000000]              sub bl, [f + esi]
+    34                                  
+    35                                  adaugare:
+    36 00000033 889E[08000000]              mov [d + esi], bl
+    37 00000039 46                          inc esi
+    38                                  
+    39 0000003A E2D0                        loop start_loop
+    40                                  
+    41                                  final:
+    42 0000003C 6A00                        push dword 0
+    43 0000003E FF15[00000000]              call [exit]

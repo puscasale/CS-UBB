@@ -1,0 +1,45 @@
+        -:    0:Source:C:/Users/Ale/Desktop/oop/lab6_7/Cart.h
+        -:    0:Graph:C:\Users\Ale\Desktop\oop\lab6_7\cmake-build-debug-coverage\CMakeFiles\lab6_7.dir\tests.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\oop\lab6_7\cmake-build-debug-coverage\CMakeFiles\lab6_7.dir\tests.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include "Activity.h"
+        -:    2:#include <vector>
+        -:    3:using std::vector;
+        -:    4:#ifndef LAB6_7_COS_H
+        -:    5:#define LAB6_7_COS_H
+        -:    6:class Cart{
+        -:    7:private:
+        -:    8:    vector<Activity> cart;
+        -:    9:public:
+        -:   10:    /**
+        -:   11:     * Constructor
+        -:   12:     */
+function _ZN4CartC1Ev called 0 returned 0% blocks executed 0%
+    #####:   13:    Cart() =default;
+    %%%%%:   13-block  0
+call    0 never executed
+        -:   14:
+        -:   15:    /**
+        -:   16:     * Adds an ativity to the cart
+        -:   17:     * @param a : the activity
+        -:   18:     */
+        -:   19:    void add_cart(const Activity& a);
+        -:   20:
+        -:   21:    /**
+        -:   22:     * Empties the cart
+        -:   23:     */
+        -:   24:    void empty();
+        -:   25:
+        -:   26:    /**
+        -:   27:     * Adds a random amount of activities to the cart
+        -:   28:     * @param n : the number
+        -:   29:     * @param activity : a vector of all the activities
+        -:   30:     */
+        -:   31:    void random_activity(int n, vector<Activity> activity);
+        -:   32:
+        -:   33:    /**
+        -:   34:     * Returns all the activities from the cart
+        -:   35:     */
+        -:   36:    const vector<Activity>& get_all_cart();
+        -:   37:};
+        -:   38:#endif //LAB6_7_COS_H

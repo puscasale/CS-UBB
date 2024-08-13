@@ -1,0 +1,5 @@
+1, Tractor1, 10000, Model1, 1:2:2026
+2, Tractori2, 20000, Model2, 2:7:2029
+4, Tractor4, 40000, Model4, 4:5:2023
+5, Tractori5, 600000, Model5, 5:5:2005
+6, Tractor6, 6000, Model6, 6:6:2006

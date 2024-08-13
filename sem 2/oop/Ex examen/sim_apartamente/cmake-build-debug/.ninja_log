@@ -1,0 +1,12 @@
+# ninja log v5
+6	75	7378358852149740	sim_apartamente_autogen/timestamp	6d66bb0d46bef97f
+6	75	7378358852149740	sim_apartamente_autogen/mocs_compilation.cpp	6d66bb0d46bef97f
+6	75	7378358852149740	C:/Users/Ale/Desktop/sim_apartamente/cmake-build-debug/sim_apartamente_autogen/timestamp	6d66bb0d46bef97f
+6	75	7378358852149740	C:/Users/Ale/Desktop/sim_apartamente/cmake-build-debug/sim_apartamente_autogen/mocs_compilation.cpp	6d66bb0d46bef97f
+306	384	7378255957162669	CMakeFiles/sim_apartamente.dir/sim_apartamente_autogen/mocs_compilation.cpp.obj	c1fba779e5a5d2d4
+78	4506	7378357907704245	CMakeFiles/sim_apartamente.dir/main.cpp.obj	23f9db3a138733b3
+465	762	7378358857780247	sim_apartamente.exe	2d393cabaff8d4ea
+93	675	7378332987266534	CMakeFiles/sim_apartamente.dir/Apartament.cpp.obj	f1f3d6724ed08024
+78	420	7378358855604894	CMakeFiles/sim_apartamente.dir/Service.cpp.obj	faedf0fc294786ca
+86	708	7378349703320736	CMakeFiles/sim_apartamente.dir/Repo.cpp.obj	a1f0393b2b0b7c56
+79	465	7378358856065788	CMakeFiles/sim_apartamente.dir/tests.cpp.obj	7b952f23c3dcb826

@@ -1,0 +1,234 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_apartamente/Repo.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_apartamente\cmake-build-debug-coverage\CMakeFiles\sim_apartamente.dir\Repo.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_apartamente\cmake-build-debug-coverage\CMakeFiles\sim_apartamente.dir\Repo.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/19/2024.
+        -:    3://
+        -:    4:
+        -:    5:#include <algorithm>
+        -:    6:#include <fstream>
+        -:    7:#include "Repo.h"
+        -:    8:
+function _ZN4Repo5storeERK11Apartamente called 15 returned 100% blocks executed 100%
+       15:    9:void Repo::store(const Apartamente &a) {
+       15:   10:    ap.push_back(a);
+       15:   10-block  0
+call    0 returned 15
+       15:   11:}
+        -:   12:
+function _ZN4Repo6removeERK11Apartamente called 2 returned 100% blocks executed 69%
+        2:   13:void Repo::remove(const Apartamente &a) {
+function _ZZN4Repo6removeERK11ApartamenteENKUlS2_E_clES2_ called 2 returned 100% blocks executed 70%
+        2:   14:    auto it = std::remove_if(ap.begin(), ap.end(), [a](const Apartamente & a_cmp){
+        2:   14-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   14-block  1
+call    3 returned 2
+call    4 returned 2
+call    5 returned 2
+branch  6 taken 2 (fallthrough)
+branch  7 taken 0 (throw)
+        2:   14-block  2
+call    8 returned 2
+    $$$$$:   14-block  3
+call    9 never executed
+    $$$$$:   14-block  4
+       2*:   15:        return a.get_pret() == a_cmp.get_pret() and a.get_str() == a_cmp.get_str() and a.get_sup() == a_cmp.get_sup();
+        2:   15-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   15-block  1
+call    3 returned 2
+branch  4 taken 2 (fallthrough)
+branch  5 taken 0 (throw)
+        2:   15-block  2
+branch  6 taken 2 (fallthrough)
+branch  7 taken 0
+        2:   15-block  3
+call    8 returned 2
+branch  9 taken 2 (fallthrough)
+branch 10 taken 0 (throw)
+        2:   15-block  4
+call   11 returned 2
+branch 12 taken 2 (fallthrough)
+branch 13 taken 0 (throw)
+        2:   15-block  5
+call   14 returned 2
+branch 15 taken 2 (fallthrough)
+branch 16 taken 0
+        2:   15-block  6
+call   17 returned 2
+branch 18 taken 2 (fallthrough)
+branch 19 taken 0 (throw)
+        2:   15-block  7
+call   20 returned 2
+branch 21 taken 2 (fallthrough)
+branch 22 taken 0 (throw)
+        2:   15-block  8
+branch 23 taken 2 (fallthrough)
+branch 24 taken 0
+        2:   15-block  9
+    %%%%%:   15-block 10
+        2:   15-block 11
+        2:   15-block 12
+branch 25 taken 2 (fallthrough)
+branch 26 taken 0
+        2:   15-block 13
+call   27 returned 2
+        2:   15-block 14
+branch 28 taken 2 (fallthrough)
+branch 29 taken 0
+        2:   15-block 15
+call   30 returned 2
+        2:   15-block 16
+        2:   15-block 17
+    $$$$$:   15-block 18
+branch 31 never executed (fallthrough)
+branch 32 never executed
+    $$$$$:   15-block 19
+call   33 never executed
+    $$$$$:   15-block 20
+    $$$$$:   15-block 21
+branch 34 never executed (fallthrough)
+branch 35 never executed
+    $$$$$:   15-block 22
+call   36 never executed
+        -:   16:    });
+        2:   17:    ap.erase(it);
+call    0 returned 2
+call    1 returned 2
+branch  2 taken 2 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   17-block  0
+        2:   18:}
+        2:   18-block  0
+        -:   19:
+function _ZN10RepoInFile14read_from_fileEv called 1 returned 100% blocks executed 71%
+        1:   20:void RepoInFile::read_from_file() {
+        1:   21:    std::ifstream file;
+        1:   21-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   22:    file.open(file_name);
+        1:   22-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   23:    string line, word;
+        1:   23-block  0
+call    0 returned 1
+call    1 returned 1
+        -:   24:
+       11:   25:    while(!file.eof()){
+       11:   25-block  0
+call    0 returned 11
+branch  1 taken 11 (fallthrough)
+branch  2 taken 0 (throw)
+       11:   25-block  1
+branch  3 taken 10
+branch  4 taken 1 (fallthrough)
+       10:   26:        getline(file, line);
+       10:   26-block  0
+call    0 returned 10
+branch  1 taken 10 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   27:
+       10:   28:        if(line.size()){
+       10:   28-block  0
+call    0 returned 10
+branch  1 taken 10 (fallthrough)
+branch  2 taken 0
+       10:   29:            vector<string> ap_info;
+       10:   29-block  0
+call    0 returned 10
+        -:   30:
+       10:   31:            auto found = line.find(',');
+call    0 returned 10
+       30:   32:            while(found != -1){
+       30:   32-block  0
+branch  0 taken 20
+branch  1 taken 10 (fallthrough)
+       20:   33:                word = line.substr(0,found);
+       20:   33-block  0
+call    0 returned 20
+branch  1 taken 20 (fallthrough)
+branch  2 taken 0 (throw)
+       20:   33-block  1
+call    3 returned 20
+call    4 returned 20
+    $$$$$:   33-block  2
+       20:   34:                line.erase(0,found+ 1);
+call    0 returned 20
+branch  1 taken 20 (fallthrough)
+branch  2 taken 0 (throw)
+       20:   35:                ap_info.push_back(word);
+       20:   35-block  0
+call    0 returned 20
+branch  1 taken 20 (fallthrough)
+branch  2 taken 0 (throw)
+       20:   36:                found = line.find(',');
+       20:   36-block  0
+call    0 returned 20
+        -:   37:            }
+       10:   38:            const Apartamente& a{ap_info.at(0),stoi(line),stoi(line)};
+       10:   38-block  0
+call    0 returned 10
+branch  1 taken 10 (fallthrough)
+branch  2 taken 0 (throw)
+       10:   38-block  1
+call    3 returned 10
+branch  4 taken 10 (fallthrough)
+branch  5 taken 0 (throw)
+       10:   38-block  2
+call    6 returned 10
+branch  7 taken 10 (fallthrough)
+branch  8 taken 0 (throw)
+       10:   38-block  3
+call    9 returned 10
+branch 10 taken 10 (fallthrough)
+branch 11 taken 0 (throw)
+       10:   38-block  4
+call   12 returned 10
+branch 13 taken 10 (fallthrough)
+branch 14 taken 0 (throw)
+       10:   38-block  5
+call   15 returned 10
+    $$$$$:   38-block  6
+call   16 never executed
+    $$$$$:   38-block  7
+       10:   39:            Repo::store(a);
+call    0 returned 10
+branch  1 taken 10 (fallthrough)
+branch  2 taken 0 (throw)
+       10:   40:            ap_info.clear();
+       10:   40-block  0
+call    0 returned 10
+       10:   41:        }
+call    0 returned 10
+call    1 returned 10
+    $$$$$:   41-block  0
+call    2 never executed
+    $$$$$:   41-block  1
+call    3 never executed
+        -:   42:    }
+        1:   43:    file.close();
+        1:   43-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   44:}
+        1:   44-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+    $$$$$:   44-block  1
+call    3 never executed
+    $$$$$:   44-block  2
+call    4 never executed
+    $$$$$:   44-block  3
+call    5 never executed

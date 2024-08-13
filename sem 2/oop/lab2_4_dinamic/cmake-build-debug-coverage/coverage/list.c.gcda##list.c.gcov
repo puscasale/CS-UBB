@@ -1,0 +1,178 @@
+        -:    0:Source:C:/Users/Ale/Desktop/oop/lab2_4_dinamic/list.c
+        -:    0:Graph:C:\Users\Ale\Desktop\oop\lab2_4_dinamic\cmake-build-debug-coverage\CMakeFiles\lab2_4_dinamic.dir\list.c.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\oop\lab2_4_dinamic\cmake-build-debug-coverage\CMakeFiles\lab2_4_dinamic.dir\list.c.gcda
+        -:    0:Runs:1
+        -:    1:#include "list.h"
+        -:    2:#include <stdlib.h>
+        -:    3:
+        -:    4:/*
+        -:    5:* Creeaza o lista goala
+        -:    6:* return: lista
+        -:    7:*/
+function create_list called 21 returned 100% blocks executed 100%
+       21:    8:List create_list() {
+        -:    9:    List rez;
+       21:   10:    rez.lung = 0;
+       21:   11:    rez.capacitate = 2;
+       21:   12:    rez.elements = malloc(rez.capacitate * sizeof(TElem ));
+       21:   13:    return rez;
+       21:   13-block  0
+        -:   14:}
+        -:   15:
+        -:   16:
+        -:   17:/*
+        -:   18: * Distruge o lista
+        -:   19: * param: l (lista)
+        -:   20:*/
+function destroy_list called 16 returned 100% blocks executed 100%
+       16:   21:void destroy_list(List *l) {
+        -:   22:
+       42:   23:    for(int i = 0; i < l->lung; i++)
+       16:   23-block  0
+       42:   23-block  1
+branch  0 taken 26
+branch  1 taken 16 (fallthrough)
+        -:   24:    {
+       26:   25:        destroy(&l->elements[i]);
+       26:   25-block  0
+call    0 returned 26
+        -:   26:    }
+       16:   27:    l->lung = 0;
+       16:   28:    free(l->elements);
+       16:   29:}
+        -:   30:
+        -:   31:/*
+        -:   32: * Realoca spatiul pentru lista
+        -:   33: * param: l (lista)
+        -:   34: */
+function resize called 6 returned 100% blocks executed 100%
+        6:   35:void resize(List *l){
+        6:   36:    int new_capacitate =  2 * l->capacitate;
+        6:   37:    TElem *new_elements = malloc(new_capacitate * sizeof(TElem));
+       18:   38:    for(int i = 0; i < l->lung; i++)
+        6:   38-block  0
+       18:   38-block  1
+branch  0 taken 12
+branch  1 taken 6 (fallthrough)
+        -:   39:    {
+       12:   40:        new_elements[i] = l->elements[i];
+       12:   40-block  0
+        -:   41:    }
+        6:   42:    free(l->elements);
+        6:   43:    l->elements = new_elements;
+        6:   44:    l->capacitate = new_capacitate;
+        6:   45:}
+        -:   46:
+        -:   47:/*
+        -:   48:  Returneaza elementul din lista de pe pozitia data
+        -:   49:  param: poz - pozitia elementului
+        -:   50:  return: elementul de pe pozitia poz
+        -:   51:*/
+function get called 61 returned 100% blocks executed 100%
+       61:   52:TElem get(List *l, int poz) {
+       61:   53:    return l->elements[poz];
+       61:   53-block  0
+        -:   54:}
+        -:   55:
+        -:   56:/*
+        -:   57: * Seteaza elementul din lista de pe pozitia data
+        -:   58: * param poz: pozitia elementului
+        -:   59: * param new_m: noul element
+        -:   60: */
+function set called 14 returned 100% blocks executed 100%
+       14:   61:void set(List *l, int poz, Med new_m){
+       14:   62:    l->elements[poz] = new_m;
+       14:   63:}
+        -:   64:
+        -:   65:/*
+        -:   66:  Returneaza lungimea unei liste
+        -:   67:  param: l (list)
+        -:   68:  return: lungimea listei l
+        -:   69:*/
+function size called 111 returned 100% blocks executed 100%
+      111:   70:int size(List *l) {
+      111:   71:    return l->lung;
+      111:   71-block  0
+        -:   72:}
+        -:   73:
+        -:   74:/*
+        -:   75: * Adauga in lista l elementul el
+        -:   76: * param: l (lista)
+        -:   77: * param: el - elementul care se adauga in lista (TElem)
+        -:   78: */
+function add called 40 returned 100% blocks executed 100%
+       40:   79:void add(List *l, TElem el) {
+       40:   80:    if(l->lung == l->capacitate){
+       40:   80-block  0
+branch  0 taken 5 (fallthrough)
+branch  1 taken 35
+        5:   81:        resize(l);
+        5:   81-block  0
+call    0 returned 5
+        -:   82:    }
+       40:   83:    l->elements[l->lung] = el;
+       40:   84:    l->lung++;
+       40:   85:}
+        -:   86:
+        -:   87:/*
+        -:   88: * Sterge elementul de pe o pozitie
+        -:   89: * param: l (list)
+        -:   90: * param: poz - pozitia de pe care se sterge elementul (int)
+        -:   91: */
+function delete called 2 returned 100% blocks executed 100%
+        2:   92:void delete(List *l, int poz) {
+        3:   93:    for (int i = poz; i < l->lung - 1; i++) {
+        2:   93-block  0
+        3:   93-block  1
+branch  0 taken 1
+branch  1 taken 2 (fallthrough)
+        1:   94:        l->elements[i] = l->elements[i + 1];
+        1:   94-block  0
+        -:   95:    }
+        2:   96:    l->lung--;
+        2:   97:}
+        -:   98:
+        -:   99:/*
+        -:  100: * Modifica elementul de pe o anumita pozitie
+        -:  101: * param l: lista
+        -:  102: * param poz: pozitia de pe care se modifica elementul
+        -:  103: * param new_name: numele entitatii (char)
+        -:  104: * param new_concentration: concentratia  entitatii (int)
+        -:  105: */
+function modify called 2 returned 100% blocks executed 100%
+        2:  106:void modify(List *l, int poz, char *new_name, int new_concentration) {
+        2:  107:    int id = l->elements[poz].id;
+        2:  108:    int stock = l->elements[poz].stock;
+        2:  109:    destroy(&l->elements[poz]);
+        2:  109-block  0
+call    0 returned 2
+        2:  110:    Med new_m = create(id, new_name, new_concentration, stock);
+call    0 returned 2
+        2:  111:    l->elements[poz] = new_m;
+        2:  112:}
+        -:  113:
+        -:  114:/*
+        -:  115: * Returneaza o copie a unei liste
+        -:  116: * param: l (list)
+        -:  117: * return: lista
+        -:  118: */
+function copy_list called 3 returned 100% blocks executed 100%
+        3:  119:List copy_list(List* l) {
+        3:  120:    List rez = create_list();
+        3:  120-block  0
+call    0 returned 3
+       12:  121:    for (int i = 0; i < size(l); i++) {
+       12:  121-block  0
+call    0 returned 12
+branch  1 taken 9
+branch  2 taken 3 (fallthrough)
+        9:  122:        TElem o = get(l, i);
+        9:  122-block  0
+call    0 returned 9
+        9:  123:        add(&rez, o);
+call    0 returned 9
+        -:  124:    }
+        -:  125:
+        3:  126:    return rez;
+        3:  126-block  0
+        -:  127:}

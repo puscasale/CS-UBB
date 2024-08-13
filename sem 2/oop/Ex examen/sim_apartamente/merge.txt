@@ -1,0 +1,10 @@
+hasdeu,50,100
+Aviatorilor,70,150
+Unirii,60,120
+Victoriei,80,180
+Dorobanti,55,130
+Cotroceni,75,160
+Herastrau,90,200
+Pipera,65,140
+Militari,45,90
+DrumulTaberei,50,100

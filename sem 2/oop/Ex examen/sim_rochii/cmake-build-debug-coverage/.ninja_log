@@ -1,0 +1,18 @@
+# ninja log v5
+91	2225	7380153200326564	CMakeFiles/sim_rochii.dir/main.cpp.obj	d2aa47fb708bbd83
+7	87	7380153178959241	sim_rochii_autogen/timestamp	f99ae19fa92ebb93
+7	87	7380153178959241	C:/Users/Ale/Desktop/sim_rochii/cmake-build-debug-coverage/sim_rochii_autogen/mocs_compilation.cpp	f99ae19fa92ebb93
+88	533	7380077786077039	CMakeFiles/sim_rochii.dir/Service.cpp.obj	775114f48dc7aa70
+7	87	7380153178959241	sim_rochii_autogen/mocs_compilation.cpp	f99ae19fa92ebb93
+170	590	7380074840598523	CMakeFiles/sim_rochii.dir/Rochie.cpp.obj	2a5c66ac2ca92fd3
+180	251	7380074837225789	CMakeFiles/sim_rochii.dir/sim_rochii_autogen/mocs_compilation.cpp.obj	87ddfc5d3f0c92b9
+7	87	7380153178959241	C:/Users/Ale/Desktop/sim_rochii/cmake-build-debug-coverage/sim_rochii_autogen/timestamp	f99ae19fa92ebb93
+172	929	7380074843875989	CMakeFiles/sim_rochii.dir/Repo.cpp.obj	94d469b95ccf854d
+2225	2580	7380153202576396	sim_rochii.exe	41a7fa73ab379e76
+90	454	7380077785290595	CMakeFiles/sim_rochii.dir/tests.cpp.obj	b2922674bace115d
+11	107	7380154348203343	sim_rochii_autogen/timestamp	f99ae19fa92ebb93
+11	107	7380154348203343	sim_rochii_autogen/mocs_compilation.cpp	f99ae19fa92ebb93
+11	107	7380154348203343	C:/Users/Ale/Desktop/sim_rochii/cmake-build-debug-coverage/sim_rochii_autogen/timestamp	f99ae19fa92ebb93
+11	107	7380154348203343	C:/Users/Ale/Desktop/sim_rochii/cmake-build-debug-coverage/sim_rochii_autogen/mocs_compilation.cpp	f99ae19fa92ebb93
+112	2219	7380154369329889	CMakeFiles/sim_rochii.dir/main.cpp.obj	d2aa47fb708bbd83
+2219	2516	7380154371058017	sim_rochii.exe	41a7fa73ab379e76

@@ -1,0 +1,167 @@
+        -:    0:Source:C:/Users/Ale/Desktop/QT/Repo.h
+        -:    0:Graph:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\Repo.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\Repo.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/16/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef QT_REPO_H
+        -:    6:#define QT_REPO_H
+        -:    7:#include <vector>
+        -:    8:#include <map>
+        -:    9:#include <random>
+        -:   10:#include <unordered_map>
+        -:   11:#include "activity.h"
+        -:   12:using std::vector;
+        -:   13:
+        -:   14:class RepoException{
+        -:   15:private:
+        -:   16:    string msg;
+        -:   17:
+        -:   18:public:
+function _ZN13RepoExceptionC1ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE called 2 returned 100% blocks executed 100%
+        2:   19:    RepoException(string m): msg{m} {};
+        2:   19-block  0
+call    0 returned 2
+        -:   20:    string get_Message() {
+        -:   21:        return this->msg;
+        -:   22:    }
+        -:   23:};
+        -:   24:
+        -:   25:class RepoAbs {
+        -:   26:public:
+        -:   27:    RepoAbs() = default;
+        -:   28:    RepoAbs(const RepoAbs& o) = delete;
+        -:   29:
+        -:   30:    virtual void store(const Activity& o) = 0;
+        -:   31:    virtual void remove(const Activity& a)  = 0;
+        -:   32:    virtual void modify(const Activity& a, const Activity& newActivity) = 0;
+        -:   33:    virtual const Activity* get_activity(const string& name, const string& descr, const string& type, int time) = 0;
+        -:   34:    virtual vector<Activity>& get_all() =0;
+        -:   35:    virtual const Activity& find_act_name(string name)= 0;
+        -:   36:
+        -:   37:};
+        -:   38:
+        -:   39:class Repo : public RepoAbs
+        -:   40:{
+        -:   41:
+        -:   42:private:
+        -:   43:    vector<Activity> act;
+        -:   44:
+        -:   45:public:
+        -:   46:    Repo(const Repo& ot) = delete;
+        -:   47:
+        -:   48:    Repo() = default;
+        -:   49:
+        -:   50:    /**
+        -:   51:     * Store/Add the activity in the list of activities
+        -:   52:     * @param activity : the activity that will be added
+        -:   53:     */
+        -:   54:    virtual void store(const Activity &activity);
+        -:   55:
+        -:   56:    /**
+        -:   57:     * Remove the activity at a given postion
+        -:   58:     * @param position : the postion of the search activity
+        -:   59:     */
+        -:   60:    virtual void remove(const Activity& a);
+        -:   61:
+        -:   62:    /**
+        -:   63:     * Modify the activity at a given position
+        -:   64:     * @param position : the position of the searched activity
+        -:   65:     * @param newActivity : the new activity
+        -:   66:     */
+        -:   67:    virtual void modify(const Activity& a, const Activity& newActivity);
+        -:   68:
+        -:   69:    /**
+        -:   70:     * Get an activity at a given position
+        -:   71:     * @param position : the position of the searched activity
+        -:   72:     * @return activity
+        -:   73:     */
+        -:   74:    virtual const Activity* get_activity(const string& name, const string& descr, const string& type, int time);
+        -:   75:
+        -:   76:    /**
+        -:   77:     * Get all activities
+        -:   78:     * @return activities
+        -:   79:     */
+function _ZN4Repo7get_allEv called 0 returned 0% blocks executed 0%
+    #####:   80:    vector<Activity>& get_all() {
+    #####:   81:        return act;
+    %%%%%:   81-block  0
+        -:   82:    }
+        -:   83:
+        -:   84:
+        -:   85:    /**
+        -:   86:     * Find an activity by a given name
+        -:   87:     * @param name : the name of the searched activity
+        -:   88:     * @return the activity
+        -:   89:     */
+        -:   90:    const Activity& find_act_name(string name);
+        -:   91:
+        -:   92:};
+        -:   93:
+        -:   94:
+        -:   95:class RepoInFile: public Repo{
+        -:   96:private:
+        -:   97:    string file_name;
+        -:   98:    void write_to_file();
+        -:   99:    void read_from_file();
+        -:  100:
+        -:  101:public:
+        -:  102:    RepoInFile(string file_name) : Repo(), file_name(file_name){
+        -:  103:        read_from_file();
+        -:  104:    }
+        -:  105:    void store(const Activity& activity) override {
+        -:  106:        Repo::store(activity);
+        -:  107:        write_to_file();
+        -:  108:    }
+        -:  109:
+        -:  110:    void remove(const Activity& a) override {
+        -:  111:        Repo::remove(a);
+        -:  112:        write_to_file();
+        -:  113:    }
+        -:  114:
+        -:  115:    void modify(const Activity& a, const Activity& newActivity) override{
+        -:  116:        Repo::modify(a,newActivity);
+        -:  117:        write_to_file();
+        -:  118:    }
+        -:  119:
+        -:  120:};
+        -:  121:
+        -:  122:class RepoLab : public RepoAbs {
+        -:  123:private:
+        -:  124:    std::unordered_map<string, Activity> activities;
+        -:  125:    double prob;
+        -:  126:    void random_prob();
+        -:  127:
+        -:  128:public:
+        -:  129:
+        -:  130:    ~RepoLab() = default;
+        -:  131:    RepoLab() {
+        -:  132:        prob = 0.5;
+        -:  133:
+        -:  134:    }
+        -:  135:    void set_prob(double probabilitate) {
+        -:  136:        prob = probabilitate;
+        -:  137:    }
+        -:  138:    void store(const Activity& a) override;
+        -:  139:    void remove(const Activity& a) override;
+        -:  140:    void modify(const Activity& a, const Activity& newActivity) override;
+        -:  141:    const Activity* get_activity(const string& name, const string& descr, const string& type, int time) override;
+        -:  142:    const Activity& find_act_name(string name) override;
+        -:  143:    vector<Activity> all;
+        -:  144:    vector<Activity>& get_all() override;
+        -:  145:
+        -:  146:
+        -:  147:};
+        -:  148:
+        -:  149:class Prob_Exception {
+        -:  150:private:
+        -:  151:    string msg;
+        -:  152:public:
+        -:  153:    Prob_Exception(string msg) : msg(msg) {};
+        -:  154:    string get_message() {
+        -:  155:        return this->msg;
+        -:  156:    }
+        -:  157:};
+        -:  158:#endif //QT_REPO_H

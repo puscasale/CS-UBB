@@ -1,0 +1,30 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_componente/Procesor.h
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/20/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef SIM_COMPONENTE_PROCESOR_H
+        -:    6:#define SIM_COMPONENTE_PROCESOR_H
+        -:    7:#include <string>
+        -:    8:using std::string;
+        -:    9:class Procesor{
+        -:   10:private:
+        -:   11:    string nume;
+        -:   12:    int nrT;
+        -:   13:    int socluProcesor;
+        -:   14:    int pret;
+        -:   15:public:
+function _ZN8ProcesorC1ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEiii called 9 returned 100% blocks executed 100%
+        9:   16:    Procesor(string nume, int nrT, int socluProcesor, int pret) : nume{nume}, nrT{nrT}, socluProcesor{socluProcesor}, pret{pret}{};
+        9:   16-block  0
+call    0 returned 9
+        -:   17:
+        -:   18:    string getNume() const;
+        -:   19:    int get_nrT() const;
+        -:   20:    int get_soclu() const;
+        -:   21:    int getPret() const;
+        -:   22:};
+        -:   23:#endif //SIM_COMPONENTE_PROCESOR_H

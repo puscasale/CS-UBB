@@ -1,0 +1,49 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_componente/RepoPlaca.h
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\Service.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\Service.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/20/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef SIM_COMPONENTE_REPOPLACA_H
+        -:    6:#define SIM_COMPONENTE_REPOPLACA_H
+        -:    7:#include "Placa.h"
+        -:    8:#include <vector>
+        -:    9:using std::vector;
+        -:   10:
+        -:   11:class RepoPlaca{
+        -:   12:private:
+        -:   13:    string file_name;
+        -:   14:    vector<Placa> placi;
+        -:   15:public:
+        -:   16:    RepoPlaca(const string& file_name) : file_name{file_name}{
+        -:   17:        load_from_file();
+        -:   18:    }
+        -:   19:    /**\
+        -:   20:     * load data from file
+        -:   21:     */
+        -:   22:    void load_from_file();
+        -:   23:    /**
+        -:   24:     * Get all
+        -:   25:     * @return : all
+        -:   26:     */
+function _ZN9RepoPlaca7get_allEv called 0 returned 0% blocks executed 0%
+    #####:   27:    const vector<Placa>& get_all(){
+    #####:   28:        return placi;
+    %%%%%:   28-block  0
+        -:   29:    }
+        -:   30:    /**
+        -:   31:     * adauga o placa in lista de placi
+        -:   32:     * @param p : placa de adaugat
+        -:   33:     */
+        -:   34:    void addPlaca(const Placa& p);
+        -:   35:
+function _ZN9RepoPlaca9sizePlacaEv called 1 returned 100% blocks executed 100%
+        1:   36:    int sizePlaca(){
+        1:   37:        return placi.size();
+        1:   37-block  0
+call    0 returned 1
+        -:   38:    }
+        -:   39:};
+        -:   40:#endif //SIM_COMPONENTE_REPOPLACA_H

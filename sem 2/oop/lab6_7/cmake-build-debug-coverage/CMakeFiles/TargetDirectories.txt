@@ -1,0 +1,3 @@
+C:/Users/Ale/Desktop/oop/lab6_7/cmake-build-debug-coverage/CMakeFiles/lab6_7.dir
+C:/Users/Ale/Desktop/oop/lab6_7/cmake-build-debug-coverage/CMakeFiles/edit_cache.dir
+C:/Users/Ale/Desktop/oop/lab6_7/cmake-build-debug-coverage/CMakeFiles/rebuild_cache.dir

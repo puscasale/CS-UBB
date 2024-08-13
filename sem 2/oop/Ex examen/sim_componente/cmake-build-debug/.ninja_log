@@ -1,0 +1,14 @@
+# ninja log v5
+6	72	7379436190133987	sim_componente_autogen/timestamp	2266ca3bb1fe0cb6
+6	72	7379436190133987	C:/Users/Ale/Desktop/sim_componente/cmake-build-debug/sim_componente_autogen/timestamp	2266ca3bb1fe0cb6
+118	610	7379422205269268	CMakeFiles/sim_componente.dir/Procesor.cpp.obj	e903bc14158167a
+6	72	7379436190133987	sim_componente_autogen/mocs_compilation.cpp	2266ca3bb1fe0cb6
+6	72	7379436190133987	C:/Users/Ale/Desktop/sim_componente/cmake-build-debug/sim_componente_autogen/mocs_compilation.cpp	2266ca3bb1fe0cb6
+114	177	7379422200972592	CMakeFiles/sim_componente.dir/sim_componente_autogen/mocs_compilation.cpp.obj	235da85800a6e5b2
+122	608	7379422205269268	CMakeFiles/sim_componente.dir/Placa.cpp.obj	4b9d406f51b75646
+178	795	7379422207129950	CMakeFiles/sim_componente.dir/Service.cpp.obj	72caf3520ae9b120
+125	918	7379422208371638	CMakeFiles/sim_componente.dir/RepoPlaca.cpp.obj	e2f2ce971efc6e51
+120	877	7379422207969749	CMakeFiles/sim_componente.dir/RepoProcesoare.cpp.obj	333db0f662cdeb2f
+73	2369	7379435095285750	CMakeFiles/sim_componente.dir/main.cpp.obj	7f1eeac99d47a099
+345	627	7379436194436430	sim_componente.exe	d7b6be14dfc03dc1
+75	345	7379436192875929	CMakeFiles/sim_componente.dir/tests.cpp.obj	7e8569b0d65ff775

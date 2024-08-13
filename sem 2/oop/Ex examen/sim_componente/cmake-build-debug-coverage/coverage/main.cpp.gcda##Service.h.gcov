@@ -1,0 +1,84 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_componente/Service.h
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/20/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef SIM_COMPONENTE_SERVICE_H
+        -:    6:#define SIM_COMPONENTE_SERVICE_H
+        -:    7:#include "RepoPlaca.h"
+        -:    8:#include "RepoProcesoare.h"
+        -:    9:
+        -:   10:class Service{
+        -:   11:private:
+        -:   12:    RepoPlaca placa;
+        -:   13:    RepoProcesoare proces;
+        -:   14:public:
+function _ZN7ServiceC1ER14RepoProcesoareR9RepoPlaca called 2 returned 100% blocks executed 80%
+        2:   15:    Service(RepoProcesoare& procese, RepoPlaca& placa) : proces(procese), placa(placa){};
+        2:   15-block  0
+call    0 returned 2
+call    1 returned 2
+branch  2 taken 2 (fallthrough)
+branch  3 taken 0 (throw)
+        2:   15-block  1
+    $$$$$:   15-block  2
+call    4 never executed
+        -:   16:
+        -:   17:    /**
+        -:   18:     * Get all placa
+        -:   19:     * @return : all placa
+        -:   20:     */
+function _ZN7Service12get_allPlacaEv called 1 returned 100% blocks executed 100%
+        1:   21:    const vector<Placa>& get_allPlaca() {
+        1:   22:        return placa.get_all();
+        1:   22-block  0
+call    0 returned 1
+        -:   23:    }
+        -:   24:
+        -:   25:    /**
+        -:   26:     * Get all procesor
+        -:   27:     * @return : all procesor
+        -:   28:     */
+function _ZN7Service14get_allProceseEv called 1 returned 100% blocks executed 100%
+        1:   29:    const vector<Procesor>& get_allProcese() {
+        1:   30:        return proces.get_all();
+        1:   30-block  0
+call    0 returned 1
+        -:   31:    }
+        -:   32:
+        -:   33:    /**
+        -:   34:     * adauga placa
+        -:   35:     * @param nume : nume placa
+        -:   36:     * @param soclu : nr soclu
+        -:   37:     * @param pret : pret
+        -:   38:     */
+        -:   39:    void addPlaca(string nume, int soclu, int pret);
+        -:   40:
+        -:   41:    /**
+        -:   42:     *
+        -:   43:     * @return : nr placi
+        -:   44:     */
+        -:   45:    int nrPlaci();
+        -:   46:
+        -:   47:    /**
+        -:   48:     *
+        -:   49:     * @return : nr procesoare
+        -:   50:     */
+        -:   51:    int nrProcese();
+        -:   52:
+        -:   53:    /**
+        -:   54:     * Total proc + placa
+        -:   55:     */
+        -:   56:    int total(const Procesor& proc, const Placa& placa);
+        -:   57:
+        -:   58:    /**
+        -:   59:     * filtrare
+        -:   60:     * @param p
+        -:   61:     * @return
+        -:   62:     */
+        -:   63:    const vector<Placa> filter(const Procesor& p);
+        -:   64:};
+        -:   65:#endif //SIM_COMPONENTE_SERVICE_H

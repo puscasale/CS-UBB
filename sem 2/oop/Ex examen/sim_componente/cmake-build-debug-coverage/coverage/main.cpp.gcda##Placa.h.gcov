@@ -1,0 +1,28 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_componente/Placa.h
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/20/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef SIM_COMPONENTE_PLACA_H
+        -:    6:#define SIM_COMPONENTE_PLACA_H
+        -:    7:#include <string>
+        -:    8:using std::string;
+        -:    9:
+        -:   10:class Placa{
+        -:   11:private:
+        -:   12:    string nume;
+        -:   13:    int socluProcesor;
+        -:   14:    int pret;
+        -:   15:public:
+function _ZN5PlacaC1ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEii called 9 returned 100% blocks executed 100%
+        9:   16:    Placa(string nume, int socluProcesor, int pret) : nume{nume}, socluProcesor{socluProcesor}, pret{pret}{};
+        9:   16-block  0
+call    0 returned 9
+        -:   17:    string get_nume() const;
+        -:   18:    int get_soclu() const;
+        -:   19:    int get_pret() const;
+        -:   20:};
+        -:   21:#endif //SIM_COMPONENTE_PLACA_H

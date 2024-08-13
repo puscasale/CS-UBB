@@ -1,0 +1,94 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_componente/RepoPlaca.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\RepoPlaca.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\RepoPlaca.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/20/2024.
+        -:    3://
+        -:    4:
+        -:    5:#include <fstream>
+        -:    6:#include "RepoPlaca.h"
+        -:    7:
+function _ZN9RepoPlaca8addPlacaERK5Placa called 1 returned 100% blocks executed 100%
+        1:    8:void RepoPlaca::addPlaca(const Placa &p) {
+        1:    9:    placi.push_back(p);
+        1:    9-block  0
+call    0 returned 1
+        -:   10:
+        1:   11:}
+        -:   12:
+function _ZN9RepoPlaca14load_from_fileEv called 2 returned 100% blocks executed 67%
+        2:   13:void RepoPlaca::load_from_file() {
+        2:   14:    std::ifstream file(file_name);
+        2:   14-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        9:   15:    while(!file.eof()){
+        2:   15-block  0
+        9:   15-block  1
+call    0 returned 9
+branch  1 taken 9 (fallthrough)
+branch  2 taken 0 (throw)
+        9:   15-block  2
+branch  3 taken 7
+branch  4 taken 2 (fallthrough)
+        7:   16:        string nume;
+        7:   16-block  0
+call    0 returned 7
+        -:   17:        int soclu, pret;
+        7:   18:        file >> nume >> soclu >> pret;
+call    0 returned 7
+branch  1 taken 7 (fallthrough)
+branch  2 taken 0 (throw)
+        7:   18-block  0
+call    3 returned 7
+branch  4 taken 7 (fallthrough)
+branch  5 taken 0 (throw)
+        7:   18-block  1
+call    6 returned 7
+branch  7 taken 7 (fallthrough)
+branch  8 taken 0 (throw)
+        -:   19:
+        7:   20:        if(!nume.empty())
+        7:   20-block  0
+call    0 returned 7
+branch  1 taken 7 (fallthrough)
+branch  2 taken 0
+        7:   21:            placi.push_back(Placa(nume, soclu,pret));
+        7:   21-block  0
+call    0 returned 7
+branch  1 taken 7 (fallthrough)
+branch  2 taken 0 (throw)
+        7:   21-block  1
+call    3 returned 7
+branch  4 taken 7 (fallthrough)
+branch  5 taken 0 (throw)
+        7:   21-block  2
+call    6 returned 7
+branch  7 taken 7 (fallthrough)
+branch  8 taken 0 (throw)
+        7:   21-block  3
+call    9 returned 7
+call   10 returned 7
+    $$$$$:   21-block  4
+call   11 never executed
+    $$$$$:   21-block  5
+call   12 never executed
+    $$$$$:   21-block  6
+    $$$$$:   21-block  7
+        7:   22:    }
+        7:   22-block  0
+call    0 returned 7
+    $$$$$:   22-block  1
+call    1 never executed
+        2:   23:    file.close();
+        2:   23-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   24:}
+        2:   24-block  0
+call    0 returned 2
+    $$$$$:   24-block  1
+call    1 never executed

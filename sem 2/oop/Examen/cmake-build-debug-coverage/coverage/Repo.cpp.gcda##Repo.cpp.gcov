@@ -1,0 +1,485 @@
+        -:    0:Source:C:/Users/Ale/Desktop/untitled1/Repo.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\Repo.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\Repo.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 06/25/2024.
+        -:    3://
+        -:    4:
+        -:    5:#include <fstream>
+        -:    6:#include <algorithm>
+        -:    7:#include <iostream>
+        -:    8:#include "Repo.h"
+        -:    9:#include "assert.h"
+        -:   10:
+function _ZN4Repo14load_from_fileEv called 3 returned 100% blocks executed 64%
+        3:   11:void Repo::load_from_file() {
+        3:   12:    ifstream file(file_name);
+        3:   12-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+       16:   13:    while(!file.eof()){
+        3:   13-block  0
+       16:   13-block  1
+call    0 returned 16
+branch  1 taken 16 (fallthrough)
+branch  2 taken 0 (throw)
+       16:   13-block  2
+branch  3 taken 13
+branch  4 taken 3 (fallthrough)
+       13:   14:        string nrmat,den,tip;
+       13:   14-block  0
+call    0 returned 13
+call    1 returned 13
+call    2 returned 13
+        -:   15:        int an;
+       13:   16:        file>>nrmat>>den>>an>>tip;
+call    0 returned 13
+branch  1 taken 13 (fallthrough)
+branch  2 taken 0 (throw)
+       13:   16-block  0
+call    3 returned 13
+branch  4 taken 13 (fallthrough)
+branch  5 taken 0 (throw)
+       13:   16-block  1
+call    6 returned 13
+branch  7 taken 13 (fallthrough)
+branch  8 taken 0 (throw)
+       13:   16-block  2
+call    9 returned 13
+branch 10 taken 13 (fallthrough)
+branch 11 taken 0 (throw)
+       13:   17:        if(!nrmat.empty() && !den.empty() && !tip.empty())
+       13:   17-block  0
+call    0 returned 13
+branch  1 taken 10 (fallthrough)
+branch  2 taken 3
+       10:   17-block  1
+call    3 returned 10
+branch  4 taken 10 (fallthrough)
+branch  5 taken 0
+       10:   17-block  2
+call    6 returned 10
+branch  7 taken 10 (fallthrough)
+branch  8 taken 0
+       10:   17-block  3
+        3:   17-block  4
+       13:   17-block  5
+branch  9 taken 10 (fallthrough)
+branch 10 taken 3
+       10:   18:            masini.push_back(Masina(nrmat,den,an,tip));
+       10:   18-block  0
+call    0 returned 10
+branch  1 taken 10 (fallthrough)
+branch  2 taken 0 (throw)
+       10:   18-block  1
+call    3 returned 10
+branch  4 taken 10 (fallthrough)
+branch  5 taken 0 (throw)
+       10:   18-block  2
+call    6 returned 10
+branch  7 taken 10 (fallthrough)
+branch  8 taken 0 (throw)
+       10:   18-block  3
+call    9 returned 10
+branch 10 taken 10 (fallthrough)
+branch 11 taken 0 (throw)
+       10:   18-block  4
+call   12 returned 10
+branch 13 taken 10 (fallthrough)
+branch 14 taken 0 (throw)
+       10:   18-block  5
+call   15 returned 10
+call   16 returned 10
+call   17 returned 10
+call   18 returned 10
+    $$$$$:   18-block  6
+call   19 never executed
+    $$$$$:   18-block  7
+call   20 never executed
+    $$$$$:   18-block  8
+    $$$$$:   18-block  9
+call   21 never executed
+    $$$$$:   18-block 10
+    $$$$$:   18-block 11
+call   22 never executed
+    $$$$$:   18-block 12
+    $$$$$:   18-block 13
+       13:   19:    }
+       13:   19-block  0
+call    0 returned 13
+call    1 returned 13
+call    2 returned 13
+    $$$$$:   19-block  1
+call    3 never executed
+    $$$$$:   19-block  2
+call    4 never executed
+    $$$$$:   19-block  3
+call    5 never executed
+        3:   20:    file.close();
+        3:   20-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   21:
+        3:   22:}
+        3:   22-block  0
+call    0 returned 3
+    $$$$$:   22-block  1
+call    1 never executed
+        -:   23:
+function _ZN4Repo13write_to_fileESt6vectorI6MasinaSaIS1_EE called 4 returned 100% blocks executed 66%
+        4:   24:void Repo::write_to_file(vector<Masina> lst) {
+        4:   25:    ofstream g(file_name);
+        4:   25-block  0
+call    0 returned 4
+branch  1 taken 4 (fallthrough)
+branch  2 taken 0 (throw)
+        6:   26:    for(Masina e:lst){
+        4:   26-block  0
+call    0 returned 4
+call    1 returned 4
+        2:   26-block  1
+call    2 returned 2
+call    3 returned 2
+branch  4 taken 2 (fallthrough)
+branch  5 taken 0 (throw)
+call    6 returned 2
+        6:   26-block  2
+call    7 returned 6
+branch  8 taken 2
+branch  9 taken 4 (fallthrough)
+        2:   27:        g<<e.get_nr()<<endl;
+        2:   27-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   27-block  1
+call    3 returned 2
+branch  4 taken 2 (fallthrough)
+branch  5 taken 0 (throw)
+        2:   27-block  2
+call    6 returned 2
+branch  7 taken 2 (fallthrough)
+branch  8 taken 0 (throw)
+        2:   27-block  3
+call    9 returned 2
+    $$$$$:   27-block  4
+call   10 never executed
+    $$$$$:   27-block  5
+        2:   28:        g<<e.get_den()<<endl;
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   28-block  0
+call    3 returned 2
+branch  4 taken 2 (fallthrough)
+branch  5 taken 0 (throw)
+        2:   28-block  1
+call    6 returned 2
+branch  7 taken 2 (fallthrough)
+branch  8 taken 0 (throw)
+        2:   28-block  2
+call    9 returned 2
+    $$$$$:   28-block  3
+call   10 never executed
+    $$$$$:   28-block  4
+        2:   29:        g<<e.get_an()<<endl;
+call    0 returned 2
+call    1 returned 2
+branch  2 taken 2 (fallthrough)
+branch  3 taken 0 (throw)
+        2:   29-block  0
+call    4 returned 2
+branch  5 taken 2 (fallthrough)
+branch  6 taken 0 (throw)
+        2:   30:        g<<e.get_tip()<<endl;
+        2:   30-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   30-block  1
+call    3 returned 2
+branch  4 taken 2 (fallthrough)
+branch  5 taken 0 (throw)
+        2:   30-block  2
+call    6 returned 2
+branch  7 taken 2 (fallthrough)
+branch  8 taken 0 (throw)
+        2:   30-block  3
+call    9 returned 2
+    $$$$$:   30-block  4
+call   10 never executed
+    $$$$$:   30-block  5
+        2:   31:    }
+call    0 returned 2
+    $$$$$:   31-block  0
+call    1 never executed
+        -:   32:
+        4:   33:}
+        4:   33-block  0
+call    0 returned 4
+    $$$$$:   33-block  1
+call    1 never executed
+        -:   34:
+function _ZN4Repo3delE6Masina called 2 returned 100% blocks executed 65%
+        2:   35:void Repo::del(Masina m) {
+function _ZZN4Repo3delE6MasinaENKUlS0_E_clES0_ called 2 returned 100% blocks executed 57%
+        2:   36:    auto it = remove_if(masini.begin(),masini.end(),[m](Masina m_c){
+        2:   36-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   36-block  1
+call    3 returned 2
+call    4 returned 2
+call    5 returned 2
+branch  6 taken 2 (fallthrough)
+branch  7 taken 0 (throw)
+        2:   36-block  2
+call    8 returned 2
+    $$$$$:   36-block  3
+call    9 never executed
+    $$$$$:   36-block  4
+       2*:   37:        return m.get_nr() == m_c.get_nr() && m.get_tip() == m_c.get_tip() && m.get_an() == m_c.get_an() && m.get_den() == m_c.get_den();
+        2:   37-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   37-block  1
+call    3 returned 2
+branch  4 taken 2 (fallthrough)
+branch  5 taken 0 (throw)
+        2:   37-block  2
+call    6 returned 2
+branch  7 taken 2 (fallthrough)
+branch  8 taken 0
+        2:   37-block  3
+call    9 returned 2
+branch 10 taken 2 (fallthrough)
+branch 11 taken 0 (throw)
+        2:   37-block  4
+call   12 returned 2
+branch 13 taken 2 (fallthrough)
+branch 14 taken 0 (throw)
+        2:   37-block  5
+call   15 returned 2
+branch 16 taken 2 (fallthrough)
+branch 17 taken 0
+        2:   37-block  6
+call   18 returned 2
+call   19 returned 2
+branch 20 taken 2 (fallthrough)
+branch 21 taken 0
+        2:   37-block  7
+call   22 returned 2
+branch 23 taken 2 (fallthrough)
+branch 24 taken 0 (throw)
+        2:   37-block  8
+call   25 returned 2
+branch 26 taken 2 (fallthrough)
+branch 27 taken 0 (throw)
+        2:   37-block  9
+call   28 returned 2
+branch 29 taken 2 (fallthrough)
+branch 30 taken 0
+        2:   37-block 10
+    %%%%%:   37-block 11
+        2:   37-block 12
+        2:   37-block 13
+branch 31 taken 2 (fallthrough)
+branch 32 taken 0
+        2:   37-block 14
+call   33 returned 2
+        2:   37-block 15
+branch 34 taken 2 (fallthrough)
+branch 35 taken 0
+        2:   37-block 16
+call   36 returned 2
+        2:   37-block 17
+branch 37 taken 2 (fallthrough)
+branch 38 taken 0
+        2:   37-block 18
+call   39 returned 2
+        2:   37-block 19
+branch 40 taken 2 (fallthrough)
+branch 41 taken 0
+        2:   37-block 20
+call   42 returned 2
+        2:   37-block 21
+branch 43 taken 2 (fallthrough)
+branch 44 taken 0
+        2:   37-block 22
+call   45 returned 2
+        2:   37-block 23
+branch 46 taken 2 (fallthrough)
+branch 47 taken 0
+        2:   37-block 24
+call   48 returned 2
+        2:   37-block 25
+        2:   37-block 26
+    $$$$$:   37-block 27
+branch 49 never executed (fallthrough)
+branch 50 never executed
+    $$$$$:   37-block 28
+call   51 never executed
+    $$$$$:   37-block 29
+    $$$$$:   37-block 30
+branch 52 never executed (fallthrough)
+branch 53 never executed
+    $$$$$:   37-block 31
+call   54 never executed
+    $$$$$:   37-block 32
+    $$$$$:   37-block 33
+branch 55 never executed (fallthrough)
+branch 56 never executed
+    $$$$$:   37-block 34
+call   57 never executed
+    $$$$$:   37-block 35
+    $$$$$:   37-block 36
+branch 58 never executed (fallthrough)
+branch 59 never executed
+    $$$$$:   37-block 37
+call   60 never executed
+    $$$$$:   37-block 38
+    $$$$$:   37-block 39
+branch 61 never executed (fallthrough)
+branch 62 never executed
+    $$$$$:   37-block 40
+call   63 never executed
+    $$$$$:   37-block 41
+    $$$$$:   37-block 42
+branch 64 never executed (fallthrough)
+branch 65 never executed
+    $$$$$:   37-block 43
+call   66 never executed
+        -:   38:    });
+        2:   39:    masini.erase(it);
+call    0 returned 2
+call    1 returned 2
+branch  2 taken 2 (fallthrough)
+branch  3 taken 0 (throw)
+    $$$$$:   39-block  0
+        2:   40:    write_to_file(get_all());
+        2:   40-block  0
+call    0 returned 2
+call    1 returned 2
+branch  2 taken 2 (fallthrough)
+branch  3 taken 0 (throw)
+        2:   40-block  1
+call    4 returned 2
+branch  5 taken 2 (fallthrough)
+branch  6 taken 0 (throw)
+        2:   40-block  2
+call    7 returned 2
+    $$$$$:   40-block  3
+call    8 never executed
+    $$$$$:   40-block  4
+        -:   41:
+        2:   42:}
+        -:   43:
+        -:   44:
+        -:   45:
+function _Z9test_repov called 1 returned 100% blocks executed 51%
+        1:   46:void test_repo(){
+        1:   46-block  0
+        1:   47:    Repo rep(R"(C:\Users\Ale\Desktop\untitled1\test.txt)");
+        1:   47-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   47-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   47-block  2
+call    6 returned 1
+    $$$$$:   47-block  3
+call    7 never executed
+    $$$$$:   47-block  4
+    $$$$$:   47-block  5
+        1:   48:    vector<Masina> aux = rep.get_all();
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+        -:   49:
+        5:   50:    Masina m("nr1","audi",2002,"van");
+        1:   50-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   50-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   50-block  2
+call    6 returned 1
+branch  7 taken 1 (fallthrough)
+branch  8 taken 0 (throw)
+        1:   50-block  3
+call    9 returned 1
+branch 10 taken 1 (fallthrough)
+branch 11 taken 0 (throw)
+        1:   50-block  4
+call   12 returned 1
+call   13 returned 1
+call   14 returned 1
+    $$$$$:   50-block  5
+call   15 never executed
+    $$$$$:   50-block  6
+    $$$$$:   50-block  7
+    $$$$$:   50-block  8
+call   16 never executed
+    $$$$$:   50-block  9
+    $$$$$:   50-block 10
+    $$$$$:   50-block 11
+call   17 never executed
+    $$$$$:   50-block 12
+    $$$$$:   50-block 13
+        1:   51:    rep.del(m);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   51-block  0
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   51-block  1
+call    6 returned 1
+    $$$$$:   51-block  2
+call    7 never executed
+    $$$$$:   51-block  3
+       1*:   52:    assert(rep.get_all().size() == 0);
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    %%%%%:   52-block  0
+call    4 never executed
+        1:   52-block  1
+        1:   53:    rep.write_to_file(aux);
+        1:   53-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   53-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   53-block  2
+call    6 returned 1
+    $$$$$:   53-block  3
+call    7 never executed
+    $$$$$:   53-block  4
+        1:   54:}
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+    $$$$$:   54-block  0
+call    3 never executed
+    $$$$$:   54-block  1
+call    4 never executed
+    $$$$$:   54-block  2
+call    5 never executed

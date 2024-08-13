@@ -1,0 +1,26 @@
+# ninja log v5
+180	706	7379436343853712	CMakeFiles/sim_componente.dir/Procesor.cpp.obj	e06de266641d4493
+6	94	7379444212148392	sim_componente_autogen/timestamp	fa8faeaa239d3290
+6	94	7379444212148392	C:/Users/Ale/Desktop/sim_componente/cmake-build-debug-coverage/sim_componente_autogen/timestamp	fa8faeaa239d3290
+6	94	7379444212148392	sim_componente_autogen/mocs_compilation.cpp	fa8faeaa239d3290
+6	94	7379444212148392	C:/Users/Ale/Desktop/sim_componente/cmake-build-debug-coverage/sim_componente_autogen/mocs_compilation.cpp	fa8faeaa239d3290
+178	279	7379436339526545	CMakeFiles/sim_componente.dir/sim_componente_autogen/mocs_compilation.cpp.obj	459f51b6b0209bfc
+186	710	7379436343943723	CMakeFiles/sim_componente.dir/Placa.cpp.obj	b129261cd5920870
+84	441	7379437126322490	CMakeFiles/sim_componente.dir/RepoPlaca.cpp.obj	c8707ff61f82beea
+192	908	7379436345941515	CMakeFiles/sim_componente.dir/Service.cpp.obj	1ef7bfcacee17f4d
+91	546	7379438672760942	CMakeFiles/sim_componente.dir/RepoProcesoare.cpp.obj	d6003719f529e3c
+99	549	7379444216715763	CMakeFiles/sim_componente.dir/tests.cpp.obj	337ba35917ff5ff
+182	2920	7379436366041806	CMakeFiles/sim_componente.dir/main.cpp.obj	4033aa5f0099220a
+549	893	7379444218825670	sim_componente.exe	a94381d4e90cbf33
+5	73	7379444314277390	sim_componente_autogen/timestamp	fa8faeaa239d3290
+5	73	7379444314277390	sim_componente_autogen/mocs_compilation.cpp	fa8faeaa239d3290
+5	73	7379444314277390	C:/Users/Ale/Desktop/sim_componente/cmake-build-debug-coverage/sim_componente_autogen/timestamp	fa8faeaa239d3290
+5	73	7379444314277390	C:/Users/Ale/Desktop/sim_componente/cmake-build-debug-coverage/sim_componente_autogen/mocs_compilation.cpp	fa8faeaa239d3290
+78	559	7379444319132913	CMakeFiles/sim_componente.dir/tests.cpp.obj	337ba35917ff5ff
+559	858	7379444320870828	sim_componente.exe	a94381d4e90cbf33
+9	82	7379446333379951	sim_componente_autogen/timestamp	fa8faeaa239d3290
+9	82	7379446333379951	sim_componente_autogen/mocs_compilation.cpp	fa8faeaa239d3290
+9	82	7379446333379951	C:/Users/Ale/Desktop/sim_componente/cmake-build-debug-coverage/sim_componente_autogen/timestamp	fa8faeaa239d3290
+9	82	7379446333379951	C:/Users/Ale/Desktop/sim_componente/cmake-build-debug-coverage/sim_componente_autogen/mocs_compilation.cpp	fa8faeaa239d3290
+87	407	7379446336630436	CMakeFiles/sim_componente.dir/Service.cpp.obj	1ef7bfcacee17f4d
+408	718	7379446338484834	sim_componente.exe	a94381d4e90cbf33

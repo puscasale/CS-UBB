@@ -1,0 +1,1926 @@
+        -:    0:Source:C:/Qt/6.8.0/mingw_64/include/QtCore/qobject.h
+        -:    0:Graph:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1:// Copyright (C) 2020 The Qt Company Ltd.
+        -:    2:// Copyright (C) 2013 Olivier Goffart <ogoffart@woboq.com>
+        -:    3:// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+        -:    4:
+        -:    5:#ifndef QOBJECT_H
+        -:    6:#define QOBJECT_H
+        -:    7:
+        -:    8:#ifndef QT_NO_QOBJECT
+        -:    9:
+        -:   10:#include <QtCore/qobjectdefs.h>
+        -:   11:#include <QtCore/qstring.h>
+        -:   12:#include <QtCore/qbytearray.h>
+        -:   13:#include <QtCore/qlist.h>
+        -:   14:#ifdef QT_INCLUDE_COMPAT
+        -:   15:#include <QtCore/qcoreevent.h>
+        -:   16:#endif
+        -:   17:#include <QtCore/qscopedpointer.h>
+        -:   18:#include <QtCore/qmetatype.h>
+        -:   19:
+        -:   20:#include <QtCore/qobject_impl.h>
+        -:   21:#include <QtCore/qbindingstorage.h>
+        -:   22:#include <QtCore/qtcoreexports.h>
+        -:   23:
+        -:   24:#include <chrono>
+        -:   25:
+        -:   26:QT_BEGIN_NAMESPACE
+        -:   27:
+        -:   28:
+        -:   29:template <typename T> class QBindable;
+        -:   30:class QEvent;
+        -:   31:class QTimerEvent;
+        -:   32:class QChildEvent;
+        -:   33:struct QMetaObject;
+        -:   34:class QVariant;
+        -:   35:class QObjectPrivate;
+        -:   36:class QObject;
+        -:   37:class QThread;
+        -:   38:class QWidget;
+        -:   39:class QAccessibleWidget;
+        -:   40:#if QT_CONFIG(regularexpression)
+        -:   41:class QRegularExpression;
+        -:   42:#endif
+        -:   43:struct QDynamicMetaObjectData;
+        -:   44:
+        -:   45:typedef QList<QObject*> QObjectList;
+        -:   46:
+        -:   47:#if QT_CORE_REMOVED_SINCE(6, 7)
+        -:   48:Q_CORE_EXPORT void qt_qFindChildren_helper(const QObject *parent, const QString &name,
+        -:   49:                                           const QMetaObject &mo, QList<void *> *list, Qt::FindChildOptions options);
+        -:   50:#endif
+        -:   51:Q_CORE_EXPORT void qt_qFindChildren_helper(const QObject *parent, QAnyStringView name,
+        -:   52:                                           const QMetaObject &mo, QList<void *> *list,
+        -:   53:                                           Qt::FindChildOptions options);
+        -:   54:#if QT_CORE_REMOVED_SINCE(6, 7)
+        -:   55:Q_CORE_EXPORT void qt_qFindChildren_helper(const QObject *parent, const QMetaObject &mo,
+        -:   56:                                           QList<void *> *list, Qt::FindChildOptions options);
+        -:   57:#endif
+        -:   58:Q_CORE_EXPORT void qt_qFindChildren_helper(const QObject *parent, const QRegularExpression &re,
+        -:   59:                                           const QMetaObject &mo, QList<void *> *list, Qt::FindChildOptions options);
+        -:   60:#if QT_CORE_REMOVED_SINCE(6, 7)
+        -:   61:Q_CORE_EXPORT QObject *qt_qFindChild_helper(const QObject *parent, const QString &name, const QMetaObject &mo, Qt::FindChildOptions options);
+        -:   62:#endif
+        -:   63:Q_CORE_EXPORT QObject *qt_qFindChild_helper(const QObject *parent, QAnyStringView name,
+        -:   64:                                            const QMetaObject &mo, Qt::FindChildOptions options);
+        -:   65:
+        -:   66:class Q_CORE_EXPORT QObjectData
+        -:   67:{
+        -:   68:    Q_DISABLE_COPY(QObjectData)
+        -:   69:public:
+        -:   70:    QObjectData() = default;
+        -:   71:    virtual ~QObjectData() = 0;
+        -:   72:    QObject *q_ptr;
+        -:   73:    QObject *parent;
+        -:   74:    QObjectList children;
+        -:   75:
+        -:   76:    uint isWidget : 1;
+        -:   77:    uint blockSig : 1;
+        -:   78:    uint wasDeleted : 1;
+        -:   79:    uint isDeletingChildren : 1;
+        -:   80:    uint sendChildEvents : 1;
+        -:   81:    uint receiveChildEvents : 1;
+        -:   82:    uint isWindow : 1; // for QWindow
+        -:   83:    uint deleteLaterCalled : 1;
+        -:   84:    uint isQuickItem : 1;
+        -:   85:    uint willBeWidget : 1; // for handling widget-specific bits in QObject's ctor
+        -:   86:    uint wasWidget : 1; // for properly cleaning up in QObject's dtor
+        -:   87:    uint receiveParentEvents: 1;
+        -:   88:    uint unused : 20;
+        -:   89:    QAtomicInt postedEvents;
+        -:   90:    QDynamicMetaObjectData *metaObject;
+        -:   91:    QBindingStorage bindingStorage;
+        -:   92:
+        -:   93:    // ### Qt7: Make this return a const QMetaObject *. You should not mess with
+        -:   94:    //          the metaobjects of existing objects.
+        -:   95:    QMetaObject *dynamicMetaObject() const;
+        -:   96:
+        -:   97:#ifdef QT_DEBUG
+        -:   98:    enum { CheckForParentChildLoopsWarnDepth = 4096 };
+        -:   99:#endif
+        -:  100:};
+        -:  101:
+        -:  102:class Q_CORE_EXPORT QObject
+        -:  103:{
+        -:  104:    Q_OBJECT
+        -:  105:
+        -:  106:    Q_PROPERTY(QString objectName READ objectName WRITE setObjectName NOTIFY objectNameChanged
+        -:  107:               BINDABLE bindableObjectName)
+        -:  108:    Q_DECLARE_PRIVATE(QObject)
+        -:  109:
+        -:  110:public:
+        -:  111:    Q_INVOKABLE explicit QObject(QObject *parent = nullptr);
+        -:  112:    virtual ~QObject();
+        -:  113:
+        -:  114:    virtual bool event(QEvent *event);
+        -:  115:    virtual bool eventFilter(QObject *watched, QEvent *event);
+        -:  116:
+        -:  117:#if defined(QT_NO_TRANSLATION) || defined(Q_QDOC)
+        -:  118:    static QString tr(const char *sourceText, const char * = nullptr, int = -1)
+        -:  119:        { return QString::fromUtf8(sourceText); }
+        -:  120:#endif // QT_NO_TRANSLATION
+        -:  121:
+        -:  122:    QString objectName() const;
+        -:  123:#if QT_CORE_REMOVED_SINCE(6, 4)
+        -:  124:    void setObjectName(const QString &name);
+        -:  125:#endif
+        -:  126:    Q_WEAK_OVERLOAD
+        -:  127:    void setObjectName(const QString &name) { doSetObjectName(name); }
+        -:  128:    void setObjectName(QAnyStringView name);
+        -:  129:    QBindable<QString> bindableObjectName();
+        -:  130:
+        -:  131:    inline bool isWidgetType() const { return d_ptr->isWidget; }
+        -:  132:    inline bool isWindowType() const { return d_ptr->isWindow; }
+        -:  133:    inline bool isQuickItemType() const { return d_ptr->isQuickItem; }
+        -:  134:
+        -:  135:    inline bool signalsBlocked() const noexcept { return d_ptr->blockSig; }
+        -:  136:    bool blockSignals(bool b) noexcept;
+        -:  137:
+        -:  138:    QThread *thread() const;
+        -:  139:#if QT_CORE_REMOVED_SINCE(6, 7)
+        -:  140:    void moveToThread(QThread *thread);
+        -:  141:#endif
+        -:  142:    bool moveToThread(QThread *thread QT6_DECL_NEW_OVERLOAD_TAIL);
+        -:  143:
+        -:  144:    int startTimer(int interval, Qt::TimerType timerType = Qt::CoarseTimer);
+        -:  145:
+        -:  146:#if QT_CORE_REMOVED_SINCE(6, 8)
+        -:  147:    int startTimer(std::chrono::milliseconds time, Qt::TimerType timerType = Qt::CoarseTimer);
+        -:  148:#endif
+        -:  149:    int startTimer(std::chrono::nanoseconds time, Qt::TimerType timerType = Qt::CoarseTimer);
+        -:  150:
+        -:  151:    void killTimer(int id);
+        -:  152:    void killTimer(Qt::TimerId id);
+        -:  153:
+        -:  154:    template<typename T>
+        -:  155:    T findChild(QAnyStringView aName, Qt::FindChildOptions options = Qt::FindChildrenRecursively) const
+        -:  156:    {
+        -:  157:        typedef typename std::remove_cv<typename std::remove_pointer<T>::type>::type ObjType;
+        -:  158:        static_assert(QtPrivate::HasQ_OBJECT_Macro<ObjType>::Value,
+        -:  159:                          "No Q_OBJECT in the class passed to QObject::findChild");
+        -:  160:        return static_cast<T>(qt_qFindChild_helper(this, aName, ObjType::staticMetaObject, options));
+        -:  161:    }
+        -:  162:
+        -:  163:    template<typename T>
+        -:  164:    QList<T> findChildren(QAnyStringView aName, Qt::FindChildOptions options = Qt::FindChildrenRecursively) const
+        -:  165:    {
+        -:  166:        typedef typename std::remove_cv<typename std::remove_pointer<T>::type>::type ObjType;
+        -:  167:        static_assert(QtPrivate::HasQ_OBJECT_Macro<ObjType>::Value,
+        -:  168:                          "No Q_OBJECT in the class passed to QObject::findChildren");
+        -:  169:        QList<T> list;
+        -:  170:        qt_qFindChildren_helper(this, aName, ObjType::staticMetaObject,
+        -:  171:                                reinterpret_cast<QList<void *> *>(&list), options);
+        -:  172:        return list;
+        -:  173:    }
+        -:  174:
+        -:  175:    template<typename T>
+        -:  176:    T findChild(Qt::FindChildOptions options = Qt::FindChildrenRecursively) const
+        -:  177:    {
+        -:  178:        return findChild<T>({}, options);
+        -:  179:    }
+        -:  180:
+        -:  181:    template<typename T>
+        -:  182:    QList<T> findChildren(Qt::FindChildOptions options = Qt::FindChildrenRecursively) const
+        -:  183:    {
+        -:  184:        return findChildren<T>(QAnyStringView{}, options);
+        -:  185:    }
+        -:  186:
+        -:  187:#if QT_CONFIG(regularexpression)
+        -:  188:    template<typename T>
+        -:  189:    inline QList<T> findChildren(const QRegularExpression &re, Qt::FindChildOptions options = Qt::FindChildrenRecursively) const
+        -:  190:    {
+        -:  191:        typedef typename std::remove_cv<typename std::remove_pointer<T>::type>::type ObjType;
+        -:  192:        static_assert(QtPrivate::HasQ_OBJECT_Macro<ObjType>::Value,
+        -:  193:                          "No Q_OBJECT in the class passed to QObject::findChildren");
+        -:  194:        QList<T> list;
+        -:  195:        qt_qFindChildren_helper(this, re, ObjType::staticMetaObject,
+        -:  196:                                reinterpret_cast<QList<void *> *>(&list), options);
+        -:  197:        return list;
+        -:  198:    }
+        -:  199:#endif // QT_CONFIG(regularexpression)
+        -:  200:
+        -:  201:    inline const QObjectList &children() const { return d_ptr->children; }
+        -:  202:
+        -:  203:    void setParent(QObject *parent);
+        -:  204:    void installEventFilter(QObject *filterObj);
+        -:  205:    void removeEventFilter(QObject *obj);
+        -:  206:
+        -:  207:    static QMetaObject::Connection connect(const QObject *sender, const char *signal,
+        -:  208:                        const QObject *receiver, const char *member, Qt::ConnectionType = Qt::AutoConnection);
+        -:  209:
+        -:  210:    static QMetaObject::Connection connect(const QObject *sender, const QMetaMethod &signal,
+        -:  211:                        const QObject *receiver, const QMetaMethod &method,
+        -:  212:                        Qt::ConnectionType type = Qt::AutoConnection);
+        -:  213:
+        -:  214:    inline QMetaObject::Connection connect(const QObject *sender, const char *signal,
+        -:  215:                        const char *member, Qt::ConnectionType type = Qt::AutoConnection) const;
+        -:  216:
+        -:  217:#ifdef Q_QDOC
+        -:  218:    template<typename PointerToMemberFunction>
+        -:  219:    static QMetaObject::Connection connect(const QObject *sender, PointerToMemberFunction signal, const QObject *receiver, PointerToMemberFunction method, Qt::ConnectionType type = Qt::AutoConnection);
+        -:  220:    template<typename PointerToMemberFunction, typename Functor>
+        -:  221:    static QMetaObject::Connection connect(const QObject *sender, PointerToMemberFunction signal, Functor functor);
+        -:  222:    template<typename PointerToMemberFunction, typename Functor>
+        -:  223:    static QMetaObject::Connection connect(const QObject *sender, PointerToMemberFunction signal, const QObject *context, Functor functor, Qt::ConnectionType type = Qt::AutoConnection);
+        -:  224:#else
+        -:  225:    //connect with context
+        -:  226:    template <typename Func1, typename Func2>
+        -:  227:    static inline QMetaObject::Connection
+       21:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+       21:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+       21:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+       21:  255:        const int *types = nullptr;
+       21:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+        -:  258:
+       21:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+      21*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+       21:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM12QTableWidgetFviiEZN3GUI11initConnectEvEUliiE_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM12QTableWidgetFviiEZN3GUI11initConnectEvEUliiE_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN4Sort11initConnectEvEUlvE_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN4Sort11initConnectEvEUlvE_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN4Sort11initConnectEvEUlvE0_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN4Sort11initConnectEvEUlvE0_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN4Sort11initConnectEvEUlvE1_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN4Sort11initConnectEvEUlvE1_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN6Filter11initConnectEvEUlvE_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN6Filter11initConnectEvEUlvE_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN6Filter11initConnectEvEUlvE0_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN6Filter11initConnectEvEUlvE0_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN5CartQ11initConnectEvEUlvE_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN5CartQ11initConnectEvEUlvE_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN5CartQ11initConnectEvEUlvE0_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN5CartQ11initConnectEvEUlvE0_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN5CartQ11initConnectEvEUlvE1_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN5CartQ11initConnectEvEUlvE1_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN5CartQ11initConnectEvEUlvE2_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN5CartQ11initConnectEvEUlvE2_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM11QListWidgetFvP15QListWidgetItemEZN3GUI11initConnectEvEUlS3_E_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESC_PKNSA_21ContextTypeForFunctorIT0_vE11ContextTypeEOSI_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM11QListWidgetFvP15QListWidgetItemEZN3GUI11initConnectEvEUlS3_E_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESC_PKNSA_21ContextTypeForFunctorIT0_vE11ContextTypeEOSI_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 78%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE8_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE8_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE0_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE0_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE1_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE1_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE2_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE2_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE3_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE3_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE4_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE4_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE5_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE5_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE6_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE6_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+_ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE7_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE:
+function _ZN7QObject7connectIM15QAbstractButtonFvbEZN3GUI11initConnectEvEUlvE7_EEN11QMetaObject10ConnectionEPKN9QtPrivate15FunctionPointerIT_E6ObjectESA_PKNS8_21ContextTypeForFunctorIT0_vE11ContextTypeEOSG_N2Qt14ConnectionTypeE called 1 returned 100% blocks executed 70%
+        1:  228:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  229:                const typename QtPrivate::ContextTypeForFunctor<Func2>::ContextType *context, Func2 &&slot,
+        -:  230:                Qt::ConnectionType type = Qt::AutoConnection)
+        -:  231:    {
+        -:  232:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  233:        typedef QtPrivate::FunctionPointer<std::decay_t<Func2>> SlotType;
+        -:  234:
+        -:  235:        if constexpr (SlotType::ArgumentCount != -1) {
+        -:  236:            static_assert((QtPrivate::AreArgumentsCompatible<typename SlotType::ReturnType, typename SignalType::ReturnType>::value),
+        -:  237:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  238:        } else {
+        1:  239:            constexpr int FunctorArgumentCount = QtPrivate::ComputeFunctorArgumentCount<std::decay_t<Func2>, typename SignalType::Arguments>::Value;
+        -:  240:            [[maybe_unused]]
+        1:  241:            constexpr int SlotArgumentCount = (FunctorArgumentCount >= 0) ? FunctorArgumentCount : 0;
+        -:  242:            typedef typename QtPrivate::FunctorReturnType<std::decay_t<Func2>, typename QtPrivate::List_Left<typename SignalType::Arguments, SlotArgumentCount>::Value>::Value SlotReturnType;
+        -:  243:
+        -:  244:            static_assert((QtPrivate::AreArgumentsCompatible<SlotReturnType, typename SignalType::ReturnType>::value),
+        -:  245:                            "Return type of the slot is not compatible with the return type of the signal.");
+        -:  246:        }
+        -:  247:
+        -:  248:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  249:                          "No Q_OBJECT in the class with the signal");
+        -:  250:
+        -:  251:        //compilation error if the arguments does not match.
+        -:  252:        static_assert(int(SignalType::ArgumentCount) >= int(SlotType::ArgumentCount),
+        -:  253:                          "The slot requires more arguments than the signal provides.");
+        -:  254:
+        1:  255:        const int *types = nullptr;
+        1:  256:        if (type == Qt::QueuedConnection || type == Qt::BlockingQueuedConnection)
+        1:  256-block  0
+branch  0 taken 1 (fallthrough)
+branch  1 taken 0
+        1:  256-block  1
+branch  2 taken 0 (fallthrough)
+branch  3 taken 1
+    #####:  257:            types = QtPrivate::ConnectionTypes<typename SignalType::Arguments>::types();
+    %%%%%:  257-block  0
+call    0 never executed
+        -:  258:
+        1:  259:        void **pSlot = nullptr;
+        -:  260:        if constexpr (std::is_member_function_pointer_v<std::decay_t<Func2>>) {
+        -:  261:            pSlot = const_cast<void **>(reinterpret_cast<void *const *>(&slot));
+        -:  262:        } else {
+       1*:  263:            Q_ASSERT_X((type & Qt::UniqueConnection) == 0, "",
+        1:  263-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  263-block  1
+call    2 never executed
+        -:  264:                       "QObject::connect: Unique connection requires the slot to be a pointer to "
+        -:  265:                       "a member function of a QObject subclass.");
+        -:  266:        }
+        -:  267:
+        -:  268:        return connectImpl(sender, reinterpret_cast<void **>(&signal), context, pSlot,
+        -:  269:                           QtPrivate::makeCallableObject<Func1>(std::forward<Func2>(slot)),
+        1:  270:                           type, types, &SignalType::Object::staticMetaObject);
+        1:  270-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+        -:  271:    }
+------------------
+        -:  272:
+        -:  273:#ifndef QT_NO_CONTEXTLESS_CONNECT
+        -:  274:    //connect without context
+        -:  275:    template <typename Func1, typename Func2>
+        -:  276:    static inline QMetaObject::Connection
+       21:  277:        connect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal, Func2 &&slot)
+        -:  278:    {
+       21:  279:        return connect(sender, signal, sender, std::forward<Func2>(slot), Qt::DirectConnection);
+        -:  280:    }
+        -:  281:#endif // QT_NO_CONTEXTLESS_CONNECT
+        -:  282:#endif //Q_QDOC
+        -:  283:
+        -:  284:    static bool disconnect(const QObject *sender, const char *signal,
+        -:  285:                           const QObject *receiver, const char *member);
+        -:  286:    static bool disconnect(const QObject *sender, const QMetaMethod &signal,
+        -:  287:                           const QObject *receiver, const QMetaMethod &member);
+        -:  288:    inline bool disconnect(const char *signal = nullptr,
+        -:  289:                           const QObject *receiver = nullptr, const char *member = nullptr) const
+        -:  290:        { return disconnect(this, signal, receiver, member); }
+        -:  291:    inline bool disconnect(const QObject *receiver, const char *member = nullptr) const
+        -:  292:        { return disconnect(this, nullptr, receiver, member); }
+        -:  293:    static bool disconnect(const QMetaObject::Connection &);
+        -:  294:
+        -:  295:#ifdef Q_QDOC
+        -:  296:    template<typename PointerToMemberFunction>
+        -:  297:    static bool disconnect(const QObject *sender, PointerToMemberFunction signal, const QObject *receiver, PointerToMemberFunction method);
+        -:  298:#else
+        -:  299:    template <typename Func1, typename Func2>
+        -:  300:    static inline bool disconnect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  301:                                  const typename QtPrivate::FunctionPointer<Func2>::Object *receiver, Func2 slot)
+        -:  302:    {
+        -:  303:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  304:        typedef QtPrivate::FunctionPointer<Func2> SlotType;
+        -:  305:
+        -:  306:        static_assert(QtPrivate::HasQ_OBJECT_Macro<typename SignalType::Object>::Value,
+        -:  307:                          "No Q_OBJECT in the class with the signal");
+        -:  308:
+        -:  309:        //compilation error if the arguments does not match.
+        -:  310:        static_assert((QtPrivate::CheckCompatibleArguments<typename SignalType::Arguments, typename SlotType::Arguments>::value),
+        -:  311:                          "Signal and slot arguments are not compatible.");
+        -:  312:
+        -:  313:        return disconnectImpl(sender, reinterpret_cast<void **>(&signal), receiver, reinterpret_cast<void **>(&slot),
+        -:  314:                              &SignalType::Object::staticMetaObject);
+        -:  315:    }
+        -:  316:    template <typename Func1>
+        -:  317:    static inline bool disconnect(const typename QtPrivate::FunctionPointer<Func1>::Object *sender, Func1 signal,
+        -:  318:                                  const QObject *receiver, void **zero)
+        -:  319:    {
+        -:  320:        // This is the overload for when one wish to disconnect a signal from any slot. (slot=nullptr)
+        -:  321:        // Since the function template parameter cannot be deduced from '0', we use a
+        -:  322:        // dummy void ** parameter that must be equal to 0
+        -:  323:        Q_ASSERT(!zero);
+        -:  324:        typedef QtPrivate::FunctionPointer<Func1> SignalType;
+        -:  325:        return disconnectImpl(sender, reinterpret_cast<void **>(&signal), receiver, zero,
+        -:  326:                              &SignalType::Object::staticMetaObject);
+        -:  327:    }
+        -:  328:#endif //Q_QDOC
+        -:  329:
+        -:  330:    void dumpObjectTree() const;
+        -:  331:    void dumpObjectInfo() const;
+        -:  332:
+        -:  333:    QT_CORE_INLINE_SINCE(6, 6)
+        -:  334:    bool setProperty(const char *name, const QVariant &value);
+        -:  335:    inline bool setProperty(const char *name, QVariant &&value);
+        -:  336:    QVariant property(const char *name) const;
+        -:  337:    QList<QByteArray> dynamicPropertyNames() const;
+        -:  338:    QBindingStorage *bindingStorage() { return &d_ptr->bindingStorage; }
+        -:  339:    const QBindingStorage *bindingStorage() const { return &d_ptr->bindingStorage; }
+        -:  340:
+        -:  341:Q_SIGNALS:
+        -:  342:    void destroyed(QObject * = nullptr);
+        -:  343:    void objectNameChanged(const QString &objectName, QPrivateSignal);
+        -:  344:
+        -:  345:public:
+        -:  346:    inline QObject *parent() const { return d_ptr->parent; }
+        -:  347:
+        -:  348:    inline bool inherits(const char *classname) const
+        -:  349:    {
+        -:  350:        return const_cast<QObject *>(this)->qt_metacast(classname) != nullptr;
+        -:  351:    }
+        -:  352:
+        -:  353:public Q_SLOTS:
+        -:  354:    void deleteLater();
+        -:  355:
+        -:  356:protected:
+        -:  357:    QObject *sender() const;
+        -:  358:    int senderSignalIndex() const;
+        -:  359:    int receivers(const char *signal) const;
+        -:  360:    bool isSignalConnected(const QMetaMethod &signal) const;
+        -:  361:
+        -:  362:    virtual void timerEvent(QTimerEvent *event);
+        -:  363:    virtual void childEvent(QChildEvent *event);
+        -:  364:    virtual void customEvent(QEvent *event);
+        -:  365:
+        -:  366:    virtual void connectNotify(const QMetaMethod &signal);
+        -:  367:    virtual void disconnectNotify(const QMetaMethod &signal);
+        -:  368:
+        -:  369:protected:
+        -:  370:    QObject(QObjectPrivate &dd, QObject *parent = nullptr);
+        -:  371:
+        -:  372:protected:
+        -:  373:    QScopedPointer<QObjectData> d_ptr;
+        -:  374:
+        -:  375:    friend struct QMetaObject;
+        -:  376:    friend struct QMetaObjectPrivate;
+        -:  377:    friend class QMetaCallEvent;
+        -:  378:    friend class QApplication;
+        -:  379:    friend class QApplicationPrivate;
+        -:  380:    friend class QCoreApplication;
+        -:  381:    friend class QCoreApplicationPrivate;
+        -:  382:    friend class QWidget;
+        -:  383:    friend class QAccessibleWidget;
+        -:  384:    friend class QThreadData;
+        -:  385:
+        -:  386:private:
+        -:  387:    void doSetObjectName(const QString &name);
+        -:  388:    bool doSetProperty(const char *name, const QVariant *lvalue, QVariant *rvalue);
+        -:  389:
+        -:  390:    Q_DISABLE_COPY(QObject)
+        -:  391:
+        -:  392:private:
+        -:  393:    static QMetaObject::Connection connectImpl(const QObject *sender, void **signal,
+        -:  394:                                               const QObject *receiver, void **slotPtr,
+        -:  395:                                               QtPrivate::QSlotObjectBase *slot, Qt::ConnectionType type,
+        -:  396:                                               const int *types, const QMetaObject *senderMetaObject);
+        -:  397:
+        -:  398:    static bool disconnectImpl(const QObject *sender, void **signal, const QObject *receiver, void **slot,
+        -:  399:                               const QMetaObject *senderMetaObject);
+        -:  400:
+        -:  401:};
+        -:  402:
+        -:  403:inline QMetaObject::Connection QObject::connect(const QObject *asender, const char *asignal,
+        -:  404:                                            const char *amember, Qt::ConnectionType atype) const
+        -:  405:{ return connect(asender, asignal, this, amember, atype); }
+        -:  406:
+        -:  407:#if QT_CORE_INLINE_IMPL_SINCE(6, 6)
+        -:  408:bool QObject::setProperty(const char *name, const QVariant &value)
+        -:  409:{
+        -:  410:    return doSetProperty(name, &value, nullptr);
+        -:  411:}
+        -:  412:#endif // inline since 6.6
+        -:  413:bool QObject::setProperty(const char *name, QVariant &&value)
+        -:  414:{
+        -:  415:    return doSetProperty(name, &value, &value);
+        -:  416:}
+        -:  417:
+        -:  418:template <class T>
+        -:  419:inline T qobject_cast(QObject *object)
+        -:  420:{
+        -:  421:    static_assert(std::is_pointer_v<T>,
+        -:  422:                  "qobject_cast requires to cast towards a pointer type");
+        -:  423:    typedef typename std::remove_cv<typename std::remove_pointer<T>::type>::type ObjType;
+        -:  424:    static_assert(QtPrivate::HasQ_OBJECT_Macro<ObjType>::Value,
+        -:  425:                    "qobject_cast requires the type to have a Q_OBJECT macro");
+        -:  426:    return static_cast<T>(ObjType::staticMetaObject.cast(object));
+        -:  427:}
+        -:  428:
+        -:  429:template <class T>
+        -:  430:inline T qobject_cast(const QObject *object)
+        -:  431:{
+        -:  432:    static_assert(std::is_pointer_v<T>,
+        -:  433:                  "qobject_cast requires to cast towards a pointer type");
+        -:  434:    static_assert(std::is_const_v<std::remove_pointer_t<T>>,
+        -:  435:                  "qobject_cast cannot cast away constness (use const_cast)");
+        -:  436:    typedef typename std::remove_cv<typename std::remove_pointer<T>::type>::type ObjType;
+        -:  437:    static_assert(QtPrivate::HasQ_OBJECT_Macro<ObjType>::Value,
+        -:  438:                      "qobject_cast requires the type to have a Q_OBJECT macro");
+        -:  439:    return static_cast<T>(ObjType::staticMetaObject.cast(object));
+        -:  440:}
+        -:  441:
+        -:  442:
+        -:  443:template <class T> constexpr const char * qobject_interface_iid() = delete;
+        -:  444:template <class T> inline T *
+        -:  445:qobject_iid_cast(QObject *object, const char *IId = qobject_interface_iid<T *>())
+        -:  446:{
+        -:  447:    return reinterpret_cast<T *>((object ? object->qt_metacast(IId) : nullptr));
+        -:  448:}
+        -:  449:template <class T> inline std::enable_if_t<std::is_const<T>::value, T *>
+        -:  450:qobject_iid_cast(const QObject *object)
+        -:  451:{
+        -:  452:    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
+        -:  453:    QObject *o = const_cast<QObject *>(object);
+        -:  454:    return qobject_iid_cast<std::remove_cv_t<T>>(o);
+        -:  455:}
+        -:  456:
+        -:  457:#if defined(Q_QDOC)
+        -:  458:#  define Q_DECLARE_INTERFACE(IFace, IId)
+        -:  459:#elif !defined(Q_MOC_RUN)
+        -:  460:#  define Q_DECLARE_INTERFACE(IFace, IId) \
+        -:  461:    template <> constexpr const char *qobject_interface_iid<IFace *>() \
+        -:  462:    { return IId; } \
+        -:  463:    template <> inline IFace *qobject_cast<IFace *>(QObject *object) \
+        -:  464:    { return qobject_iid_cast<IFace>(object); } \
+        -:  465:    template <> inline const IFace *qobject_cast<const IFace *>(const QObject *object) \
+        -:  466:    { return qobject_iid_cast<const IFace>(object); }
+        -:  467:#endif // Q_MOC_RUN
+        -:  468:
+        -:  469:inline const QBindingStorage *qGetBindingStorage(const QObject *o)
+        -:  470:{
+        -:  471:    return o->bindingStorage();
+        -:  472:}
+        -:  473:inline QBindingStorage *qGetBindingStorage(QObject *o)
+        -:  474:{
+        -:  475:    return o->bindingStorage();
+        -:  476:}
+        -:  477:
+        -:  478:#ifndef QT_NO_DEBUG_STREAM
+        -:  479:Q_CORE_EXPORT QDebug operator<<(QDebug, const QObject *);
+        -:  480:#endif
+        -:  481:
+        -:  482:class QSignalBlocker
+        -:  483:{
+        -:  484:public:
+        -:  485:    Q_NODISCARD_CTOR
+        -:  486:    inline explicit QSignalBlocker(QObject *o) noexcept;
+        -:  487:    Q_NODISCARD_CTOR
+        -:  488:    inline explicit QSignalBlocker(QObject &o) noexcept;
+        -:  489:    inline ~QSignalBlocker();
+        -:  490:
+        -:  491:    Q_NODISCARD_CTOR
+        -:  492:    inline QSignalBlocker(QSignalBlocker &&other) noexcept;
+        -:  493:    inline QSignalBlocker &operator=(QSignalBlocker &&other) noexcept;
+        -:  494:
+        -:  495:    inline void reblock() noexcept;
+        -:  496:    inline void unblock() noexcept;
+        -:  497:    inline void dismiss() noexcept;
+        -:  498:
+        -:  499:private:
+        -:  500:    Q_DISABLE_COPY(QSignalBlocker)
+        -:  501:    QObject *m_o;
+        -:  502:    bool m_blocked;
+        -:  503:    bool m_inhibited;
+        -:  504:};
+        -:  505:
+        -:  506:QSignalBlocker::QSignalBlocker(QObject *o) noexcept
+        -:  507:    : m_o(o),
+        -:  508:      m_blocked(o && o->blockSignals(true)),
+        -:  509:      m_inhibited(false)
+        -:  510:{}
+        -:  511:
+        -:  512:QSignalBlocker::QSignalBlocker(QObject &o) noexcept
+        -:  513:    : m_o(&o),
+        -:  514:      m_blocked(o.blockSignals(true)),
+        -:  515:      m_inhibited(false)
+        -:  516:{}
+        -:  517:
+        -:  518:QSignalBlocker::QSignalBlocker(QSignalBlocker &&other) noexcept
+        -:  519:    : m_o(other.m_o),
+        -:  520:      m_blocked(other.m_blocked),
+        -:  521:      m_inhibited(other.m_inhibited)
+        -:  522:{
+        -:  523:    other.m_o = nullptr;
+        -:  524:}
+        -:  525:
+        -:  526:QSignalBlocker &QSignalBlocker::operator=(QSignalBlocker &&other) noexcept
+        -:  527:{
+        -:  528:    if (this != &other) {
+        -:  529:        // if both *this and other block the same object's signals:
+        -:  530:        // unblock *this iff our dtor would unblock, but other's wouldn't
+        -:  531:        if (m_o != other.m_o || (!m_inhibited && other.m_inhibited))
+        -:  532:            unblock();
+        -:  533:        m_o = other.m_o;
+        -:  534:        m_blocked = other.m_blocked;
+        -:  535:        m_inhibited = other.m_inhibited;
+        -:  536:        // disable other:
+        -:  537:        other.m_o = nullptr;
+        -:  538:    }
+        -:  539:    return *this;
+        -:  540:}
+        -:  541:
+        -:  542:QSignalBlocker::~QSignalBlocker()
+        -:  543:{
+        -:  544:    if (m_o && !m_inhibited)
+        -:  545:        m_o->blockSignals(m_blocked);
+        -:  546:}
+        -:  547:
+        -:  548:void QSignalBlocker::reblock() noexcept
+        -:  549:{
+        -:  550:    if (m_o)
+        -:  551:        m_o->blockSignals(true);
+        -:  552:    m_inhibited = false;
+        -:  553:}
+        -:  554:
+        -:  555:void QSignalBlocker::unblock() noexcept
+        -:  556:{
+        -:  557:    if (m_o)
+        -:  558:        m_o->blockSignals(m_blocked);
+        -:  559:    m_inhibited = true;
+        -:  560:}
+        -:  561:
+        -:  562:void QSignalBlocker::dismiss() noexcept
+        -:  563:{
+        -:  564:    m_o = nullptr;
+        -:  565:}
+        -:  566:
+        -:  567:namespace QtPrivate {
+        -:  568:    inline QObject & deref_for_methodcall(QObject &o) { return  o; }
+        -:  569:    inline QObject & deref_for_methodcall(QObject *o) { return *o; }
+        -:  570:}
+        -:  571:#define Q_SET_OBJECT_NAME(obj) QT_PREPEND_NAMESPACE(QtPrivate)::deref_for_methodcall(obj).setObjectName(QLatin1StringView(#obj))
+        -:  572:
+        -:  573:QT_END_NAMESPACE
+        -:  574:
+        -:  575:#endif
+        -:  576:
+        -:  577:#endif // QOBJECT_H

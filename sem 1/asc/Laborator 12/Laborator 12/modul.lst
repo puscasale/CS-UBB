@@ -1,0 +1,179 @@
+     1                                  ; bits 32
+     2                                  ; global _conversie_rapida
+     3                                  
+     4                                  ; segment data public data use32 ; NU merge segment data public use32 
+     5                                      ; rez times 8 db 0
+     6                                      ; db 0
+     7                                      ; TabHexa db '0123456789ABCDEF'
+     8                                     
+     9                                  ; segment code public code use32 ; NU merge segment code public use32
+    10                                      ; _conversie_rapida:
+    11                                          ; push ebp
+    12                                          ; mov ebp, esp        
+    13                                          
+    14                                          ; mov ebx, TabHexa
+    15                                          ; mov edx, [ebp + 8]  ; parametrul functiei
+    16                                          ; mov ecx, 8
+    17                                          
+    18                                          ; mov edi, rez        ; EDI = adresa de inceput a rezultatului (rez)
+    19                                          ; repeta:
+    20                                              ; mov esi, 0
+    21                                              
+    22                                              ; cif1:
+    23                                              ; mov al, [edx]   ; AL = caracterul de la pointerul EDX
+    24                                              ; inc edx         ; EDX "indica" urmatorul caracter
+    25                                              
+    26                                              ; cmp al, '1'     ; |
+    27                                              ; je .egal        ; |
+    28                                              ; shl esi, 1      ; | 
+    29                                              ; jmp .dupa       ; |
+    30                                              ; .egal:          ; |
+    31                                              ; shl esi, 1      ; |
+    32                                              ; inc esi         ; |-> conversie '0' si '1' in 0 si 1, rezultat pus in ESI
+    33                                              ; .dupa:
+    34                                                              ; ; repetare actiune de inca 3 ori
+    35                                              ; cif2:
+    36                                              ; mov al, [edx]
+    37                                              ; inc edx
+    38                                              
+    39                                              ; cmp al, '1'
+    40                                              ; je .egal
+    41                                              ; shl esi, 1
+    42                                              ; jmp .dupa
+    43                                              ; .egal:
+    44                                              ; shl esi, 1
+    45                                              ; inc esi
+    46                                              ; .dupa:
+    47                                              
+    48                                              ; cif3:
+    49                                              ; mov al, [edx]
+    50                                              ; inc edx
+    51                                              
+    52                                              ; cmp al, '1'
+    53                                              ; je .egal
+    54                                              ; shl esi, 1
+    55                                              ; jmp .dupa
+    56                                              ; .egal:
+    57                                              ; shl esi, 1
+    58                                              ; inc esi
+    59                                              ; .dupa:
+    60                                              
+    61                                              ; cif4:
+    62                                              ; mov al, [edx]
+    63                                              ; inc edx
+    64                                              
+    65                                              ; cmp al, '1'
+    66                                              ; je .egal
+    67                                              ; shl esi, 1
+    68                                              ; jmp .dupa
+    69                                              ; .egal:
+    70                                              ; shl esi, 1
+    71                                              ; inc esi
+    72                                              ; .dupa:
+    73                                              
+    74                                              ; mov eax, esi    ; EAX = rezultatul in urma conversiei din char in int 
+    75                                              ; xlat            ; se iau ultimii 4 biti pentru conversia rapida
+    76                                              
+    77                                              ; mov [edi], al   ; se pune la adresa EDI rezultatul
+    78                                              ; inc edi         ; EDI indica urmatorul byte din rez
+    79                                              
+    80                                              ; loop repeta     ; se repeta instructiunile de 8 ori (8 bytes = 32 biti)
+    81                                              
+    82                                          ; mov eax, rez ; EAX = numar convertit
+    83                                          ; mov esp, ebp
+    84                                          ; pop ebp
+    85                                          ; ret        
+    86                                  
+    87                                          
+    88                                  bits 32
+    89                                  global _conversie_rapida
+    90                                  
+    91                                  segment data public data use32 ; NU merge segment data public use32 
+    92 00000000 00<rept>                    rez times 8 db 0
+    93 00000008 00                          db 0
+    94 00000009 3031323334353637            TabHexa db '01234567'
+    95                                     
+    96                                  segment code public code use32 ; NU merge segment code public use32
+    97                                      _conversie_rapida:
+    98 00000000 55                              push ebp
+    99 00000001 89E5                            mov ebp, esp        
+   100                                          
+   101 00000003 BB[09000000]                    mov ebx, TabHexa
+   102 00000008 8B5508                          mov edx, [ebp + 8]  ; parametrul functiei
+   103 0000000B B908000000                      mov ecx, 8
+   104                                          
+   105 00000010 BF[00000000]                    mov edi, rez        ; EDI = adresa de inceput a rezultatului (rez)
+   106                                          repeta:
+   107 00000015 BE00000000                          mov esi, 0
+   108                                              
+   109                                              cif1:
+   110 0000001A 8A02                                mov al, [edx]   ; AL = caracterul de la pointerul EDX
+   111 0000001C 42                                  inc edx         ; EDX "indica" urmatorul caracter
+   112                                              
+   113 0000001D 3C31                                cmp al, '1'     ; |
+   114 0000001F 7404                                je .egal        ; |
+   115 00000021 D1E6                                shl esi, 1      ; | 
+   116 00000023 EB03                                jmp .dupa       ; |
+   117                                              .egal:          ; |
+   118 00000025 D1E6                                shl esi, 1      ; |
+   119 00000027 46                                  inc esi         ; |-> conversie '0' si '1' in 0 si 1, rezultat pus in ESI
+   120                                              .dupa:
+   121                                                              ; repetare actiune de inca 3 ori
+   122                                              cif2:
+   123 00000028 8A02                                mov al, [edx]
+   124 0000002A 42                                  inc edx
+   125                                              
+   126 0000002B 3C31                                cmp al, '1'
+   127 0000002D 7404                                je .egal
+   128 0000002F D1E6                                shl esi, 1
+   129 00000031 EB03                                jmp .dupa
+   130                                              .egal:
+   131 00000033 D1E6                                shl esi, 1
+   132 00000035 46                                  inc esi
+   133                                              .dupa:
+   134                                              
+   135                                              cif3:
+   136 00000036 8A02                                mov al, [edx]
+   137 00000038 42                                  inc edx
+   138                                              
+   139 00000039 3C31                                cmp al, '1'
+   140 0000003B 7404                                je .egal
+   141 0000003D D1E6                                shl esi, 1
+   142 0000003F EB03                                jmp .dupa
+   143                                              .egal:
+   144 00000041 D1E6                                shl esi, 1
+   145 00000043 46                                  inc esi
+   146                                              .dupa:
+   147                                              
+   148                                              ; cif4:
+   149                                              ; mov al, [edx]
+   150                                              ; inc edx
+   151                                              
+   152                                              ; cmp al, '1'
+   153                                              ; je .egal
+   154                                              ; shl esi, 1
+   155                                              ; jmp .dupa
+   156                                              ; .egal:
+   157                                              ; shl esi, 1
+   158                                              ; inc esi
+   159                                              ; .dupa:
+   160                                              
+   161 00000044 89F0                                mov eax, esi    ; EAX = rezultatul in urma conversiei din char in int 
+   162 00000046 D7                                  xlat            ; se iau ultimii 4 biti pentru conversia rapida
+   163                                              
+   164 00000047 8807                                mov [edi], al   ; se pune la adresa EDI rezultatul
+   165 00000049 47                                  inc edi         ; EDI indica urmatorul byte din rez
+   166                                              
+   167 0000004A E2C9                                loop repeta     ; se repeta instructiunile de 8 ori (8 bytes = 32 biti)
+   168                                              
+   169 0000004C B8[00000000]                    mov eax, rez ; EAX = numar convertit
+   170 00000051 89EC                            mov esp, ebp
+   171 00000053 5D                              pop ebp
+   172 00000054 C3                              ret        
+   173                                  
+   174                                          
+   175                                          
+   176                                   
+   177                                          
+   178                                          
+   179                                   

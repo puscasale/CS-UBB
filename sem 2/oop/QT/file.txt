@@ -1,0 +1,8 @@
+coachella,music,festival,9
+comiccon,convention,convention,25
+carnival,festivity,festival,10
+tedtalks,inspiration,conference,12
+mardigras,parade,festival,8
+sxsw,multimedia,festival,18
+artbasel,exhibit,fair,4
+aoa,cool,festival,3

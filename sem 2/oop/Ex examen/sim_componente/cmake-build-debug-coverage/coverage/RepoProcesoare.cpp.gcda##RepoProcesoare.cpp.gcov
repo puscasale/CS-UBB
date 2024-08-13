@@ -1,0 +1,90 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_componente/RepoProcesoare.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\RepoProcesoare.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_componente\cmake-build-debug-coverage\CMakeFiles\sim_componente.dir\RepoProcesoare.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/20/2024.
+        -:    3://
+        -:    4:
+        -:    5:#include <fstream>
+        -:    6:#include "RepoProcesoare.h"
+        -:    7:
+function _ZN14RepoProcesoare14load_from_fileEv called 2 returned 100% blocks executed 68%
+        2:    8:void RepoProcesoare::load_from_file() {
+        2:    9:    std::ifstream file(file_name);
+        2:    9-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        8:   10:    while(!file.eof()){
+        2:   10-block  0
+        8:   10-block  1
+call    0 returned 8
+branch  1 taken 8 (fallthrough)
+branch  2 taken 0 (throw)
+        8:   10-block  2
+branch  3 taken 6
+branch  4 taken 2 (fallthrough)
+        6:   11:        string nume;
+        6:   11-block  0
+call    0 returned 6
+        -:   12:        int nrT, soclu, pret;
+        6:   13:        file >> nume >> nrT >> soclu >> pret;
+call    0 returned 6
+branch  1 taken 6 (fallthrough)
+branch  2 taken 0 (throw)
+        6:   13-block  0
+call    3 returned 6
+branch  4 taken 6 (fallthrough)
+branch  5 taken 0 (throw)
+        6:   13-block  1
+call    6 returned 6
+branch  7 taken 6 (fallthrough)
+branch  8 taken 0 (throw)
+        6:   13-block  2
+call    9 returned 6
+branch 10 taken 6 (fallthrough)
+branch 11 taken 0 (throw)
+        6:   14:        if(!nume.empty())
+        6:   14-block  0
+call    0 returned 6
+branch  1 taken 6 (fallthrough)
+branch  2 taken 0
+        6:   15:            procesoare.push_back(Procesor(nume,nrT,soclu,pret));
+        6:   15-block  0
+call    0 returned 6
+branch  1 taken 6 (fallthrough)
+branch  2 taken 0 (throw)
+        6:   15-block  1
+call    3 returned 6
+branch  4 taken 6 (fallthrough)
+branch  5 taken 0 (throw)
+        6:   15-block  2
+call    6 returned 6
+branch  7 taken 6 (fallthrough)
+branch  8 taken 0 (throw)
+        6:   15-block  3
+call    9 returned 6
+call   10 returned 6
+    $$$$$:   15-block  4
+call   11 never executed
+    $$$$$:   15-block  5
+call   12 never executed
+    $$$$$:   15-block  6
+    $$$$$:   15-block  7
+        -:   16:
+        6:   17:    }
+        6:   17-block  0
+call    0 returned 6
+    $$$$$:   17-block  1
+call    1 never executed
+        2:   18:    file.close();
+        2:   18-block  0
+call    0 returned 2
+branch  1 taken 2 (fallthrough)
+branch  2 taken 0 (throw)
+        2:   19:}
+        2:   19-block  0
+call    0 returned 2
+    $$$$$:   19-block  1
+call    1 never executed

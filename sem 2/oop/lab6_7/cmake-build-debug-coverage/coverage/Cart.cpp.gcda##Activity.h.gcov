@@ -1,0 +1,86 @@
+        -:    0:Source:C:/Users/Ale/Desktop/oop/lab6_7/Activity.h
+        -:    0:Graph:C:\Users\Ale\Desktop\oop\lab6_7\cmake-build-debug-coverage\CMakeFiles\lab6_7.dir\Cart.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\oop\lab6_7\cmake-build-debug-coverage\CMakeFiles\lab6_7.dir\Cart.cpp.gcda
+        -:    0:Runs:1
+        -:    1:
+        -:    2:#ifndef LAB6_7_ACTIVITY_H
+        -:    3:#define LAB6_7_ACTIVITY_H
+        -:    4:#include <string>
+        -:    5:#include <iostream>
+        -:    6:using std::string;
+        -:    7:
+        -:    8:
+        -:    9:class Activity{
+        -:   10:
+        -:   11:private:
+        -:   12:    string name;
+        -:   13:    string description;
+        -:   14:    string type;
+        -:   15:    int time;
+        -:   16:
+        -:   17:public:
+        -:   18:    Activity() = default;
+        -:   19:
+        -:   20:    /**
+        -:   21:     * Getter for name
+        -:   22:     * @return name
+        -:   23:     */
+        -:   24:    string get_name() const;
+        -:   25:
+        -:   26:    /**
+        -:   27:     * Getter for description
+        -:   28:     * @return description
+        -:   29:     */
+        -:   30:    string get_description() const;
+        -:   31:
+        -:   32:    /**
+        -:   33:     * Getter for type
+        -:   34:     * @return type
+        -:   35:     */
+        -:   36:    string get_type() const;
+        -:   37:
+        -:   38:    /**
+        -:   39:     * Getter for time
+        -:   40:     * @return time
+        -:   41:     */
+        -:   42:    int get_time() const;
+        -:   43:
+        -:   44:    /**
+        -:   45:     * Constructor
+        -:   46:     * @param name : the name of the activity
+        -:   47:     * @param description : the description of the activity
+        -:   48:     * @param type : the type of the activity
+        -:   49:     * @param time : the time of the activity
+        -:   50:     */
+        -:   51:    Activity(string name, string description, string type, int time);
+        -:   52:
+        -:   53:    /**
+        -:   54:     * Copy constructor
+        -:   55:     * @param a
+        -:   56:     */
+function _ZN8ActivityC1ERKS_ called 0 returned 0% blocks executed 0%
+    #####:   57:    Activity(const Activity& other) :name{ other.name }, description{ other.description }, type{ other.type }, time{ other.time } {
+    %%%%%:   57-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   57-block  1
+call    4 never executed
+branch  5 never executed (fallthrough)
+branch  6 never executed (throw)
+    #####:   58:        std::cout << "*\n";
+    %%%%%:   58-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   59:    }
+    %%%%%:   59-block  0
+    $$$$$:   59-block  1
+call    0 never executed
+    $$$$$:   59-block  2
+call    1 never executed
+    $$$$$:   59-block  3
+call    2 never executed
+        -:   60:};
+        -:   61:#endif //LAB6_7_ACTIVITY_H

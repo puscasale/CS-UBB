@@ -1,0 +1,83 @@
+     1                                  bits 32
+     2                                  global start
+     3                                  
+     4                                  extern exit, scanf, fopen, fclose, printf, fscanf
+     5                                  import exit msvcrt.dll
+     6                                  import scanf msvcrt.dll
+     7                                  import fopen msvcrt.dll
+     8                                  import fclose msvcrt.dll
+     9                                  import printf msvcrt.dll
+    10                                  import fscanf msvcrt.dll
+    11                                  
+    12                                  
+    13                                  segment data use32 class = data
+    14 00000000 0000<rept>                  file_name times 20 db 0, 0
+    15 00000028 7200                        file_mode db "r", 0
+    16 0000002A FFFFFFFF                    file_descr dd -1
+    17 0000002E 257300                      file_r_format db "%s", 0
+    18                                      
+    19 00000031 257300                      r_format_str db "%s", 0
+    20 00000034 256400                      r_format_dec db "%d", 0
+    21 00000037 25732000                    w_format db "%s ", 0
+    22                                      
+    23 0000003B 00000000                    number dd 0
+    24 0000003F 0000<rept>                  cuv times 20 db 0, 0
+    25                                  
+    26                                  
+    27                                  segment code use32 class = code
+    28                                      start:
+    29 00000000 68[00000000]                    push dword file_name
+    30 00000005 68[31000000]                    push dword r_format_str
+    31 0000000A FF15[00000000]                  call [scanf]
+    32 00000010 83C408                          add esp, 4 * 2
+    33                                          
+    34 00000013 68[3B000000]                    push dword number
+    35 00000018 68[34000000]                    push dword r_format_dec
+    36 0000001D FF15[00000000]                  call [scanf]
+    37 00000023 83C408                          add esp, 4 * 2
+    38                                          
+    39 00000026 68[28000000]                    push dword file_mode
+    40 0000002B 68[00000000]                    push dword file_name
+    41 00000030 FF15[00000000]                  call [fopen]
+    42 00000036 83C408                          add esp, 4 * 2
+    43                                          
+    44 00000039 A3[2A000000]                    mov [file_descr], eax
+    45 0000003E 83F800                          cmp eax, 0
+    46 00000041 745A                            je final
+    47                                          
+    48 00000043 BE01000000                      mov esi, 1
+    49                                          
+    50                                          rep_1:
+    51 00000048 68[3F000000]                        push dword cuv
+    52 0000004D 68[2E000000]                        push dword file_r_format
+    53 00000052 FF35[2A000000]                      push dword [file_descr]
+    54 00000058 FF15[00000000]                      call [fscanf]
+    55 0000005E 83C40C                              add esp, 4 * 3
+    56                                              
+    57 00000061 83F801                              cmp eax, 1
+    58 00000064 7528                                jne exit_rep_1
+    59                                              
+    60 00000066 89F0                                mov eax, esi
+    61 00000068 BA00000000                          mov edx, 0
+    62 0000006D F735[3B000000]                      div dword [number]
+    63                                              
+    64 00000073 83FA00                              cmp edx, 0
+    65 00000076 7513                                jne not_multiple
+    66                                              
+    67 00000078 68[3F000000]                        push dword cuv
+    68 0000007D 68[37000000]                        push dword w_format
+    69 00000082 FF15[00000000]                      call [printf]
+    70 00000088 83C408                              add esp, 4 * 2
+    71                                              
+    72                                              not_multiple:
+    73 0000008B 46                                  inc esi
+    74 0000008C EBBA                                jmp rep_1
+    75                                          
+    76                                          exit_rep_1:
+    77 0000008E FF35[2A000000]                  push dword [file_descr]
+    78 00000094 FF15[00000000]                  call [fclose]
+    79 0000009A 83C404                          add esp, 4 * 1
+    80                                          
+    81                                          final:
+    82 0000009D 6A00                            push dword 0
+    83 0000009F FF15[00000000]                  call [exit]

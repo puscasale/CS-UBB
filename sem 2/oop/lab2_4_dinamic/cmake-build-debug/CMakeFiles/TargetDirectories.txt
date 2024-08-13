@@ -1,0 +1,3 @@
+C:/Users/Ale/Desktop/Year 1/sem 2/oop/lab2_4_dinamic/cmake-build-debug/CMakeFiles/lab2_4_dinamic.dir
+C:/Users/Ale/Desktop/Year 1/sem 2/oop/lab2_4_dinamic/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Ale/Desktop/Year 1/sem 2/oop/lab2_4_dinamic/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,369 @@
+        -:    0:Source:C:/Users/Ale/Desktop/oop/lab2_4_dinamic/main.c
+        -:    0:Graph:C:\Users\Ale\Desktop\oop\lab2_4_dinamic\cmake-build-debug-coverage\CMakeFiles\lab2_4_dinamic.dir\main.c.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\oop\lab2_4_dinamic\cmake-build-debug-coverage\CMakeFiles\lab2_4_dinamic.dir\main.c.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdio.h>
+        -:    2:#include "functions.h"
+        -:    3:#include "med.h"
+        -:    4:#include "list.h"
+        -:    5:#include "tests.h"
+        -:    6:#define _CRTDBG_MAP_ALLOC
+        -:    7:#include <crtdbg.h>
+        -:    8:#include <stdlib.h>
+        -:    9:#include <stdbool.h>
+        -:   10:
+        -:   11:
+function run called 1 returned 0% blocks executed 7%
+        1:   12:void run(){
+        1:   13:    List l = create_list();
+        1:   13-block  0
+call    0 returned 1
+    #####:   14:    while(true){
+        1:   15:        printf("\n1. Vizualizare\n2. Adaugare\n3. Stergere\n4. Modificare\n5. Filtrate\n6. Sortare\n7. Iesire\n");
+        1:   15-block  0
+call    0 returned 1
+        1:   16:        int option = 0;
+        1:   17:        printf("\nIntroduceti optiunea:");
+call    0 returned 1
+        1:   18:        scanf("%d", &option);
+call    0 returned 1
+        1:   19:        switch (option) {
+branch  0 taken 0
+branch  1 taken 0
+branch  2 taken 0
+branch  3 taken 0
+branch  4 taken 0
+branch  5 taken 0
+branch  6 taken 1
+branch  7 taken 0
+    #####:   20:            case 1: {
+    #####:   21:                if(size(&l) == 0)
+    %%%%%:   21-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:   22:                    printf("\nNu exista medicamente");
+    %%%%%:   22-block  0
+call    0 never executed
+        -:   23:                else {
+    #####:   24:                    for( int i = 0; i < size(&l); i++){
+    %%%%%:   24-block  0
+    %%%%%:   24-block  1
+call    0 never executed
+branch  1 never executed
+branch  2 never executed (fallthrough)
+    #####:   25:                        Med m = get(&l, i);
+    %%%%%:   25-block  0
+call    0 never executed
+    #####:   26:                        printf("\nId:%d Nume:%s Concentratie:%d Stoc:%d",m.id, m.name, m.concentration, m.stock);
+call    0 never executed
+        -:   27:                    }
+        -:   28:                }
+    #####:   29:                break;
+    %%%%%:   29-block  0
+        -:   30:            }
+    #####:   31:            case 2: {
+        -:   32:                int id, stock, concentration;
+        -:   33:                char name[50];
+        -:   34:
+    #####:   35:                printf("Introduceti id-ul:");
+    %%%%%:   35-block  0
+call    0 never executed
+    #####:   36:                scanf("%d", &id);
+call    0 never executed
+        -:   37:
+    #####:   38:                printf("Intrdouceti numele:");
+call    0 never executed
+    #####:   39:                scanf("%s", &name);
+call    0 never executed
+        -:   40:
+    #####:   41:                printf("Introduceti concentratia:");
+call    0 never executed
+    #####:   42:                scanf("%d", &concentration);
+call    0 never executed
+        -:   43:
+    #####:   44:                printf("Introduceti stocul:");
+call    0 never executed
+    #####:   45:                scanf("%d", &stock);
+call    0 never executed
+        -:   46:
+    #####:   47:                int error = add_med(&l, id, name, concentration, stock);
+call    0 never executed
+    #####:   48:                if(error != 0)
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   49:                    printf("Medicament invalid");
+    %%%%%:   49-block  0
+call    0 never executed
+        -:   50:                else
+    #####:   51:                    printf("Medicament adaugat");
+    %%%%%:   51-block  0
+call    0 never executed
+    #####:   52:                break;
+    %%%%%:   52-block  0
+        -:   53:            }
+    #####:   54:            case 3: {
+    #####:   55:                int poz = 0;
+        -:   56:
+    #####:   57:                printf("Introduceti pozitia:");
+    %%%%%:   57-block  0
+call    0 never executed
+    #####:   58:                scanf("%d", &poz);
+call    0 never executed
+        -:   59:
+    #####:   60:                poz = poz-1;
+    #####:   61:                int error = delete_med(&l, poz);
+call    0 never executed
+    #####:   62:                if(error != 0)
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   63:                    printf("Medicamentul nu exista");
+    %%%%%:   63-block  0
+call    0 never executed
+        -:   64:                else
+    #####:   65:                    printf("Medicament sters");
+    %%%%%:   65-block  0
+call    0 never executed
+    #####:   66:                break;
+    %%%%%:   66-block  0
+        -:   67:            }
+    #####:   68:            case 4: {
+        -:   69:                int  new_concentration;
+        -:   70:                char new_name[50];
+    #####:   71:                int poz = 0;
+        -:   72:
+    #####:   73:                printf("Introduceti pozitia:");
+    %%%%%:   73-block  0
+call    0 never executed
+    #####:   74:                scanf("%d", &poz);
+call    0 never executed
+        -:   75:
+    #####:   76:                poz = poz - 1;
+    #####:   77:                printf("Introduceti noul nume:");
+call    0 never executed
+    #####:   78:                scanf("%s", &new_name);
+call    0 never executed
+        -:   79:
+    #####:   80:                printf("Introduceti noua concentratie:");
+call    0 never executed
+    #####:   81:                scanf("%d", &new_concentration);
+call    0 never executed
+        -:   82:
+    #####:   83:                int error = modify_med(&l, poz, new_name, new_concentration);
+call    0 never executed
+    #####:   84:                if(error != 0)
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   85:                    printf("Medicament invalid");
+    %%%%%:   85-block  0
+call    0 never executed
+        -:   86:                else
+    #####:   87:                    printf("Medicament modificat");
+    %%%%%:   87-block  0
+call    0 never executed
+    #####:   88:                break;
+    %%%%%:   88-block  0
+        -:   89:            }
+    #####:   90:            case 5: {
+        -:   91:                char letter;
+        -:   92:                int number;
+        -:   93:                int crt;
+        -:   94:
+    #####:   95:                printf("1. Stoc\n2. Nume");
+    %%%%%:   95-block  0
+call    0 never executed
+    #####:   96:                printf("\nIntroduceti criteriul de filtrare:");
+call    0 never executed
+        -:   97:
+    #####:   98:                scanf("%d", &crt);
+call    0 never executed
+        -:   99:
+    #####:  100:                if(crt == 1){
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  101:                    printf("Introduceti un numar:");
+    %%%%%:  101-block  0
+call    0 never executed
+    #####:  102:                    scanf("%d", &number);
+call    0 never executed
+    #####:  103:                    List rez = filter_stock(&l, number);
+call    0 never executed
+        -:  104:
+    #####:  105:                    if(size(&rez) == 0){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:  106:                        printf("Nu exisat medicamente care sa aiba stocul mai mic decat numarul dat");
+    %%%%%:  106-block  0
+call    0 never executed
+        -:  107:                    }
+        -:  108:                    else {
+    #####:  109:                        for( int i = 0; i < size(&rez); i++){
+    %%%%%:  109-block  0
+    %%%%%:  109-block  1
+call    0 never executed
+branch  1 never executed
+branch  2 never executed (fallthrough)
+    #####:  110:                            Med m = get(&rez, i);
+    %%%%%:  110-block  0
+call    0 never executed
+    #####:  111:                            printf("\nId:%d Nume:%s Concentratie:%d Stoc:%d",m.id, m.name, m.concentration, m.stock);
+call    0 never executed
+        -:  112:                        }
+        -:  113:                    }
+        -:  114:                }
+        -:  115:
+        -:  116:                else {
+    #####:  117:                    getchar();
+    %%%%%:  117-block  0
+call    0 never executed
+    #####:  118:                    printf("Introduceti o litera:");
+call    0 never executed
+    #####:  119:                    scanf("%c", &letter);
+call    0 never executed
+    #####:  120:                    List rez = filter_name(&l, letter);
+call    0 never executed
+        -:  121:
+    #####:  122:                    if(size(&rez) == 0){
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:  123:                        printf("Nu exista medicamente a caror nume sa inceapa cu aceasta litera");
+    %%%%%:  123-block  0
+call    0 never executed
+        -:  124:                    }
+        -:  125:                    else{
+    #####:  126:                        for( int i = 0; i < size(&rez); i++){
+    %%%%%:  126-block  0
+    %%%%%:  126-block  1
+call    0 never executed
+branch  1 never executed
+branch  2 never executed (fallthrough)
+    #####:  127:                            Med m = get(&rez, i);
+    %%%%%:  127-block  0
+call    0 never executed
+    #####:  128:                            printf("\nId:%d Nume:%s Concentratie:%d Stoc:%d",m.id, m.name, m.concentration, m.stock);
+call    0 never executed
+        -:  129:                        }
+        -:  130:                    }
+        -:  131:                }
+    #####:  132:                break;
+    %%%%%:  132-block  0
+        -:  133:            }
+    #####:  134:            case 6: {
+        -:  135:                int mod;
+    #####:  136:                printf("1. Nume\n2. Stoc");
+    %%%%%:  136-block  0
+call    0 never executed
+    #####:  137:                printf("\nIntroduceti modeul de sortare:");
+call    0 never executed
+    #####:  138:                scanf("%d", &mod);
+call    0 never executed
+        -:  139:
+    #####:  140:                if(mod == 1) {
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  141:                    List sorted = sortNAme(&l);
+    %%%%%:  141-block  0
+call    0 never executed
+    #####:  142:                    for( int i = 0; i < size(&sorted); i++){
+    %%%%%:  142-block  0
+call    0 never executed
+branch  1 never executed
+branch  2 never executed (fallthrough)
+    #####:  143:                        Med m = get(&sorted, i);
+    %%%%%:  143-block  0
+call    0 never executed
+    #####:  144:                        printf("\nId:%d Nume:%s Concentratie:%d Stoc:%d",m.id, m.name, m.concentration, m.stock);
+call    0 never executed
+        -:  145:                    }
+    #####:  146:                    free(sorted.elements);
+    %%%%%:  146-block  0
+        -:  147:                }
+        -:  148:                else{
+    #####:  149:                    List sorted = sortStock(&l);
+    %%%%%:  149-block  0
+call    0 never executed
+    #####:  150:                    for( int i = 0; i < size(&sorted); i++){
+    %%%%%:  150-block  0
+call    0 never executed
+branch  1 never executed
+branch  2 never executed (fallthrough)
+    #####:  151:                        Med m = get(&sorted, i);
+    %%%%%:  151-block  0
+call    0 never executed
+    #####:  152:                        printf("\nId:%d Nume:%s Concentratie:%d Stoc:%d",m.id, m.name, m.concentration, m.stock);
+call    0 never executed
+        -:  153:                    }
+    #####:  154:                    free(sorted.elements);
+    %%%%%:  154-block  0
+        -:  155:                }
+    #####:  156:                break;
+    %%%%%:  156-block  0
+        -:  157:
+        -:  158:            }
+        1:  159:            case 7: {
+        1:  160:                destroy_list(&l);
+        1:  160-block  0
+call    0 returned 1
+        1:  161:                exit(0);
+call    0 returned 0
+        -:  162:            }
+    #####:  163:            default: {
+    #####:  164:                printf("\nOptiune invalida");
+    %%%%%:  164-block  0
+call    0 never executed
+    #####:  165:                break;
+        -:  166:            }
+        -:  167:        }
+        -:  168:    }
+        -:  169:}
+        -:  170:
+function tests called 1 returned 100% blocks executed 100%
+        1:  171:void tests(){
+        1:  172:    test_resize();
+        1:  172-block  0
+call    0 returned 1
+        1:  173:    test_add();
+call    0 returned 1
+        1:  174:    test_set();
+call    0 returned 1
+        1:  175:    test_get();
+call    0 returned 1
+        1:  176:    test_Modify();
+call    0 returned 1
+        1:  177:    test_delete();
+call    0 returned 1
+        1:  178:    test_CopyList();
+call    0 returned 1
+        1:  179:    test_CreateList();
+call    0 returned 1
+        1:  180:    test_validate();
+call    0 returned 1
+        1:  181:    test_add_med();
+call    0 returned 1
+        1:  182:    test_delete_med();
+call    0 returned 1
+        1:  183:    test_modify_med();
+call    0 returned 1
+        1:  184:    test_filter_stock();
+call    0 returned 1
+        1:  185:    test_filter_name();
+call    0 returned 1
+        1:  186:    test_sortStock();
+call    0 returned 1
+        1:  187:    test_sortName();
+call    0 returned 1
+        -:  188:
+        1:  189:}
+        -:  190:
+function main called 1 returned 0% blocks executed 75%
+        1:  191:int main() {
+        -:  192:    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+        1:  193:    tests();
+        1:  193-block  0
+call    0 returned 1
+        1:  194:    run();
+call    0 returned 0
+    #####:  195:    return 0;
+        -:  196:}

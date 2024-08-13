@@ -1,0 +1,145 @@
+        -:    0:Source:C:/Users/Ale/Desktop/sim_rochii/tests.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\sim_rochii\cmake-build-debug-coverage\CMakeFiles\sim_rochii.dir\tests.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\sim_rochii\cmake-build-debug-coverage\CMakeFiles\sim_rochii.dir\tests.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 05/21/2024.
+        -:    3://
+        -:    4:
+        -:    5:#include "tests.h"
+        -:    6:#include "assert.h"
+function _Z8test_setv called 1 returned 100% blocks executed 55%
+        1:    7:void test_set() {
+        1:    7-block  0
+        3:    8:    Rochie r{1,"a","e",2,true};
+        1:    8-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:    8-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:    8-block  2
+call    6 returned 1
+branch  7 taken 1 (fallthrough)
+branch  8 taken 0 (throw)
+        1:    8-block  3
+call    9 returned 1
+call   10 returned 1
+    $$$$$:    8-block  4
+call   11 never executed
+    $$$$$:    8-block  5
+    $$$$$:    8-block  6
+    $$$$$:    8-block  7
+call   12 never executed
+    $$$$$:    8-block  8
+    $$$$$:    8-block  9
+        1:    9:    r.set_dis(false);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+       1*:   10:    assert(r.get_dis() == false);
+        1:   10-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   10-block  1
+branch  3 taken 0 (fallthrough)
+branch  4 taken 1
+    %%%%%:   10-block  2
+call    5 never executed
+        1:   10-block  3
+        1:   11:}
+        1:   11-block  0
+call    0 returned 1
+    $$$$$:   11-block  1
+call    1 never executed
+        -:   12:
+function _Z8test_srvv called 1 returned 100% blocks executed 61%
+        1:   13:void test_srv() {
+        1:   13-block  0
+        1:   14:    Repo rep(R"(C:\Users\Ale\Desktop\sim_rochii\file.txt)");
+        1:   14-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   14-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   14-block  2
+call    6 returned 1
+    $$$$$:   14-block  3
+call    7 never executed
+    $$$$$:   14-block  4
+    $$$$$:   14-block  5
+        1:   15:    Service srv(rep);
+call    0 returned 1
+        1:   16:    vector<Rochie> sorted;
+call    0 returned 1
+        1:   17:    srv.sort_marime(sorted);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+       1*:   18:    assert(sorted[0].get_marime() == "L");
+        1:   18-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+        1:   18-block  1
+call    4 returned 1
+branch  5 taken 1 (fallthrough)
+branch  6 taken 0 (throw)
+        1:   18-block  2
+branch  7 taken 0 (fallthrough)
+branch  8 taken 1
+    %%%%%:   18-block  3
+call    9 never executed
+        1:   18-block  4
+        1:   18-block  5
+branch 10 taken 1 (fallthrough)
+branch 11 taken 0
+        1:   18-block  6
+call   12 returned 1
+    $$$$$:   18-block  7
+branch 13 never executed (fallthrough)
+branch 14 never executed
+    $$$$$:   18-block  8
+call   15 never executed
+    $$$$$:   18-block  9
+        1:   19:    srv.sort_pret(sorted);
+        1:   19-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+       1*:   20:    assert(sorted[0].get_pret() == 30);
+        1:   20-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+        1:   20-block  1
+branch  4 taken 0 (fallthrough)
+branch  5 taken 1
+    %%%%%:   20-block  2
+call    6 never executed
+        1:   20-block  3
+        1:   21:}
+        1:   21-block  0
+call    0 returned 1
+call    1 returned 1
+    $$$$$:   21-block  1
+call    2 never executed
+    $$$$$:   21-block  2
+call    3 never executed
+        -:   22:
+function _Z8test_allv called 1 returned 100% blocks executed 100%
+        1:   23:void test_all() {
+        1:   24:    test_set();
+        1:   24-block  0
+call    0 returned 1
+        1:   25:    test_srv();
+call    0 returned 1
+        1:   26:}

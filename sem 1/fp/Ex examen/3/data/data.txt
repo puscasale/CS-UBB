@@ -1,0 +1,5 @@
+15.02, 12:00, ASC, normal
+15.02, 11:00, Lc, normal
+06.02, 12:00, Fp, normal
+07.02, 12:00, AS, normal
+08.02, 12:00, A, normal

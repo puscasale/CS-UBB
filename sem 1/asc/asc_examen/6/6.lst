@@ -1,0 +1,111 @@
+     1                                  bits 32
+     2                                  global start
+     3                                  
+     4                                  extern exit, fopen, fclose, fscanf, printf
+     5                                  import exit msvcrt.dll
+     6                                  import fopen msvcrt.dll
+     7                                  import fclose msvcrt.dll
+     8                                  import fscanf msvcrt.dll
+     9                                  import printf msvcrt.dll
+    10                                  
+    11                                  
+    12                                  segment data use32 class = data
+    13 00000000 6E756D6572652E7478-         file_name db "numere.txt", 0
+    13 00000009 7400               
+    14 0000000B 7200                        file_mode db "r", 0
+    15 0000000D FFFFFFFF                    file_descr dd -1
+    16                                      
+    17 00000011 0000000000000000-           impar times 25 dd 0, 0
+    17 00000011 <rept>             
+    18 000000D9 0000000000000000-           par times 25 dd 0, 0
+    18 000000D9 <rept>             
+    19                                      
+    20 000001A1 00000000                    number dd 0
+    21                                      
+    22 000001A5 256400                      r_format db "%d", 0
+    23 000001A8 25642000                    w_format db "%d ", 0
+    24 000001AC 256300                      new_line db "%c", 0
+    25                                      
+    26                                  
+    27                                  segment code use32 class = code
+    28                                      start:
+    29 00000000 68[0B000000]                    push dword file_mode
+    30 00000005 68[00000000]                    push dword file_name
+    31 0000000A FF15[00000000]                  call [fopen]
+    32 00000010 83C408                          add esp, 4 * 2
+    33                                          
+    34 00000013 A3[0D000000]                    mov [file_descr], eax
+    35 00000018 83F800                          cmp eax, 0
+    36 0000001B 0F84A1000000                    je final
+    37                                          
+    38 00000021 BE00000000                      mov esi, 0
+    39 00000026 BF00000000                      mov edi, 0
+    40                                          
+    41                                          rep_1:
+    42 0000002B 68[A1010000]                        push dword number
+    43 00000030 68[A5010000]                        push dword r_format
+    44 00000035 FF35[0D000000]                      push dword [file_descr]
+    45 0000003B FF15[00000000]                      call [fscanf]
+    46 00000041 83C40C                              add esp, 4 * 3
+    47                                              
+    48 00000044 83F801                              cmp eax, 1
+    49 00000047 7522                                jne exit_rep_1
+    50                                              
+    51 00000049 A1[A1010000]                        mov eax, [number]
+    52 0000004E A901000000                          test eax, 01h
+    53 00000053 740B                                jz is_par
+    54                                              
+    55 00000055 8986[11000000]                      mov [impar + esi], eax
+    56 0000005B 83C604                              add esi, 4
+    57 0000005E EB09                                jmp skipper 
+    58                                              
+    59                                              is_par:
+    60 00000060 8987[D9000000]                      mov [par + edi], eax
+    61 00000066 83C704                              add edi, 4
+    62                                              
+    63                                              skipper:
+    64 00000069 EBC0                                jmp rep_1
+    65                                              
+    66                                          exit_rep_1:
+    67 0000006B BE[11000000]                    mov esi, impar
+    68                                          
+    69                                          rep_2:
+    70 00000070 AD                                  lodsd
+    71 00000071 83F800                              cmp eax, 0
+    72 00000074 7411                                je exit_rep_2
+    73                                              
+    74 00000076 50                                  push eax
+    75 00000077 68[A8010000]                        push dword w_format
+    76 0000007C FF15[00000000]                      call [printf]
+    77 00000082 83C408                              add esp, 4 * 2
+    78                                              
+    79 00000085 EBE9                                jmp rep_2
+    80                                  
+    81                                          exit_rep_2:
+    82 00000087 6A0A                            push dword 10
+    83 00000089 68[AC010000]                    push dword new_line
+    84 0000008E FF15[00000000]                  call [printf]
+    85 00000094 83C408                          add esp, 4 * 2
+    86                                          
+    87 00000097 BE[D9000000]                    mov esi, par
+    88                                          
+    89                                          rep_3:
+    90 0000009C AD                                  lodsd
+    91 0000009D 83F800                              cmp eax, 0
+    92 000000A0 7411                                je exit_rep_3
+    93                                              
+    94 000000A2 50                                  push eax
+    95 000000A3 68[A8010000]                        push dword w_format
+    96 000000A8 FF15[00000000]                      call [printf]
+    97 000000AE 83C408                              add esp, 4 * 2
+    98                                              
+    99 000000B1 EBE9                                jmp rep_3
+   100                                  
+   101                                          exit_rep_3:
+   102 000000B3 FF35[0D000000]                  push dword [file_descr]
+   103 000000B9 FF15[00000000]                  call [fclose]
+   104 000000BF 83C404                          add esp, 4 * 1
+   105                                          
+   106                                          final:
+   107 000000C2 6A00                            push dword 0
+   108 000000C4 FF15[00000000]                  call [exit]

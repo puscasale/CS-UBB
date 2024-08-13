@@ -1,0 +1,29 @@
+     1                                  bits 32 
+     2                                  global start
+     3                                  
+     4                                  extern exit
+     5                                  import exit msvcrt.dll
+     6                                  
+     7                                  extern convert
+     8                                  
+     9                                  
+    10                                  segment data use32 class = data
+    11 00000000 20000000                    counter dd 32
+    12                                      
+    13                                      
+    14                                  segment code use32 class = code
+    15                                      start:
+    16                                          repeats:
+    17 00000000 833D[00000000]7E                    cmp dword [counter], 126
+    18 00000007 7713                                ja exit_loop
+    19                                              
+    20 00000009 FF35[00000000]                      push dword [counter]
+    21 0000000F E8(00000000)                        call convert
+    22                                              
+    23 00000014 FF05[00000000]                      inc dword [counter]
+    24 0000001A EBE4                                jmp repeats
+    25                                      
+    26                                          exit_loop:
+    27                                          
+    28 0000001C 6A00                            push dword 0
+    29 0000001E FF15[00000000]                  call [exit]

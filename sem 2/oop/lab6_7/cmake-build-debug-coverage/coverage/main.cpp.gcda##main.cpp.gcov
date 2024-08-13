@@ -1,0 +1,49 @@
+        -:    0:Source:C:/Users/Ale/Desktop/oop/lab6_7/main.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\oop\lab6_7\cmake-build-debug-coverage\CMakeFiles\lab6_7.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\oop\lab6_7\cmake-build-debug-coverage\CMakeFiles\lab6_7.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#define _CRTDBG_MAP_ALLOC
+        -:    2:#include <crtdbg.h>
+        -:    3:#include <stdlib.h>
+        -:    4:#include "tests.h"
+        -:    5:#include "Repo.h"
+        -:    6:#include "ui.h"
+        -:    7:#include "Validator.h"
+function _Z9start_appv called 1 returned 100% blocks executed 67%
+        1:    8:void start_app() {
+        -:    9:    //Repo rep;
+        1:   10:    RepoLab rep;
+        1:   10-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        -:   11:    //RepoInFile rep(R"(C:\Users\Ale\Desktop\oop\lab6_7\file.txt)");
+        -:   12:    Validator valid;
+        1:   13:    Service srv{rep, valid};
+        1:   13-block  0
+call    0 returned 1
+        1:   14:    UI ui{srv};
+call    0 returned 1
+        1:   15:    ui.start();
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   16:}
+        1:   16-block  0
+call    0 returned 1
+call    1 returned 1
+    $$$$$:   16-block  1
+call    2 never executed
+    $$$$$:   16-block  2
+call    3 never executed
+        -:   17:
+function main called 1 returned 100% blocks executed 100%
+        1:   18:int main() {
+        1:   19:    test_all();
+        1:   19-block  0
+call    0 returned 1
+        1:   20:    start_app();
+call    0 returned 1
+        -:   21:    _CrtDumpMemoryLeaks();
+        1:   22:    return 0;
+        -:   23:}

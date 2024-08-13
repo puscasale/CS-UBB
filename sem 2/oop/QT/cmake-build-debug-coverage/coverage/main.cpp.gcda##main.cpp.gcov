@@ -1,0 +1,80 @@
+        -:    0:Source:C:/Users/Ale/Desktop/QT/main.cpp
+        -:    0:Graph:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\QT\cmake-build-debug-coverage\CMakeFiles\QT.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include <QApplication>
+        -:    2:#include <QPushButton>
+        -:    3:#include <QtWidgets/qlabel.h>
+        -:    4:#include <QtWidgets/qpushbutton.h>
+        -:    5:#include <QtWidgets/qboxlayout.h>
+        -:    6:#include <QtWidgets/qlineedit.h>
+        -:    7:#include <QtWidgets/qformlayout.h>
+        -:    8:#include <QtWidgets/qlistwidget.h>
+        -:    9:#include "GUI.h"
+        -:   10:#include "Service.h"
+        -:   11:#include "tests.h"
+        -:   12:#include <vector>
+        -:   13:#include <string>
+        -:   14:using std::vector;
+        -:   15:using std::string;
+        -:   16:
+function main called 1 returned 100% blocks executed 59%
+        1:   17:int main(int argc, char *argv[]) {
+        1:   18:    QApplication a(argc, argv);
+        1:   18-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   19:    test_all();
+        1:   19-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   20:    RepoInFile activity(R"(C:\Users\Ale\Desktop\QT\file.txt)");
+        1:   20-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   20-block  1
+call    3 returned 1
+branch  4 taken 1 (fallthrough)
+branch  5 taken 0 (throw)
+        1:   20-block  2
+call    6 returned 1
+    $$$$$:   20-block  3
+call    7 never executed
+    $$$$$:   20-block  4
+    $$$$$:   20-block  5
+        -:   21:    Validator valid;
+        1:   22:    Service srv(activity, valid);
+call    0 returned 1
+        -:   23:
+        1:   24:    GUI gui(srv);
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   25:    gui.show();
+        1:   25-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   26:    return a.exec();
+        1:   26-block  0
+call    0 returned 1
+branch  1 taken 1 (fallthrough)
+branch  2 taken 0 (throw)
+        1:   26-block  1
+        1:   27:}
+        1:   27-block  0
+call    0 returned 1
+call    1 returned 1
+call    2 returned 1
+call    3 returned 1
+    $$$$$:   27-block  1
+call    4 never executed
+    $$$$$:   27-block  2
+call    5 never executed
+    $$$$$:   27-block  3
+call    6 never executed
+    $$$$$:   27-block  4
+call    7 never executed

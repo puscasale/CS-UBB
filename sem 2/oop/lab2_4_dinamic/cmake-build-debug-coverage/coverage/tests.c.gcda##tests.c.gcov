@@ -1,0 +1,610 @@
+        -:    0:Source:C:/Users/Ale/Desktop/oop/lab2_4_dinamic/tests.c
+        -:    0:Graph:C:\Users\Ale\Desktop\oop\lab2_4_dinamic\cmake-build-debug-coverage\CMakeFiles\lab2_4_dinamic.dir\tests.c.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\oop\lab2_4_dinamic\cmake-build-debug-coverage\CMakeFiles\lab2_4_dinamic.dir\tests.c.gcda
+        -:    0:Runs:1
+        -:    1:#include "tests.h"
+        -:    2:#include "functions.h"
+        -:    3:#include "med.h"
+        -:    4:#include "list.h"
+        -:    5:#include <assert.h>
+        -:    6:#include <stdlib.h>
+        -:    7:#include <string.h>
+        -:    8:#include <stdio.h>
+        -:    9:#include <crtdbg.h>
+        -:   10:
+        -:   11://list tests
+function test_CreateList called 1 returned 100% blocks executed 86%
+        1:   12:void test_CreateList(){
+        1:   13:    List l = create_list();
+        1:   13-block  0
+call    0 returned 1
+       1*:   14:    assert(size(&l) == 0);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   14-block  0
+call    3 never executed
+        1:   14-block  1
+        1:   15:    destroy_list(&l);
+        1:   15-block  0
+call    0 returned 1
+        1:   16:}
+        -:   17:
+function test_get called 1 returned 100% blocks executed 89%
+        1:   18:void test_get() {
+        1:   19:    List l = create_list();
+        1:   19-block  0
+call    0 returned 1
+        1:   20:    add(&l,create(1,"nurofen",67,100));
+call    0 returned 1
+call    1 returned 1
+        -:   21:    Med m;
+        1:   22:    m = get(&l, 0);
+call    0 returned 1
+       1*:   23:    assert(m.id == 1);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   23-block  0
+call    2 never executed
+        1:   23-block  1
+        1:   24:    destroy_list(&l);
+        1:   24-block  0
+call    0 returned 1
+        1:   25:}
+        -:   26:
+function test_set called 1 returned 100% blocks executed 89%
+        1:   27:void test_set() {
+        1:   28:    List l = create_list();
+        1:   28-block  0
+call    0 returned 1
+        1:   29:    add(&l, create(1, "nurofen", 67, 100));
+call    0 returned 1
+call    1 returned 1
+        1:   30:    add(&l, create(2, "nuj", 7, 10));
+call    0 returned 1
+call    1 returned 1
+        1:   31:    TElem original = get(&l, 1);
+call    0 returned 1
+        1:   32:    set(&l, 1, create(3, "vitamine", 56, 8));
+call    0 returned 1
+call    1 returned 1
+       1*:   33:    assert(l.elements[1].id == 3);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   33-block  0
+call    2 never executed
+        1:   33-block  1
+       1*:   34:    assert(size(&l) == 2);
+        1:   34-block  0
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   34-block  1
+call    3 never executed
+        1:   34-block  2
+        1:   35:    destroy(&original);
+        1:   35-block  0
+call    0 returned 1
+        1:   36:    destroy_list(&l);
+call    0 returned 1
+        -:   37:
+        -:   38:
+        1:   39:}
+        -:   40:
+function test_add called 1 returned 100% blocks executed 84%
+        1:   41:void test_add() {
+        1:   42:    List l = create_list();
+        1:   42-block  0
+call    0 returned 1
+        1:   43:    add(&l,create(1,"nurofen",67,100));
+call    0 returned 1
+call    1 returned 1
+       1*:   44:    assert(size(&l) == 1);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   44-block  0
+call    3 never executed
+        1:   44-block  1
+        1:   45:    add(&l,create(2,"nurofen",67,100));
+        1:   45-block  0
+call    0 returned 1
+call    1 returned 1
+       1*:   46:    assert(l.capacitate == l.lung);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   46-block  0
+call    2 never executed
+        1:   46-block  1
+        1:   47:    add(&l,create(3,"nurofen",67,100));
+        1:   47-block  0
+call    0 returned 1
+call    1 returned 1
+       1*:   48:    assert(l.capacitate != l.lung);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   48-block  0
+call    2 never executed
+        1:   48-block  1
+        1:   49:    destroy_list(&l);
+        1:   49-block  0
+call    0 returned 1
+        1:   50:}
+        -:   51:
+function test_delete called 1 returned 100% blocks executed 88%
+        1:   52:void test_delete() {
+        1:   53:    List l = create_list();
+        1:   53-block  0
+call    0 returned 1
+        1:   54:    Med m = create(1,"nurofen",67,100);
+call    0 returned 1
+        1:   55:    add(&l, m);
+call    0 returned 1
+        1:   56:    destroy(&m);
+call    0 returned 1
+       1*:   57:    assert(get(&l, 0).stock == 100);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   57-block  0
+call    3 never executed
+        1:   57-block  1
+        1:   58:    add(&l, create(2, "agocalmin",97, 87));
+        1:   58-block  0
+call    0 returned 1
+call    1 returned 1
+        1:   59:    delete(&l, 0);
+call    0 returned 1
+       1*:   60:    assert(size(&l) == 1);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   60-block  0
+call    3 never executed
+        1:   60-block  1
+        1:   61:    destroy_list(&l);
+        1:   61-block  0
+call    0 returned 1
+        1:   62:}
+        -:   63:
+function test_Modify called 1 returned 100% blocks executed 83%
+        1:   64:void test_Modify() {
+        1:   65:    List l = create_list();
+        1:   65-block  0
+call    0 returned 1
+        1:   66:    add(&l,create(1,"nurofen",67,100));
+call    0 returned 1
+call    1 returned 1
+        1:   67:    modify(&l, 0, "teraflu", 100);
+call    0 returned 1
+       1*:   68:    assert(strcmp(l.elements[0].name, "teraflu") == 0);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   68-block  0
+call    2 never executed
+        1:   68-block  1
+       1*:   69:    assert(l.elements[0].concentration == 100);
+        1:   69-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   69-block  1
+call    2 never executed
+        1:   69-block  2
+        1:   70:    destroy_list(&l);
+        1:   70-block  0
+call    0 returned 1
+        1:   71:}
+        -:   72:
+function test_CopyList called 1 returned 100% blocks executed 92%
+        1:   73:void test_CopyList(){
+        1:   74:    List l = create_list();
+        1:   74-block  0
+call    0 returned 1
+        1:   75:    add(&l, create(1,"nurofen",67,100));
+call    0 returned 1
+call    1 returned 1
+        1:   76:    add(&l, create(2, "agocalmin",97, 87));
+call    0 returned 1
+call    1 returned 1
+        -:   77:
+        1:   78:    List l2 = copy_list(&l);
+call    0 returned 1
+       1*:   79:    assert(size(&l2) == 2);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   79-block  0
+call    3 never executed
+        1:   79-block  1
+        1:   80:    destroy_list(&l);
+        1:   80-block  0
+call    0 returned 1
+        1:   81:    free(l2.elements);
+        1:   82:}
+        -:   83:
+function test_resize called 1 returned 100% blocks executed 91%
+        1:   84:void test_resize() {
+        1:   85:    List l = create_list();
+        1:   85-block  0
+call    0 returned 1
+        1:   86:    add(&l, create(1,"nurofen",67,100));
+call    0 returned 1
+call    1 returned 1
+        1:   87:    add(&l, create(2,"nurofen",67,100));
+call    0 returned 1
+call    1 returned 1
+        1:   88:    resize(&l);
+call    0 returned 1
+       1*:   89:    assert(l.capacitate == 4);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   89-block  0
+call    2 never executed
+        1:   89-block  1
+        1:   90:    destroy_list(&l);
+        1:   90-block  0
+call    0 returned 1
+        1:   91:}
+        -:   92:
+        -:   93://med tests
+        -:   94:
+function test_validate called 1 returned 100% blocks executed 84%
+        1:   95:void test_validate(){
+        1:   96:    Med m = create(-2, "nurofen", 3, 4);
+        1:   96-block  0
+call    0 returned 1
+       1*:   97:    assert(validate(m) == 1);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   97-block  0
+call    3 never executed
+        1:   97-block  1
+        1:   98:    destroy(&m);
+        1:   98-block  0
+call    0 returned 1
+        -:   99:
+        1:  100:    Med m1 = create(1, "34", 3, 4);
+call    0 returned 1
+       1*:  101:    assert(validate(m1) == 2);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:  101-block  0
+call    3 never executed
+        1:  101-block  1
+        1:  102:    destroy(&m1);
+        1:  102-block  0
+call    0 returned 1
+        -:  103:
+        1:  104:    Med m2 = create(1, "nurofen", -3, 7);
+call    0 returned 1
+       1*:  105:    assert(validate(m2) == 3);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:  105-block  0
+call    3 never executed
+        1:  105-block  1
+        1:  106:    destroy(&m2);
+        1:  106-block  0
+call    0 returned 1
+        -:  107:
+        1:  108:    Med m3 = create(1, "nurofen", 3, -4);
+call    0 returned 1
+       1*:  109:    assert(validate(m3) == 4);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:  109-block  0
+call    3 never executed
+        1:  109-block  1
+        1:  110:    destroy(&m3);
+        1:  110-block  0
+call    0 returned 1
+        -:  111:
+        1:  112:    Med m4 = create(1, "nurofen", 2, 3);
+call    0 returned 1
+       1*:  113:    assert(validate(m4) == 0);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:  113-block  0
+call    3 never executed
+        1:  113-block  1
+        1:  114:    destroy(&m4);
+        1:  114-block  0
+call    0 returned 1
+        -:  115:
+        1:  116:}
+        -:  117:
+function test_add_med called 1 returned 100% blocks executed 80%
+        1:  118:void test_add_med() {
+        1:  119:    List l = create_list();
+        1:  119-block  0
+call    0 returned 1
+        1:  120:    int error = add_med(&l, 1, "nuj", -4, 6);
+call    0 returned 1
+       1*:  121:    assert(error == 3);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  121-block  0
+call    2 never executed
+        1:  121-block  1
+        1:  122:    add_med(&l, 1, "nurofen", 3, 3);
+        1:  122-block  0
+call    0 returned 1
+       1*:  123:    assert(size(&l) == 1);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:  123-block  0
+call    3 never executed
+        1:  123-block  1
+        1:  124:    add_med(&l, 1, "nurofen", 3, 10);
+        1:  124-block  0
+call    0 returned 1
+       1*:  125:    assert(l.elements[0].stock == 13);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  125-block  0
+call    2 never executed
+        1:  125-block  1
+        1:  126:     error = add_med(&l, 1, "fr", 4, 10);
+        1:  126-block  0
+call    0 returned 1
+       1*:  127:    assert(error != 0);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  127-block  0
+call    2 never executed
+        1:  127-block  1
+        1:  128:    destroy_list(&l);
+        1:  128-block  0
+call    0 returned 1
+        1:  129:}
+        -:  130:
+function test_delete_med called 1 returned 100% blocks executed 86%
+        1:  131:void test_delete_med() {
+        1:  132:    List l = create_list();
+        1:  132-block  0
+call    0 returned 1
+        1:  133:    int error = delete_med(&l, 7);
+call    0 returned 1
+       1*:  134:    assert(error != 0);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  134-block  0
+call    2 never executed
+        1:  134-block  1
+        1:  135:    add_med(&l, 1, "nurofen", 2, 3);
+        1:  135-block  0
+call    0 returned 1
+        1:  136:    add_med(&l, 2, "nuj", 4, 5);
+call    0 returned 1
+        1:  137:    delete_med(&l, 1);
+call    0 returned 1
+       1*:  138:    assert(size(&l) == 1);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:  138-block  0
+call    3 never executed
+        1:  138-block  1
+        1:  139:    destroy_list(&l);
+        1:  139-block  0
+call    0 returned 1
+        1:  140:}
+        -:  141:
+function test_modify_med called 1 returned 100% blocks executed 81%
+        1:  142:void test_modify_med() {
+        1:  143:    List l = create_list();
+        1:  143-block  0
+call    0 returned 1
+        1:  144:    add_med(&l, 1, "nurofen", 2, 3);
+call    0 returned 1
+        1:  145:    modify_med(&l, 0, "nume", 99);
+call    0 returned 1
+       1*:  146:    assert(l.elements[0].concentration == 99);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  146-block  0
+call    2 never executed
+        1:  146-block  1
+        1:  147:    int error = modify_med(&l, 9, "nuj", 8);
+        1:  147-block  0
+call    0 returned 1
+       1*:  148:    assert(error != 0);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  148-block  0
+call    2 never executed
+        1:  148-block  1
+        1:  149:    error = modify_med(&l, 0, "87", -2);
+        1:  149-block  0
+call    0 returned 1
+       1*:  150:    assert(error != 0);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  150-block  0
+call    2 never executed
+        1:  150-block  1
+        1:  151:    destroy_list(&l);
+        1:  151-block  0
+call    0 returned 1
+        -:  152:
+        1:  153:}
+        -:  154:
+function test_filter_stock called 1 returned 100% blocks executed 90%
+        1:  155:void test_filter_stock() {
+        1:  156:    List l = create_list();
+        1:  156-block  0
+call    0 returned 1
+        1:  157:    add_med(&l, 1, "nurofen", 2, 3);
+call    0 returned 1
+        1:  158:    add_med(&l, 2, "nuj", 5, 8);
+call    0 returned 1
+        1:  159:    List rez = filter_stock(&l, 7);
+call    0 returned 1
+       1*:  160:    assert(size(&rez) == 1);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:  160-block  0
+call    3 never executed
+        1:  160-block  1
+        1:  161:    free(rez.elements);
+        1:  162:    destroy_list(&l);
+        1:  162-block  0
+call    0 returned 1
+        -:  163:
+        1:  164:}
+        -:  165:
+function test_filter_name called 1 returned 100% blocks executed 90%
+        1:  166:void test_filter_name() {
+        1:  167:    List l = create_list();
+        1:  167-block  0
+call    0 returned 1
+        1:  168:    add_med(&l, 1, "nurofen", 2, 3);
+call    0 returned 1
+        1:  169:    add_med(&l, 2, "nuj", 5, 8);
+call    0 returned 1
+        1:  170:    List rez = filter_name(&l, 'n');
+call    0 returned 1
+       1*:  171:    assert(size(&rez) == 2);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:  171-block  0
+call    3 never executed
+        1:  171-block  1
+        1:  172:    free(rez.elements);
+        1:  173:    destroy_list(&l);
+        1:  173-block  0
+call    0 returned 1
+        -:  174:
+        1:  175:}
+        -:  176:
+function test_sortStock called 1 returned 100% blocks executed 91%
+        1:  177:void test_sortStock() {
+        1:  178:    List l = create_list();
+        1:  178-block  0
+call    0 returned 1
+        1:  179:    add_med(&l, 1, "nurofen", 2, 3);
+call    0 returned 1
+        1:  180:    add_med(&l, 2, "nuj", 5, 8);
+call    0 returned 1
+        1:  181:    add_med(&l, 3, "nurofen", 5, 2);
+call    0 returned 1
+        1:  182:    add_med(&l, 4, "urofen", 6, 2);
+call    0 returned 1
+        1:  183:    List sorted = sortStock(&l);
+call    0 returned 1
+       1*:  184:    assert(sorted.elements[0].id == 3);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  184-block  0
+call    2 never executed
+        1:  184-block  1
+        1:  185:    destroy_list(&l);
+        1:  185-block  0
+call    0 returned 1
+        1:  186:    free(sorted.elements);
+        1:  187:}
+        -:  188:
+function test_sortName called 1 returned 100% blocks executed 90%
+        1:  189:void test_sortName() {
+        1:  190:    List l = create_list();
+        1:  190-block  0
+call    0 returned 1
+        1:  191:    add_med(&l, 1, "nurofen", 2, 9);
+call    0 returned 1
+        1:  192:    add_med(&l, 2, "auj", 5, 9);
+call    0 returned 1
+        1:  193:    add_med(&l, 3, "burofen", 5, 8);
+call    0 returned 1
+        1:  194:    List sorted = sortNAme(&l);
+call    0 returned 1
+       1*:  195:    assert(sorted.elements[2].id == 1);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  195-block  0
+call    2 never executed
+        1:  195-block  1
+        1:  196:    destroy_list(&l);
+        1:  196-block  0
+call    0 returned 1
+        1:  197:    free(sorted.elements);
+        1:  198:}
+        -:  199:
+        -:  200:
+        -:  201:
+        -:  202:
+        -:  203:
+        -:  204:
+        -:  205:
+        -:  206:
+        -:  207:
+        -:  208:
+        -:  209:
+        -:  210:
+        -:  211:
+        -:  212:
+        -:  213:
+        -:  214:
+        -:  215:
+        -:  216:
+        -:  217:
+        -:  218:
+        -:  219:
+        -:  220:
+        -:  221:
+        -:  222:
+        -:  223:
+        -:  224:
+        -:  225:
+        -:  226:
+        -:  227:
+        -:  228:
+        -:  229:
+        -:  230:
+        -:  231:
+        -:  232:
+        -:  233:
+        -:  234:
+        -:  235:
+        -:  236:
+        -:  237:
+        -:  238:
+        -:  239:
+        -:  240:
+        -:  241:
+        -:  242:
+        -:  243:
+        -:  244:
+        -:  245:
+        -:  246:
+        -:  247:
+        -:  248:
+        -:  249:
+        -:  250:
+        -:  251:
+        -:  252:
+        -:  253:
+        -:  254:
+        -:  255://list tests
+        -:  256:
+        -:  257:
+        -:  258:
+        -:  259:
+        -:  260:
+        -:  261:
+        -:  262:
+        -:  263:
+        -:  264:
+        -:  265:
+        -:  266:
+        -:  267:
+        -:  268:
+        -:  269:
+        -:  270:

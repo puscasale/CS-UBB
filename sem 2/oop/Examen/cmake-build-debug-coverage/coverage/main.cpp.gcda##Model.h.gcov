@@ -1,0 +1,289 @@
+        -:    0:Source:C:/Users/Ale/Desktop/untitled1/Model.h
+        -:    0:Graph:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1://
+        -:    2:// Created by Ale on 06/25/2024.
+        -:    3://
+        -:    4:
+        -:    5:#ifndef UNTITLED1_MODEL_H
+        -:    6:#define UNTITLED1_MODEL_H
+        -:    7:
+        -:    8:#include <QAbstractTableModel>
+        -:    9:#include <QBrush>
+        -:   10:#include "Srv.h"
+        -:   11:
+        -:   12:class Model : public QAbstractTableModel{
+        -:   13:private:
+        -:   14:    vector<Masina> all;
+        -:   15:public:
+function _ZN5ModelC1ESt6vectorI6MasinaSaIS1_EE called 1 returned 100% blocks executed 80%
+        1:   16:    Model(vector<Masina> all):all(all){};
+        1:   16-block  0
+call    0 returned 1
+call    1 returned 1
+branch  2 taken 1 (fallthrough)
+branch  3 taken 0 (throw)
+        1:   16-block  1
+    $$$$$:   16-block  2
+call    4 never executed
+        -:   17:
+function _ZNK5Model4dataERK11QModelIndexi called 105 returned 100% blocks executed 56%
+      105:   18:    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override{
+      105:   19:        if(role == Qt::BackgroundRole){
+      105:   19-block  0
+branch  0 taken 15 (fallthrough)
+branch  1 taken 90
+       15:   20:            auto m = all[index.row()];
+       15:   20-block  0
+call    0 returned 15
+call    1 returned 15
+call    2 returned 15
+branch  3 taken 15 (fallthrough)
+branch  4 taken 0 (throw)
+       15:   21:            string tp = m.get_tip();
+       15:   21-block  0
+call    0 returned 15
+branch  1 taken 15 (fallthrough)
+branch  2 taken 0 (throw)
+       15:   22:            if(tp == "sedan"){
+       15:   22-block  0
+call    0 returned 15
+branch  1 taken 15 (fallthrough)
+branch  2 taken 0 (throw)
+       15:   22-block  1
+branch  3 taken 3 (fallthrough)
+branch  4 taken 12
+        3:   23:                QBrush b(Qt::darkGray);
+        3:   23-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        3:   24:                return b;
+        3:   24-block  0
+call    0 returned 3
+branch  1 taken 3 (fallthrough)
+branch  2 taken 0 (throw)
+        3:   25:            }
+        3:   25-block  0
+call    0 returned 3
+    $$$$$:   25-block  1
+call    1 never executed
+       12:   26:            if(tp == "hatch"){
+       12:   26-block  0
+call    0 returned 12
+branch  1 taken 12 (fallthrough)
+branch  2 taken 0 (throw)
+       12:   26-block  1
+branch  3 taken 0 (fallthrough)
+branch  4 taken 12
+    #####:   27:                QBrush b(Qt::darkCyan);
+    %%%%%:   27-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   28:                return b;
+    %%%%%:   28-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   29:            }
+    %%%%%:   29-block  0
+call    0 never executed
+    $$$$$:   29-block  1
+call    1 never executed
+       12:   30:            if(tp == "suv"){
+       12:   30-block  0
+call    0 returned 12
+branch  1 taken 12 (fallthrough)
+branch  2 taken 0 (throw)
+       12:   30-block  1
+branch  3 taken 6 (fallthrough)
+branch  4 taken 6
+        6:   31:                QBrush b(Qt::darkBlue);
+        6:   31-block  0
+call    0 returned 6
+branch  1 taken 6 (fallthrough)
+branch  2 taken 0 (throw)
+        6:   32:                return b;
+        6:   32-block  0
+call    0 returned 6
+branch  1 taken 6 (fallthrough)
+branch  2 taken 0 (throw)
+        6:   33:            }
+        6:   33-block  0
+call    0 returned 6
+    $$$$$:   33-block  1
+call    1 never executed
+        6:   34:            if(tp == "van"){
+        6:   34-block  0
+call    0 returned 6
+branch  1 taken 6 (fallthrough)
+branch  2 taken 0 (throw)
+        6:   34-block  1
+branch  3 taken 6 (fallthrough)
+branch  4 taken 0
+        6:   35:                QBrush b(Qt::darkMagenta);
+        6:   35-block  0
+call    0 returned 6
+branch  1 taken 6 (fallthrough)
+branch  2 taken 0 (throw)
+        6:   36:                return b;
+        6:   36-block  0
+call    0 returned 6
+branch  1 taken 6 (fallthrough)
+branch  2 taken 0 (throw)
+        6:   37:            }
+        6:   37-block  0
+call    0 returned 6
+    $$$$$:   37-block  1
+call    1 never executed
+        -:   38:
+      30*:   39:        }
+    %%%%%:   39-block  0
+       15:   39-block  1
+call    0 returned 15
+branch  1 taken 0 (fallthrough)
+branch  2 taken 15
+    %%%%%:   39-block  2
+       15:   39-block  3
+call    3 returned 15
+branch  4 taken 0 (fallthrough)
+branch  5 taken 15
+    $$$$$:   39-block  4
+call    6 never executed
+    $$$$$:   39-block  5
+call    7 never executed
+        -:   40:
+       90:   41:        if(role == Qt::DisplayRole){
+       90:   41-block  0
+branch  0 taken 15 (fallthrough)
+branch  1 taken 75
+       15:   42:            auto m = all[index.row()];
+       15:   42-block  0
+call    0 returned 15
+call    1 returned 15
+call    2 returned 15
+branch  3 taken 15 (fallthrough)
+branch  4 taken 0 (throw)
+       15:   43:            if(index.column() == 0)
+       15:   43-block  0
+call    0 returned 15
+branch  1 taken 5 (fallthrough)
+branch  2 taken 10
+        5:   44:                return QString::fromStdString(m.get_nr());
+        5:   44-block  0
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   44-block  1
+call    3 returned 5
+branch  4 taken 5 (fallthrough)
+branch  5 taken 0 (throw)
+        5:   44-block  2
+call    6 returned 5
+call    7 returned 5
+call    8 returned 5
+    $$$$$:   44-block  3
+call    9 never executed
+    $$$$$:   44-block  4
+    $$$$$:   44-block  5
+       10:   45:            if(index.column() == 1)
+       10:   45-block  0
+call    0 returned 10
+branch  1 taken 5 (fallthrough)
+branch  2 taken 5
+        5:   46:                return QString::fromStdString(m.get_den());
+        5:   46-block  0
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0 (throw)
+        5:   46-block  1
+call    3 returned 5
+branch  4 taken 5 (fallthrough)
+branch  5 taken 0 (throw)
+        5:   46-block  2
+call    6 returned 5
+call    7 returned 5
+call    8 returned 5
+    $$$$$:   46-block  3
+call    9 never executed
+    $$$$$:   46-block  4
+    $$$$$:   46-block  5
+        5:   47:            if(index.column() == 2)
+        5:   47-block  0
+call    0 returned 5
+branch  1 taken 5 (fallthrough)
+branch  2 taken 0
+        5:   48:                return QString::number(m.get_an());
+        5:   48-block  0
+call    0 returned 5
+call    1 returned 5
+branch  2 taken 5 (fallthrough)
+branch  3 taken 0 (throw)
+        5:   48-block  1
+call    4 returned 5
+call    5 returned 5
+    $$$$$:   48-block  2
+    #####:   49:            if(index.column() == 3)
+    %%%%%:   49-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:   50:                return QString::fromStdString(m.get_tip());
+    %%%%%:   50-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   50-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   50-block  2
+call    6 never executed
+call    7 never executed
+call    8 never executed
+    $$$$$:   50-block  3
+call    9 never executed
+    $$$$$:   50-block  4
+    $$$$$:   50-block  5
+      15*:   51:        }
+    %%%%%:   51-block  0
+       15:   51-block  1
+call    0 returned 15
+branch  1 taken 0 (fallthrough)
+branch  2 taken 15
+    $$$$$:   51-block  2
+call    3 never executed
+       75:   52:        return QVariant{};
+       75:   52-block  0
+call    0 returned 75
+        -:   53:    }
+        -:   54:
+function _ZNK5Model8rowCountERK11QModelIndex called 23 returned 100% blocks executed 100%
+       23:   55:    int rowCount(const QModelIndex& index = QModelIndex()) const override{
+       23:   56:        return all.size();
+       23:   56-block  0
+call    0 returned 23
+        -:   57:    }
+        -:   58:
+function _ZNK5Model11columnCountERK11QModelIndex called 22 returned 100% blocks executed 100%
+       22:   59:    int columnCount(const QModelIndex& index = QModelIndex()) const override{
+       22:   60:        return 4;
+       22:   60-block  0
+        -:   61:    }
+        -:   62:
+function _ZN5Model3setESt6vectorI6MasinaSaIS1_EE called 1 returned 100% blocks executed 100%
+        1:   63:    void set(vector<Masina> alln){
+        1:   64:        beginResetModel();
+        1:   64-block  0
+call    0 returned 1
+        1:   65:        all=alln;
+call    0 returned 1
+        1:   66:        endResetModel();
+call    0 returned 1
+        1:   67:    }
+        -:   68:
+        -:   69:};
+        -:   70:#endif //UNTITLED1_MODEL_H
+        -:   71:

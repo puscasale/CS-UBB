@@ -1,0 +1,2723 @@
+        -:    0:Source:C:/Qt/6.8.0/mingw_64/include/QtCore/qmetatype.h
+        -:    0:Graph:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\main.cpp.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\untitled1\cmake-build-debug-coverage\CMakeFiles\untitled1.dir\main.cpp.gcda
+        -:    0:Runs:1
+        -:    1:// Copyright (C) 2021 The Qt Company Ltd.
+        -:    2:// Copyright (C) 2018 Intel Corporation.
+        -:    3:// Copyright (C) 2014 Olivier Goffart <ogoffart@woboq.com>
+        -:    4:// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+        -:    5:
+        -:    6:#ifndef QMETATYPE_H
+        -:    7:#define QMETATYPE_H
+        -:    8:
+        -:    9:#include <QtCore/qglobal.h>
+        -:   10:#include <QtCore/qatomic.h>
+        -:   11:#include <QtCore/qbytearray.h>
+        -:   12:#include <QtCore/qcompare.h>
+        -:   13:#include <QtCore/qdatastream.h>
+        -:   14:#include <QtCore/qfloat16.h>
+        -:   15:#include <QtCore/qhashfunctions.h>
+        -:   16:#include <QtCore/qiterable.h>
+        -:   17:#ifndef QT_NO_QOBJECT
+        -:   18:#include <QtCore/qobjectdefs.h>
+        -:   19:#endif
+        -:   20:#include <QtCore/qscopeguard.h>
+        -:   21:
+        -:   22:#include <array>
+        -:   23:#include <new>
+        -:   24:#include <vector>
+        -:   25:#include <list>
+        -:   26:#include <map>
+        -:   27:#include <functional>
+        -:   28:#include <optional>
+        -:   29:#include <QtCore/q20type_traits.h>
+        -:   30:
+        -:   31:#ifdef Bool
+        -:   32:#error qmetatype.h must be included before any header file that defines Bool
+        -:   33:#endif
+        -:   34:
+        -:   35:QT_BEGIN_NAMESPACE
+        -:   36:
+        -:   37:// from qcborcommon.h
+        -:   38:enum class QCborSimpleType : quint8;
+        -:   39:
+        -:   40:template <typename T>
+        -:   41:struct QMetaTypeId2;
+        -:   42:
+        -:   43:template <typename T>
+        -:   44:inline constexpr int qMetaTypeId();
+        -:   45:
+        -:   46:// F is a tuple: (QMetaType::TypeName, QMetaType::TypeNameID, RealType)
+        -:   47:#define QT_FOR_EACH_STATIC_PRIMITIVE_NON_VOID_TYPE(F)\
+        -:   48:    F(Bool, 1, bool) \
+        -:   49:    F(Int, 2, int) \
+        -:   50:    F(UInt, 3, uint) \
+        -:   51:    F(LongLong, 4, qlonglong) \
+        -:   52:    F(ULongLong, 5, qulonglong) \
+        -:   53:    F(Double, 6, double) \
+        -:   54:    F(Long, 32, long) \
+        -:   55:    F(Short, 33, short) \
+        -:   56:    F(Char, 34, char) \
+        -:   57:    F(Char16, 56, char16_t) \
+        -:   58:    F(Char32, 57, char32_t) \
+        -:   59:    F(ULong, 35, ulong) \
+        -:   60:    F(UShort, 36, ushort) \
+        -:   61:    F(UChar, 37, uchar) \
+        -:   62:    F(Float, 38, float) \
+        -:   63:    F(SChar, 40, signed char) \
+        -:   64:    F(Nullptr, 51, std::nullptr_t) \
+        -:   65:    F(QCborSimpleType, 52, QCborSimpleType) \
+        -:   66:
+        -:   67:#define QT_FOR_EACH_STATIC_PRIMITIVE_TYPE(F)        \
+        -:   68:    QT_FOR_EACH_STATIC_PRIMITIVE_NON_VOID_TYPE(F)   \
+        -:   69:    F(Void, 43, void) \
+        -:   70:
+        -:   71:#define QT_FOR_EACH_STATIC_PRIMITIVE_POINTER(F)     \
+        -:   72:    F(VoidStar, 31, void*) \
+        -:   73:
+        -:   74:#if QT_CONFIG(easingcurve)
+        -:   75:#define QT_FOR_EACH_STATIC_EASINGCURVE(F)\
+        -:   76:    F(QEasingCurve, 29, QEasingCurve)
+        -:   77:#else
+        -:   78:#define QT_FOR_EACH_STATIC_EASINGCURVE(F)
+        -:   79:#endif
+        -:   80:
+        -:   81:#if QT_CONFIG(itemmodel)
+        -:   82:#define QT_FOR_EACH_STATIC_ITEMMODEL_CLASS(F)\
+        -:   83:    F(QModelIndex, 42, QModelIndex) \
+        -:   84:    F(QPersistentModelIndex, 50, QPersistentModelIndex)
+        -:   85:#else
+        -:   86:#define QT_FOR_EACH_STATIC_ITEMMODEL_CLASS(F)
+        -:   87:#endif
+        -:   88:
+        -:   89:#if QT_CONFIG(regularexpression)
+        -:   90:#  define QT_FOR_EACH_STATIC_REGULAR_EXPRESSION(F) \
+        -:   91:    F(QRegularExpression, 44, QRegularExpression)
+        -:   92:#else
+        -:   93:#  define QT_FOR_EACH_STATIC_REGULAR_EXPRESSION(F)
+        -:   94:#endif
+        -:   95:#ifndef QT_NO_VARIANT
+        -:   96:#  define QT_FOR_EACH_STATIC_QVARIANT(F) \
+        -:   97:    F(QVariant, 41, QVariant)
+        -:   98:#else
+        -:   99:#  define QT_FOR_EACH_STATIC_QVARIANT(F)
+        -:  100:#endif
+        -:  101:
+        -:  102:#define QT_FOR_EACH_STATIC_CORE_CLASS(F)\
+        -:  103:    F(QChar, 7, QChar) \
+        -:  104:    F(QString, 10, QString) \
+        -:  105:    F(QByteArray, 12, QByteArray) \
+        -:  106:    F(QBitArray, 13, QBitArray) \
+        -:  107:    F(QDate, 14, QDate) \
+        -:  108:    F(QTime, 15, QTime) \
+        -:  109:    F(QDateTime, 16, QDateTime) \
+        -:  110:    F(QUrl, 17, QUrl) \
+        -:  111:    F(QLocale, 18, QLocale) \
+        -:  112:    F(QRect, 19, QRect) \
+        -:  113:    F(QRectF, 20, QRectF) \
+        -:  114:    F(QSize, 21, QSize) \
+        -:  115:    F(QSizeF, 22, QSizeF) \
+        -:  116:    F(QLine, 23, QLine) \
+        -:  117:    F(QLineF, 24, QLineF) \
+        -:  118:    F(QPoint, 25, QPoint) \
+        -:  119:    F(QPointF, 26, QPointF) \
+        -:  120:    QT_FOR_EACH_STATIC_EASINGCURVE(F) \
+        -:  121:    F(QUuid, 30, QUuid) \
+        -:  122:    QT_FOR_EACH_STATIC_QVARIANT(F) \
+        -:  123:    QT_FOR_EACH_STATIC_REGULAR_EXPRESSION(F) \
+        -:  124:    F(QJsonValue, 45, QJsonValue) \
+        -:  125:    F(QJsonObject, 46, QJsonObject) \
+        -:  126:    F(QJsonArray, 47, QJsonArray) \
+        -:  127:    F(QJsonDocument, 48, QJsonDocument) \
+        -:  128:    F(QCborValue, 53, QCborValue) \
+        -:  129:    F(QCborArray, 54, QCborArray) \
+        -:  130:    F(QCborMap, 55, QCborMap) \
+        -:  131:    F(Float16, 63, qfloat16) \
+        -:  132:    QT_FOR_EACH_STATIC_ITEMMODEL_CLASS(F)
+        -:  133:
+        -:  134:#define QT_FOR_EACH_STATIC_CORE_POINTER(F)\
+        -:  135:    F(QObjectStar, 39, QObject*)
+        -:  136:
+        -:  137:#ifndef QT_NO_VARIANT
+        -:  138:#  define QT_FOR_EACH_STATIC_CORE_TEMPLATE(F)\
+        -:  139:    F(QVariantMap, 8, QVariantMap) \
+        -:  140:    F(QVariantList, 9, QVariantList) \
+        -:  141:    F(QVariantHash, 28, QVariantHash) \
+        -:  142:    F(QVariantPair, 58, QVariantPair) \
+        -:  143:    F(QByteArrayList, 49, QByteArrayList) \
+        -:  144:    F(QStringList, 11, QStringList) \
+        -:  145:    /**/
+        -:  146:#else
+        -:  147:#  define QT_FOR_EACH_STATIC_CORE_TEMPLATE(F)\
+        -:  148:    F(QByteArrayList, 49, QByteArrayList) \
+        -:  149:    F(QStringList, 11, QStringList)
+        -:  150:#endif
+        -:  151:
+        -:  152:#if QT_CONFIG(shortcut)
+        -:  153:#define QT_FOR_EACH_STATIC_KEYSEQUENCE_CLASS(F)\
+        -:  154:    F(QKeySequence, 0x100b, QKeySequence)
+        -:  155:#else
+        -:  156:#define QT_FOR_EACH_STATIC_KEYSEQUENCE_CLASS(F)
+        -:  157:#endif
+        -:  158:
+        -:  159:#define QT_FOR_EACH_STATIC_GUI_CLASS(F)\
+        -:  160:    F(QFont, 0x1000, QFont) \
+        -:  161:    F(QPixmap, 0x1001, QPixmap) \
+        -:  162:    F(QBrush, 0x1002, QBrush) \
+        -:  163:    F(QColor, 0x1003, QColor) \
+        -:  164:    F(QPalette, 0x1004, QPalette) \
+        -:  165:    F(QIcon, 0x1005, QIcon) \
+        -:  166:    F(QImage, 0x1006, QImage) \
+        -:  167:    F(QPolygon, 0x1007, QPolygon) \
+        -:  168:    F(QRegion, 0x1008, QRegion) \
+        -:  169:    F(QBitmap, 0x1009, QBitmap) \
+        -:  170:    F(QCursor, 0x100a, QCursor) \
+        -:  171:    QT_FOR_EACH_STATIC_KEYSEQUENCE_CLASS(F) \
+        -:  172:    F(QPen, 0x100c, QPen) \
+        -:  173:    F(QTextLength, 0x100d, QTextLength) \
+        -:  174:    F(QTextFormat, 0x100e, QTextFormat) \
+        -:  175:    F(QTransform, 0x1010, QTransform) \
+        -:  176:    F(QMatrix4x4, 0x1011, QMatrix4x4) \
+        -:  177:    F(QVector2D, 0x1012, QVector2D) \
+        -:  178:    F(QVector3D, 0x1013, QVector3D) \
+        -:  179:    F(QVector4D, 0x1014, QVector4D) \
+        -:  180:    F(QQuaternion, 0x1015, QQuaternion) \
+        -:  181:    F(QPolygonF, 0x1016, QPolygonF) \
+        -:  182:    F(QColorSpace, 0x1017, QColorSpace) \
+        -:  183:
+        -:  184:
+        -:  185:#define QT_FOR_EACH_STATIC_WIDGETS_CLASS(F)\
+        -:  186:    F(QSizePolicy, 0x2000, QSizePolicy) \
+        -:  187:
+        -:  188:// F is a tuple: (QMetaType::TypeName, QMetaType::TypeNameID, AliasingType, "RealType")
+        -:  189:#define QT_FOR_EACH_STATIC_ALIAS_TYPE(F)\
+        -:  190:    F(ULong, -1, ulong, "unsigned long") \
+        -:  191:    F(UInt, -1, uint, "unsigned int") \
+        -:  192:    F(UShort, -1, ushort, "unsigned short") \
+        -:  193:    F(UChar, -1, uchar, "unsigned char") \
+        -:  194:    F(LongLong, -1, qlonglong, "long long") \
+        -:  195:    F(ULongLong, -1, qulonglong, "unsigned long long") \
+        -:  196:    F(SChar, -1, signed char, "qint8") \
+        -:  197:    F(UChar, -1, uchar, "quint8") \
+        -:  198:    F(Short, -1, short, "qint16") \
+        -:  199:    F(UShort, -1, ushort, "quint16") \
+        -:  200:    F(Int, -1, int, "qint32") \
+        -:  201:    F(UInt, -1, uint, "quint32") \
+        -:  202:    F(LongLong, -1, qlonglong, "qint64") \
+        -:  203:    F(ULongLong, -1, qulonglong, "quint64") \
+        -:  204:    F(QByteArrayList, -1, QByteArrayList, "QList<QByteArray>") \
+        -:  205:    F(QStringList, -1, QStringList, "QList<QString>") \
+        -:  206:    QT_FOR_EACH_STATIC_VARIANT_ALIAS_TYPE(F)
+        -:  207:
+        -:  208:#ifndef QT_NO_VARIANT
+        -:  209:#define QT_FOR_EACH_STATIC_VARIANT_ALIAS_TYPE(F) \
+        -:  210:    F(QVariantList, -1, QVariantList, "QList<QVariant>") \
+        -:  211:    F(QVariantMap, -1, QVariantMap, "QMap<QString,QVariant>") \
+        -:  212:    F(QVariantHash, -1, QVariantHash, "QHash<QString,QVariant>") \
+        -:  213:    F(QVariantPair, -1, QVariantPair, "QPair<QVariant,QVariant>") \
+        -:  214:    /**/
+        -:  215:#else
+        -:  216:#define QT_FOR_EACH_STATIC_VARIANT_ALIAS_TYPE(F)
+        -:  217:#endif
+        -:  218:
+        -:  219:#define QT_FOR_EACH_STATIC_TYPE(F)\
+        -:  220:    QT_FOR_EACH_STATIC_PRIMITIVE_TYPE(F)\
+        -:  221:    QT_FOR_EACH_STATIC_PRIMITIVE_POINTER(F)\
+        -:  222:    QT_FOR_EACH_STATIC_CORE_CLASS(F)\
+        -:  223:    QT_FOR_EACH_STATIC_CORE_POINTER(F)\
+        -:  224:    QT_FOR_EACH_STATIC_CORE_TEMPLATE(F)\
+        -:  225:    QT_FOR_EACH_STATIC_GUI_CLASS(F)\
+        -:  226:    QT_FOR_EACH_STATIC_WIDGETS_CLASS(F)\
+        -:  227:
+        -:  228:#define QT_DEFINE_METATYPE_ID(TypeName, Id, Name) \
+        -:  229:    TypeName = Id,
+        -:  230:
+        -:  231:#define QT_FOR_EACH_AUTOMATIC_TEMPLATE_1ARG(F) \
+        -:  232:    F(QList) \
+        -:  233:    F(QQueue) \
+        -:  234:    F(QStack) \
+        -:  235:    F(QSet) \
+        -:  236:    /*end*/
+        -:  237:
+        -:  238:#define QT_FOR_EACH_AUTOMATIC_TEMPLATE_2ARG(F) \
+        -:  239:    F(QHash, class) \
+        -:  240:    F(QMap, class)
+        -:  241:
+        -:  242:#define QT_FOR_EACH_AUTOMATIC_TEMPLATE_SMART_POINTER(F) \
+        -:  243:    F(QSharedPointer) \
+        -:  244:    F(QWeakPointer) \
+        -:  245:    F(QPointer)
+        -:  246:
+        -:  247:class QDataStream;
+        -:  248:struct QMetaObject;
+        -:  249:
+        -:  250:namespace QtPrivate
+        -:  251:{
+        -:  252:
+        -:  253:class QMetaTypeInterface;
+        -:  254:
+        -:  255:// MSVC is the only supported compiler that includes the type of a variable in
+        -:  256:// its mangled form, so it's not binary-compatible to drop the const in
+        -:  257:// QMetaTypeInterfaceWrapper::metaType for it, which means we must keep the
+        -:  258:// mutable field until Qt 7.
+        -:  259:#if QT_VERSION >= QT_VERSION_CHECK(7, 0, 0) || defined(QT_BOOTSTRAPPED) || !defined(Q_CC_MSVC)
+        -:  260:#  define QMTI_MUTABLE
+        -:  261:using NonConstMetaTypeInterface = QMetaTypeInterface;
+        -:  262:#else
+        -:  263:#  define QMTI_MUTABLE mutable
+        -:  264:using NonConstMetaTypeInterface = const QMetaTypeInterface;
+        -:  265:#endif
+        -:  266:
+        -:  267:class QMetaTypeInterface
+        -:  268:{
+        -:  269:public:
+        -:  270:
+        -:  271:    /* Revision: Can increase if new field are added, or if semantics changes
+        -:  272:       0: Initial Revision
+        -:  273:       1: the meaning of the NeedsDestruction flag changed
+        -:  274:    */
+        -:  275:    static inline constexpr ushort CurrentRevision = 1;
+        -:  276:
+        -:  277:    ushort revision;
+        -:  278:    ushort alignment;
+        -:  279:    uint size;
+        -:  280:    uint flags;
+        -:  281:    QMTI_MUTABLE QBasicAtomicInt typeId;
+        -:  282:
+        -:  283:    using MetaObjectFn = const QMetaObject *(*)(const QMetaTypeInterface *);
+        -:  284:    MetaObjectFn metaObjectFn;
+        -:  285:
+        -:  286:    const char *name;
+        -:  287:
+        -:  288:    using DefaultCtrFn = void (*)(const QMetaTypeInterface *, void *);
+        -:  289:    DefaultCtrFn defaultCtr;
+        -:  290:    using CopyCtrFn = void (*)(const QMetaTypeInterface *, void *, const void *);
+        -:  291:    CopyCtrFn copyCtr;
+        -:  292:    using MoveCtrFn = void (*)(const QMetaTypeInterface *, void *, void *);
+        -:  293:    MoveCtrFn moveCtr;
+        -:  294:    using DtorFn = void (*)(const QMetaTypeInterface *, void *);
+        -:  295:    DtorFn dtor;
+        -:  296:    using EqualsFn = bool (*)(const QMetaTypeInterface *, const void *, const void *);
+        -:  297:    EqualsFn equals;
+        -:  298:    using LessThanFn = bool (*)(const QMetaTypeInterface *, const void *, const void *);
+        -:  299:    LessThanFn lessThan;
+        -:  300:    using DebugStreamFn = void (*)(const QMetaTypeInterface *, QDebug &, const void *);
+        -:  301:    DebugStreamFn debugStream;
+        -:  302:    using DataStreamOutFn = void (*)(const QMetaTypeInterface *, QDataStream &, const void *);
+        -:  303:    DataStreamOutFn dataStreamOut;
+        -:  304:    using DataStreamInFn = void (*)(const QMetaTypeInterface *, QDataStream &, void *);
+        -:  305:    DataStreamInFn dataStreamIn;
+        -:  306:
+        -:  307:    using LegacyRegisterOp = void (*)();
+        -:  308:    LegacyRegisterOp legacyRegisterOp;
+        -:  309:};
+        -:  310:#undef QMTI_MUTABLE
+        -:  311:
+        -:  312:/*!
+        -:  313:    This template is used for implicit conversion from type From to type To.
+        -:  314:    \internal
+        -:  315:*/
+        -:  316:template<typename From, typename To>
+        -:  317:To convertImplicit(const From& from)
+        -:  318:{
+        -:  319:    return from;
+        -:  320:}
+        -:  321:
+        -:  322:    template<typename T, bool>
+        -:  323:    struct SequentialValueTypeIsMetaType;
+        -:  324:    template<typename T, bool>
+        -:  325:    struct AssociativeValueTypeIsMetaType;
+        -:  326:    template<typename T, bool>
+        -:  327:    struct IsMetaTypePair;
+        -:  328:    template<typename, typename>
+        -:  329:    struct MetaTypeSmartPointerHelper;
+        -:  330:
+        -:  331:    template<typename T>
+        -:  332:    struct IsQFlags : std::false_type {};
+        -:  333:
+        -:  334:    template<typename Enum>
+        -:  335:    struct IsQFlags<QFlags<Enum>> : std::true_type {};
+        -:  336:
+        -:  337:    template<typename T>
+        -:  338:    struct IsEnumOrFlags : std::disjunction<std::is_enum<T>, IsQFlags<T>> {};
+        -:  339:}  // namespace QtPrivate
+        -:  340:
+        -:  341:class Q_CORE_EXPORT QMetaType {
+        -:  342:public:
+        -:  343:#ifndef Q_QDOC
+        -:  344:    // The code that actually gets compiled.
+        -:  345:    enum Type {
+        -:  346:        // these are merged with QVariant
+        -:  347:        QT_FOR_EACH_STATIC_TYPE(QT_DEFINE_METATYPE_ID)
+        -:  348:
+        -:  349:        FirstCoreType = Bool,
+        -:  350:        LastCoreType = Float16,
+        -:  351:        FirstGuiType = QFont,
+        -:  352:        LastGuiType = QColorSpace,
+        -:  353:        FirstWidgetsType = QSizePolicy,
+        -:  354:        LastWidgetsType = QSizePolicy,
+        -:  355:        HighestInternalId = LastWidgetsType,
+        -:  356:
+        -:  357:        QReal = sizeof(qreal) == sizeof(double) ? Double : Float,
+        -:  358:
+        -:  359:        UnknownType = 0,
+        -:  360:        User = 65536
+        -:  361:    };
+        -:  362:#else
+        -:  363:    // If we are using QDoc it fakes the Type enum looks like this.
+        -:  364:    enum Type {
+        -:  365:        UnknownType = 0, Bool = 1, Int = 2, UInt = 3, LongLong = 4, ULongLong = 5,
+        -:  366:        Double = 6, Long = 32, Short = 33, Char = 34, ULong = 35, UShort = 36,
+        -:  367:        UChar = 37, Float = 38,
+        -:  368:        VoidStar = 31,
+        -:  369:        QChar = 7, QString = 10, QStringList = 11, QByteArray = 12,
+        -:  370:        QBitArray = 13, QDate = 14, QTime = 15, QDateTime = 16, QUrl = 17,
+        -:  371:        QLocale = 18, QRect = 19, QRectF = 20, QSize = 21, QSizeF = 22,
+        -:  372:        QLine = 23, QLineF = 24, QPoint = 25, QPointF = 26,
+        -:  373:        QEasingCurve = 29, QUuid = 30, QVariant = 41, QModelIndex = 42,
+        -:  374:        QPersistentModelIndex = 50, QRegularExpression = 44,
+        -:  375:        QJsonValue = 45, QJsonObject = 46, QJsonArray = 47, QJsonDocument = 48,
+        -:  376:        QByteArrayList = 49, QObjectStar = 39, SChar = 40,
+        -:  377:        Void = 43,
+        -:  378:        Nullptr = 51,
+        -:  379:        QVariantMap = 8, QVariantList = 9, QVariantHash = 28, QVariantPair = 58,
+        -:  380:        QCborSimpleType = 52, QCborValue = 53, QCborArray = 54, QCborMap = 55,
+        -:  381:        Char16 = 56, Char32 = 57,
+        -:  382:        Int128 = 59, UInt128 = 60, Float128 = 61, BFloat16 = 62, Float16 = 63,
+        -:  383:
+        -:  384:        // Gui types
+        -:  385:        QFont = 0x1000, QPixmap = 0x1001, QBrush = 0x1002, QColor = 0x1003, QPalette = 0x1004,
+        -:  386:        QIcon = 0x1005, QImage = 0x1006, QPolygon = 0x1007, QRegion = 0x1008, QBitmap = 0x1009,
+        -:  387:        QCursor = 0x100a, QKeySequence = 0x100b, QPen = 0x100c, QTextLength = 0x100d, QTextFormat = 0x100e,
+        -:  388:        QTransform = 0x1010, QMatrix4x4 = 0x1011, QVector2D = 0x1012,
+        -:  389:        QVector3D = 0x1013, QVector4D = 0x1014, QQuaternion = 0x1015, QPolygonF = 0x1016, QColorSpace = 0x1017,
+        -:  390:
+        -:  391:        // Widget types
+        -:  392:        QSizePolicy = 0x2000,
+        -:  393:
+        -:  394:        // Start-point for client-code types:
+        -:  395:        User = 65536
+        -:  396:    };
+        -:  397:#endif
+        -:  398:
+        -:  399:    enum TypeFlag {
+        -:  400:        NeedsConstruction = 0x1,
+        -:  401:        NeedsDestruction = 0x2,
+        -:  402:        RelocatableType = 0x4,
+        -:  403:#if QT_DEPRECATED_SINCE(6, 0)
+        -:  404:        MovableType Q_DECL_ENUMERATOR_DEPRECATED_X("Use RelocatableType instead.") = RelocatableType,
+        -:  405:#endif
+        -:  406:        PointerToQObject = 0x8,
+        -:  407:        IsEnumeration = 0x10,
+        -:  408:        SharedPointerToQObject = 0x20,
+        -:  409:        WeakPointerToQObject = 0x40,
+        -:  410:        TrackingPointerToQObject = 0x80,
+        -:  411:        IsUnsignedEnumeration = 0x100,
+        -:  412:        IsGadget = 0x200,
+        -:  413:        PointerToGadget = 0x400,
+        -:  414:        IsPointer = 0x800,
+        -:  415:        IsQmlList =0x1000, // used in the QML engine to recognize QQmlListProperty<T> and list<T>
+        -:  416:        IsConst = 0x2000,
+        -:  417:        // since 6.5:
+        -:  418:        NeedsCopyConstruction = 0x4000,
+        -:  419:        NeedsMoveConstruction = 0x8000,
+        -:  420:    };
+        -:  421:    Q_DECLARE_FLAGS(TypeFlags, TypeFlag)
+        -:  422:
+        -:  423:    static void registerNormalizedTypedef(const QT_PREPEND_NAMESPACE(QByteArray) &normalizedTypeName, QMetaType type);
+        -:  424:
+        -:  425:#if QT_DEPRECATED_SINCE(6, 0)
+        -:  426:    QT_DEPRECATED_VERSION_6_0
+        -:  427:    static int type(const char *typeName)
+        -:  428:    { return QMetaType::fromName(typeName).id(); }
+        -:  429:    QT_DEPRECATED_VERSION_6_0
+        -:  430:    static int type(const QT_PREPEND_NAMESPACE(QByteArray) &typeName)
+        -:  431:    { return QMetaType::fromName(typeName).id(); }
+        -:  432:    QT_DEPRECATED_VERSION_6_0
+        -:  433:    static const char *typeName(int type)
+        -:  434:    { return QMetaType(type).name(); }
+        -:  435:    QT_DEPRECATED_VERSION_6_0
+        -:  436:    static int sizeOf(int type)
+        -:  437:    { return int(QMetaType(type).sizeOf()); }
+        -:  438:    QT_DEPRECATED_VERSION_6_0
+        -:  439:    static TypeFlags typeFlags(int type)
+        -:  440:    { return QMetaType(type).flags(); }
+        -:  441:    QT_DEPRECATED_VERSION_6_0
+        -:  442:    static const QMetaObject *metaObjectForType(int type)
+        -:  443:    { return QMetaType(type).metaObject(); }
+        -:  444:    QT_DEPRECATED_VERSION_6_0
+        -:  445:    static void *create(int type, const void *copy = nullptr)
+        -:  446:    { return QMetaType(type).create(copy); }
+        -:  447:    QT_DEPRECATED_VERSION_6_0
+        -:  448:    static void destroy(int type, void *data)
+        -:  449:    { return QMetaType(type).destroy(data); }
+        -:  450:    QT_DEPRECATED_VERSION_6_0
+        -:  451:    static void *construct(int type, void *where, const void *copy)
+        -:  452:    { return QMetaType(type).construct(where, copy); }
+        -:  453:    QT_DEPRECATED_VERSION_6_0
+        -:  454:    static void destruct(int type, void *where)
+        -:  455:    { return QMetaType(type).destruct(where); }
+        -:  456:#endif
+        -:  457:    static bool isRegistered(int type);
+        -:  458:
+        -:  459:    explicit QMetaType(int type);
+        -:  460:    explicit constexpr QMetaType(const QtPrivate::QMetaTypeInterface *d) : d_ptr(d) {}
+        -:  461:    constexpr QMetaType() = default;
+        -:  462:
+        -:  463:    bool isValid() const;
+        -:  464:    bool isRegistered() const;
+        -:  465:    void registerType() const
+        -:  466:    {
+        -:  467:        // "register" is a reserved keyword
+        -:  468:        registerHelper();
+        -:  469:    }
+        -:  470:#if QT_CORE_REMOVED_SINCE(6, 1) || defined(Q_QDOC)
+        -:  471:    int id() const;
+        -:  472:#else
+        -:  473:    // ### Qt 7: Remove traces of out of line version
+        -:  474:    // unused int parameter is used to avoid ODR violation
+        -:  475:    int id(int = 0) const
+        -:  476:    {
+        -:  477:        // keep in sync with the version in removed_api.cpp
+        -:  478:        return registerHelper();
+        -:  479:    }
+        -:  480:#endif
+        -:  481:    constexpr qsizetype sizeOf() const;
+        -:  482:    constexpr qsizetype alignOf() const;
+        -:  483:    constexpr TypeFlags flags() const;
+        -:  484:    constexpr const QMetaObject *metaObject() const;
+        -:  485:    constexpr const char *name() const;
+        -:  486:
+        -:  487:    void *create(const void *copy = nullptr) const;
+        -:  488:    void destroy(void *data) const;
+        -:  489:    void *construct(void *where, const void *copy = nullptr) const;
+        -:  490:    void destruct(void *data) const;
+        -:  491:    QPartialOrdering compare(const void *lhs, const void *rhs) const;
+        -:  492:    bool equals(const void *lhs, const void *rhs) const;
+        -:  493:
+        -:  494:    bool isDefaultConstructible() const noexcept { return d_ptr && isDefaultConstructible(d_ptr); }
+        -:  495:    bool isCopyConstructible() const noexcept { return d_ptr && isCopyConstructible(d_ptr); }
+        -:  496:    bool isMoveConstructible() const noexcept { return d_ptr && isMoveConstructible(d_ptr); }
+        -:  497:    bool isDestructible() const noexcept { return d_ptr && isDestructible(d_ptr); }
+        -:  498:    bool isEqualityComparable() const;
+        -:  499:    bool isOrdered() const;
+        -:  500:
+        -:  501:#ifndef QT_NO_DATASTREAM
+        -:  502:    bool save(QDataStream &stream, const void *data) const;
+        -:  503:    bool load(QDataStream &stream, void *data) const;
+        -:  504:    bool hasRegisteredDataStreamOperators() const;
+        -:  505:
+        -:  506:#if QT_DEPRECATED_SINCE(6, 0)
+        -:  507:    QT_DEPRECATED_VERSION_6_0
+        -:  508:    static bool save(QDataStream &stream, int type, const void *data)
+        -:  509:    { return QMetaType(type).save(stream, data); }
+        -:  510:    QT_DEPRECATED_VERSION_6_0
+        -:  511:    static bool load(QDataStream &stream, int type, void *data)
+        -:  512:    { return QMetaType(type).load(stream, data); }
+        -:  513:#endif
+        -:  514:#endif
+        -:  515:
+        -:  516:    QMetaType underlyingType() const;
+        -:  517:
+        -:  518:    template<typename T>
+        -:  519:    constexpr static QMetaType fromType();
+        -:  520:    static QMetaType fromName(QByteArrayView name);
+        -:  521:
+        -:  522:    friend bool operator==(QMetaType a, QMetaType b)
+        -:  523:    {
+        -:  524:        if (a.d_ptr == b.d_ptr)
+        -:  525:            return true;
+        -:  526:        if (!a.d_ptr || !b.d_ptr)
+        -:  527:            return false; // one type is undefined, the other is defined
+        -:  528:        // avoid id call if we already have the id
+        -:  529:        const int aId = a.id();
+        -:  530:        const int bId = b.id();
+        -:  531:        return aId == bId;
+        -:  532:    }
+        -:  533:    friend bool operator!=(QMetaType a, QMetaType b) { return !(a == b); }
+        -:  534:
+        -:  535:#ifndef QT_NO_DEBUG_STREAM
+        -:  536:private:
+        -:  537:    friend Q_CORE_EXPORT QDebug operator<<(QDebug d, QMetaType m);
+        -:  538:public:
+        -:  539:    bool debugStream(QDebug& dbg, const void *rhs);
+        -:  540:    bool hasRegisteredDebugStreamOperator() const;
+        -:  541:
+        -:  542:#if QT_DEPRECATED_SINCE(6, 0)
+        -:  543:    QT_DEPRECATED_VERSION_6_0
+        -:  544:    static bool debugStream(QDebug& dbg, const void *rhs, int typeId)
+        -:  545:    { return QMetaType(typeId).debugStream(dbg, rhs); }
+        -:  546:    template<typename T>
+        -:  547:    QT_DEPRECATED_VERSION_6_0
+        -:  548:    static bool hasRegisteredDebugStreamOperator()
+        -:  549:    { return QMetaType::fromType<T>().hasRegisteredDebugStreamOperator(); }
+        -:  550:    QT_DEPRECATED_VERSION_6_0
+        -:  551:    static bool hasRegisteredDebugStreamOperator(int typeId)
+        -:  552:    { return QMetaType(typeId).hasRegisteredDebugStreamOperator(); }
+        -:  553:#endif
+        -:  554:#endif
+        -:  555:
+        -:  556:    // type erased converter function
+        -:  557:    using ConverterFunction = std::function<bool(const void *src, void *target)>;
+        -:  558:
+        -:  559:    // type erased mutable view, primarily for containers
+        -:  560:    using MutableViewFunction = std::function<bool(void *src, void *target)>;
+        -:  561:
+        -:  562:    // implicit conversion supported like double -> float
+        -:  563:    template<typename From, typename To>
+        -:  564:    static bool registerConverter()
+        -:  565:    {
+        -:  566:        return registerConverter<From, To>(QtPrivate::convertImplicit<From, To>);
+        -:  567:    }
+        -:  568:
+        -:  569:    // member function as in "QString QFont::toString() const"
+        -:  570:    template<typename From, typename To>
+        -:  571:    static bool registerConverter(To(From::*function)() const)
+        -:  572:    {
+        -:  573:        static_assert((!QMetaTypeId2<To>::IsBuiltIn || !QMetaTypeId2<From>::IsBuiltIn),
+        -:  574:            "QMetaType::registerConverter: At least one of the types must be a custom type.");
+        -:  575:
+        -:  576:        const QMetaType fromType = QMetaType::fromType<From>();
+        -:  577:        const QMetaType toType = QMetaType::fromType<To>();
+        -:  578:        auto converter = [function](const void *from, void *to) -> bool {
+        -:  579:            const From *f = static_cast<const From *>(from);
+        -:  580:            To *t = static_cast<To *>(to);
+        -:  581:            *t = (f->*function)();
+        -:  582:            return true;
+        -:  583:        };
+        -:  584:        return registerConverterImpl<From, To>(converter, fromType, toType);
+        -:  585:    }
+        -:  586:
+        -:  587:    // member function
+        -:  588:    template<typename From, typename To>
+        -:  589:    static bool registerMutableView(To(From::*function)())
+        -:  590:    {
+        -:  591:        static_assert((!QMetaTypeId2<To>::IsBuiltIn || !QMetaTypeId2<From>::IsBuiltIn),
+        -:  592:            "QMetaType::registerMutableView: At least one of the types must be a custom type.");
+        -:  593:
+        -:  594:        const QMetaType fromType = QMetaType::fromType<From>();
+        -:  595:        const QMetaType toType = QMetaType::fromType<To>();
+        -:  596:        auto view = [function](void *from, void *to) -> bool {
+        -:  597:            From *f = static_cast<From *>(from);
+        -:  598:            To *t = static_cast<To *>(to);
+        -:  599:            *t = (f->*function)();
+        -:  600:            return true;
+        -:  601:        };
+        -:  602:        return registerMutableViewImpl<From, To>(view, fromType, toType);
+        -:  603:    }
+        -:  604:
+        -:  605:    // member function as in "double QString::toDouble(bool *ok = nullptr) const"
+        -:  606:    template<typename From, typename To>
+        -:  607:    static bool registerConverter(To(From::*function)(bool*) const)
+        -:  608:    {
+        -:  609:        static_assert((!QMetaTypeId2<To>::IsBuiltIn || !QMetaTypeId2<From>::IsBuiltIn),
+        -:  610:            "QMetaType::registerConverter: At least one of the types must be a custom type.");
+        -:  611:
+        -:  612:        const QMetaType fromType = QMetaType::fromType<From>();
+        -:  613:        const QMetaType toType = QMetaType::fromType<To>();
+        -:  614:        auto converter = [function](const void *from, void *to) -> bool {
+        -:  615:            const From *f = static_cast<const From *>(from);
+        -:  616:            To *t = static_cast<To *>(to);
+        -:  617:            bool result = true;
+        -:  618:            *t = (f->*function)(&result);
+        -:  619:            if (!result)
+        -:  620:                *t = To();
+        -:  621:            return result;
+        -:  622:        };
+        -:  623:        return registerConverterImpl<From, To>(converter, fromType, toType);
+        -:  624:    }
+        -:  625:
+        -:  626:    // functor or function pointer
+        -:  627:    template<typename From, typename To, typename UnaryFunction>
+        -:  628:    static bool registerConverter(UnaryFunction function)
+        -:  629:    {
+        -:  630:        static_assert((!QMetaTypeId2<To>::IsBuiltIn || !QMetaTypeId2<From>::IsBuiltIn),
+        -:  631:            "QMetaType::registerConverter: At least one of the types must be a custom type.");
+        -:  632:
+        -:  633:        const QMetaType fromType = QMetaType::fromType<From>();
+        -:  634:        const QMetaType toType = QMetaType::fromType<To>();
+        -:  635:        auto converter = [function = std::move(function)](const void *from, void *to) -> bool {
+        -:  636:            const From *f = static_cast<const From *>(from);
+        -:  637:            To *t = static_cast<To *>(to);
+        -:  638:            auto &&r = function(*f);
+        -:  639:            if constexpr (std::is_same_v<q20::remove_cvref_t<decltype(r)>, std::optional<To>>) {
+        -:  640:                if (!r)
+        -:  641:                    return false;
+        -:  642:                *t = *std::forward<decltype(r)>(r);
+        -:  643:            } else {
+        -:  644:                *t = std::forward<decltype(r)>(r);
+        -:  645:            }
+        -:  646:            return true;
+        -:  647:        };
+        -:  648:        return registerConverterImpl<From, To>(std::move(converter), fromType, toType);
+        -:  649:    }
+        -:  650:
+        -:  651:    // functor or function pointer
+        -:  652:    template<typename From, typename To, typename UnaryFunction>
+        -:  653:    static bool registerMutableView(UnaryFunction function)
+        -:  654:    {
+        -:  655:        static_assert((!QMetaTypeId2<To>::IsBuiltIn || !QMetaTypeId2<From>::IsBuiltIn),
+        -:  656:            "QMetaType::registerMutableView: At least one of the types must be a custom type.");
+        -:  657:
+        -:  658:        const QMetaType fromType = QMetaType::fromType<From>();
+        -:  659:        const QMetaType toType = QMetaType::fromType<To>();
+        -:  660:        auto view = [function = std::move(function)](void *from, void *to) -> bool {
+        -:  661:            From *f = static_cast<From *>(from);
+        -:  662:            To *t = static_cast<To *>(to);
+        -:  663:            *t = function(*f);
+        -:  664:            return true;
+        -:  665:        };
+        -:  666:        return registerMutableViewImpl<From, To>(std::move(view), fromType, toType);
+        -:  667:    }
+        -:  668:
+        -:  669:private:
+        -:  670:    template<typename From, typename To>
+        -:  671:    static bool registerConverterImpl(ConverterFunction converter, QMetaType fromType, QMetaType toType)
+        -:  672:    {
+        -:  673:        if (registerConverterFunction(std::move(converter), fromType, toType)) {
+        -:  674:            static const auto unregister = qScopeGuard([=] {
+        -:  675:                unregisterConverterFunction(fromType, toType);
+        -:  676:            });
+        -:  677:            return true;
+        -:  678:        } else {
+        -:  679:            return false;
+        -:  680:        }
+        -:  681:    }
+        -:  682:
+        -:  683:    template<typename From, typename To>
+        -:  684:    static bool registerMutableViewImpl(MutableViewFunction view, QMetaType fromType, QMetaType toType)
+        -:  685:    {
+        -:  686:        if (registerMutableViewFunction(std::move(view), fromType, toType)) {
+        -:  687:            static const auto unregister = qScopeGuard([=] {
+        -:  688:               unregisterMutableViewFunction(fromType, toType);
+        -:  689:            });
+        -:  690:            return true;
+        -:  691:        } else {
+        -:  692:            return false;
+        -:  693:        }
+        -:  694:    }
+        -:  695:public:
+        -:  696:
+        -:  697:    static bool convert(QMetaType fromType, const void *from, QMetaType toType, void *to);
+        -:  698:    static bool canConvert(QMetaType fromType, QMetaType toType);
+        -:  699:
+        -:  700:    static bool view(QMetaType fromType, void *from, QMetaType toType, void *to);
+        -:  701:    static bool canView(QMetaType fromType, QMetaType toType);
+        -:  702:#if QT_DEPRECATED_SINCE(6, 0)
+        -:  703:    QT_DEPRECATED_VERSION_6_0
+        -:  704:    static bool convert(const void *from, int fromTypeId, void *to, int toTypeId)
+        -:  705:    { return convert(QMetaType(fromTypeId), from, QMetaType(toTypeId), to); }
+        -:  706:    QT_DEPRECATED_VERSION_6_0
+        -:  707:    static bool compare(const void *lhs, const void *rhs, int typeId, int *result)
+        -:  708:    {
+        -:  709:        QMetaType t(typeId);
+        -:  710:        auto c = t.compare(lhs, rhs);
+        -:  711:        if (c == QPartialOrdering::Unordered) {
+        -:  712:            *result = 0;
+        -:  713:            return false;
+        -:  714:        } else if (c == QPartialOrdering::Less) {
+        -:  715:            *result = -1;
+        -:  716:            return true;
+        -:  717:        } else if (c == QPartialOrdering::Equivalent) {
+        -:  718:            *result = 0;
+        -:  719:            return true;
+        -:  720:        } else {
+        -:  721:            *result = 1;
+        -:  722:            return true;
+        -:  723:        }
+        -:  724:    }
+        -:  725:    QT_DEPRECATED_VERSION_6_0
+        -:  726:    static bool equals(const void *lhs, const void *rhs, int typeId, int *result)
+        -:  727:    {
+        -:  728:        QMetaType t(typeId);
+        -:  729:        if (!t.isEqualityComparable())
+        -:  730:            return false;
+        -:  731:        *result = t.equals(lhs, rhs) ? 0 : -1;
+        -:  732:        return true;
+        -:  733:    }
+        -:  734:#endif
+        -:  735:
+        -:  736:    template<typename From, typename To>
+        -:  737:    static bool hasRegisteredConverterFunction()
+        -:  738:    {
+        -:  739:        return hasRegisteredConverterFunction(
+        -:  740:                    QMetaType::fromType<From>(), QMetaType::fromType<To>());
+        -:  741:    }
+        -:  742:
+        -:  743:    static bool hasRegisteredConverterFunction(QMetaType fromType, QMetaType toType);
+        -:  744:
+        -:  745:    template<typename From, typename To>
+        -:  746:    static bool hasRegisteredMutableViewFunction()
+        -:  747:    {
+        -:  748:        return hasRegisteredMutableViewFunction(
+        -:  749:                    QMetaType::fromType<From>(), QMetaType::fromType<To>());
+        -:  750:    }
+        -:  751:
+        -:  752:    static bool hasRegisteredMutableViewFunction(QMetaType fromType, QMetaType toType);
+        -:  753:
+        -:  754:#ifndef Q_QDOC
+        -:  755:    template<typename, bool> friend struct QtPrivate::SequentialValueTypeIsMetaType;
+        -:  756:    template<typename, bool> friend struct QtPrivate::AssociativeValueTypeIsMetaType;
+        -:  757:    template<typename, bool> friend struct QtPrivate::IsMetaTypePair;
+        -:  758:    template<typename, typename> friend struct QtPrivate::MetaTypeSmartPointerHelper;
+        -:  759:#endif
+        -:  760:    static bool registerConverterFunction(const ConverterFunction &f, QMetaType from, QMetaType to);
+        -:  761:    static void unregisterConverterFunction(QMetaType from, QMetaType to);
+        -:  762:
+        -:  763:    static bool registerMutableViewFunction(const MutableViewFunction &f, QMetaType from, QMetaType to);
+        -:  764:    static void unregisterMutableViewFunction(QMetaType from, QMetaType to);
+        -:  765:
+        -:  766:    static void unregisterMetaType(QMetaType type);
+        -:  767:
+        -:  768:#if QT_VERSION < QT_VERSION_CHECK(7, 0, 0)
+        -:  769:    const QtPrivate::QMetaTypeInterface *iface() { return d_ptr; }
+        -:  770:#endif
+        -:  771:    const QtPrivate::QMetaTypeInterface *iface() const { return d_ptr; }
+        -:  772:
+        -:  773:private:
+        -:  774:    static bool isDefaultConstructible(const QtPrivate::QMetaTypeInterface *) noexcept Q_DECL_PURE_FUNCTION;
+        -:  775:    static bool isCopyConstructible(const QtPrivate::QMetaTypeInterface *) noexcept Q_DECL_PURE_FUNCTION;
+        -:  776:    static bool isMoveConstructible(const QtPrivate::QMetaTypeInterface *) noexcept Q_DECL_PURE_FUNCTION;
+        -:  777:    static bool isDestructible(const QtPrivate::QMetaTypeInterface *) noexcept Q_DECL_PURE_FUNCTION;
+        -:  778:
+        -:  779:#if QT_CORE_REMOVED_SINCE(6, 5)
+        -:  780:    int idHelper() const;
+        -:  781:#endif
+        -:  782:    static int registerHelper(const QtPrivate::QMetaTypeInterface *iface);
+        -:  783:    int registerHelper() const
+        -:  784:    {
+        -:  785:        // keep in sync with the QMetaType::id() version in removed_api.cpp
+        -:  786:        if (d_ptr) {
+        -:  787:            if (int id = d_ptr->typeId.loadRelaxed())
+        -:  788:                return id;
+        -:  789:            return registerHelper(d_ptr);
+        -:  790:        }
+        -:  791:        return 0;
+        -:  792:    }
+        -:  793:
+        -:  794:    friend int qRegisterMetaType(QMetaType meta);
+        -:  795:
+        -:  796:    friend class QVariant;
+        -:  797:    const QtPrivate::QMetaTypeInterface *d_ptr = nullptr;
+        -:  798:};
+        -:  799:
+        -:  800:#undef QT_DEFINE_METATYPE_ID
+        -:  801:
+        -:  802:Q_DECLARE_OPERATORS_FOR_FLAGS(QMetaType::TypeFlags)
+        -:  803:
+        -:  804:#define QT_METATYPE_PRIVATE_DECLARE_TYPEINFO(C, F)  \
+        -:  805:    }                                               \
+        -:  806:    Q_DECLARE_TYPEINFO(QtMetaTypePrivate:: C, (F)); \
+        -:  807:    namespace QtMetaTypePrivate {
+        -:  808:
+        -:  809:
+        -:  810:namespace QtMetaTypePrivate {
+        -:  811:
+        -:  812:class QPairVariantInterfaceImpl
+        -:  813:{
+        -:  814:public:
+        -:  815:    const void *_pair;
+        -:  816:    QMetaType _metaType_first;
+        -:  817:    QMetaType _metaType_second;
+        -:  818:
+        -:  819:    typedef void (*getFunc)(const void * const *p, void *);
+        -:  820:
+        -:  821:    getFunc _getFirst;
+        -:  822:    getFunc _getSecond;
+        -:  823:
+        -:  824:    template<class T>
+        -:  825:    static void getFirstImpl(const void * const *pair, void *dataPtr)
+        -:  826:    { *static_cast<typename T::first_type *>(dataPtr) = static_cast<const T*>(*pair)->first; }
+        -:  827:    template<class T>
+        -:  828:    static void getSecondImpl(const void * const *pair, void *dataPtr)
+        -:  829:    { *static_cast<typename T::second_type *>(dataPtr) = static_cast<const T*>(*pair)->second; }
+        -:  830:
+        -:  831:public:
+        -:  832:    template<class T> QPairVariantInterfaceImpl(const T*p)
+        -:  833:      : _pair(p)
+        -:  834:      , _metaType_first(QMetaType::fromType<typename T::first_type>())
+        -:  835:      , _metaType_second(QMetaType::fromType<typename T::second_type>())
+        -:  836:      , _getFirst(getFirstImpl<T>)
+        -:  837:      , _getSecond(getSecondImpl<T>)
+        -:  838:    {
+        -:  839:    }
+        -:  840:
+        -:  841:    constexpr QPairVariantInterfaceImpl()
+        -:  842:      : _pair(nullptr)
+        -:  843:      , _getFirst(nullptr)
+        -:  844:      , _getSecond(nullptr)
+        -:  845:    {
+        -:  846:    }
+        -:  847:
+        -:  848:    inline void first(void *dataPtr) const { _getFirst(&_pair, dataPtr); }
+        -:  849:    inline void second(void *dataPtr) const { _getSecond(&_pair, dataPtr); }
+        -:  850:};
+        -:  851:QT_METATYPE_PRIVATE_DECLARE_TYPEINFO(QPairVariantInterfaceImpl, Q_RELOCATABLE_TYPE)
+        -:  852:
+        -:  853:template<typename From>
+        -:  854:struct QPairVariantInterfaceConvertFunctor;
+        -:  855:
+        -:  856:template<typename T, typename U>
+        -:  857:struct QPairVariantInterfaceConvertFunctor<std::pair<T, U> >
+        -:  858:{
+        -:  859:    QPairVariantInterfaceImpl operator()(const std::pair<T, U>& f) const
+        -:  860:    {
+        -:  861:        return QPairVariantInterfaceImpl(&f);
+        -:  862:    }
+        -:  863:};
+        -:  864:
+        -:  865:}
+        -:  866:
+        -:  867:class QObject;
+        -:  868:
+        -:  869:#define QT_FORWARD_DECLARE_SHARED_POINTER_TYPES_ITER(Name) \
+        -:  870:    template <class T> class Name; \
+        -:  871:
+        -:  872:QT_FOR_EACH_AUTOMATIC_TEMPLATE_SMART_POINTER(QT_FORWARD_DECLARE_SHARED_POINTER_TYPES_ITER)
+        -:  873:
+        -:  874:namespace QtPrivate
+        -:  875:{
+        -:  876:    namespace detail {
+        -:  877:    template<typename T, typename ODR_VIOLATION_PREVENTER>
+        -:  878:    struct is_complete_helper
+        -:  879:    {
+        -:  880:        template<typename U>
+        -:  881:        static auto check(U *) -> std::integral_constant<bool, sizeof(U) != 0>;
+        -:  882:        static auto check(...) -> std::false_type;
+        -:  883:        using type = decltype(check(static_cast<T *>(nullptr)));
+        -:  884:    };
+        -:  885:    } // namespace detail
+        -:  886:
+        -:  887:    template <typename T, typename ODR_VIOLATION_PREVENTER>
+        -:  888:    struct is_complete : detail::is_complete_helper<std::remove_reference_t<T>, ODR_VIOLATION_PREVENTER>::type {};
+        -:  889:
+        -:  890:    template <typename T> struct MetatypeDecay              { using type = T; };
+        -:  891:    template <typename T> struct MetatypeDecay<const T>     { using type = T; };
+        -:  892:    template <typename T> struct MetatypeDecay<const T &>   { using type = T; };
+        -:  893:
+        -:  894:    template <typename T> struct IsPointerDeclaredOpaque  :
+        -:  895:            std::disjunction<std::is_member_pointer<T>,
+        -:  896:                             std::is_function<std::remove_pointer_t<T>>>
+        -:  897:    {};
+        -:  898:    template <> struct IsPointerDeclaredOpaque<void *>      : std::true_type {};
+        -:  899:    template <> struct IsPointerDeclaredOpaque<const void *> : std::true_type {};
+        -:  900:
+        -:  901:    // Note: this does not check that T = U* isn't pointing to a
+        -:  902:    // forward-declared type. You may want to combine with
+        -:  903:    // checkTypeIsSuitableForMetaType().
+        -:  904:    template<typename T>
+        -:  905:    struct IsPointerToTypeDerivedFromQObject
+        -:  906:    {
+        -:  907:        enum { Value = false };
+        -:  908:    };
+        -:  909:
+        -:  910:    // Specialize to avoid sizeof(void) warning
+        -:  911:    template<>
+        -:  912:    struct IsPointerToTypeDerivedFromQObject<void*>
+        -:  913:    {
+        -:  914:        enum { Value = false };
+        -:  915:    };
+        -:  916:    template<>
+        -:  917:    struct IsPointerToTypeDerivedFromQObject<const void*>
+        -:  918:    {
+        -:  919:        enum { Value = false };
+        -:  920:    };
+        -:  921:    template<>
+        -:  922:    struct IsPointerToTypeDerivedFromQObject<QObject*>
+        -:  923:    {
+        -:  924:        enum { Value = true };
+        -:  925:    };
+        -:  926:
+        -:  927:    template<typename T>
+        -:  928:    struct IsPointerToTypeDerivedFromQObject<T*>
+        -:  929:    {
+        -:  930:        typedef qint8 yes_type;
+        -:  931:        typedef qint64 no_type;
+        -:  932:
+        -:  933:#ifndef QT_NO_QOBJECT
+        -:  934:        static yes_type checkType(QObject* );
+        -:  935:        static yes_type checkType(const QObject* );
+        -:  936:#endif
+        -:  937:        static no_type checkType(...);
+        -:  938:        enum { Value = sizeof(checkType(static_cast<T*>(nullptr))) == sizeof(yes_type) };
+        -:  939:    };
+        -:  940:
+        -:  941:    template<typename T, typename Enable = void>
+        -:  942:    struct IsGadgetHelper { enum { IsRealGadget = false, IsGadgetOrDerivedFrom = false }; };
+        -:  943:
+        -:  944:    template<typename T>
+        -:  945:    struct IsGadgetHelper<T, typename T::QtGadgetHelper>
+        -:  946:    {
+        -:  947:        template <typename X>
+        -:  948:        static char checkType(void (X::*)());
+        -:  949:        static void *checkType(void (T::*)());
+        -:  950:        enum {
+        -:  951:            IsRealGadget = sizeof(checkType(&T::qt_check_for_QGADGET_macro)) == sizeof(void *),
+        -:  952:            IsGadgetOrDerivedFrom = true
+        -:  953:        };
+        -:  954:    };
+        -:  955:
+        -:  956:    template <typename T>
+        -:  957:    using IsRealGadget = std::bool_constant<IsGadgetHelper<T>::IsRealGadget>;
+        -:  958:
+        -:  959:    template<typename T, typename Enable = void>
+        -:  960:    struct IsPointerToGadgetHelper { enum { IsRealGadget = false, IsGadgetOrDerivedFrom = false }; };
+        -:  961:
+        -:  962:    template<typename T>
+        -:  963:    struct IsPointerToGadgetHelper<T*, typename T::QtGadgetHelper>
+        -:  964:    {
+        -:  965:        using BaseType = T;
+        -:  966:        template <typename X>
+        -:  967:        static char checkType(void (X::*)());
+        -:  968:        static void *checkType(void (T::*)());
+        -:  969:        enum {
+        -:  970:            IsRealGadget = !IsPointerToTypeDerivedFromQObject<T*>::Value && sizeof(checkType(&T::qt_check_for_QGADGET_macro)) == sizeof(void *),
+        -:  971:            IsGadgetOrDerivedFrom = !IsPointerToTypeDerivedFromQObject<T*>::Value
+        -:  972:        };
+        -:  973:    };
+        -:  974:
+        -:  975:
+        -:  976:    template<typename T> char qt_getEnumMetaObject(const T&);
+        -:  977:
+        -:  978:    template<typename T>
+        -:  979:    struct IsQEnumHelper {
+        -:  980:        static const T &declval();
+        -:  981:        // If the type was declared with Q_ENUM, the friend qt_getEnumMetaObject() declared in the
+        -:  982:        // Q_ENUM macro will be chosen by ADL, and the return type will be QMetaObject*.
+        -:  983:        // Otherwise the chosen overload will be the catch all template function
+        -:  984:        // qt_getEnumMetaObject(T) which returns 'char'
+        -:  985:        enum { Value = sizeof(qt_getEnumMetaObject(declval())) == sizeof(QMetaObject*) };
+        -:  986:    };
+        -:  987:    template<> struct IsQEnumHelper<void> { enum { Value = false }; };
+        -:  988:
+        -:  989:    template<typename T, typename Enable = void>
+        -:  990:    struct MetaObjectForType
+        -:  991:    {
+        -:  992:        static constexpr const QMetaObject *value() { return nullptr; }
+        -:  993:        using MetaObjectFn = const QMetaObject *(*)(const QMetaTypeInterface *);
+        -:  994:        static constexpr MetaObjectFn metaObjectFunction = nullptr;
+        -:  995:    };
+        -:  996:#ifndef QT_NO_QOBJECT
+        -:  997:    template<typename T>
+        -:  998:    struct MetaObjectForType<T*, typename std::enable_if<IsPointerToTypeDerivedFromQObject<T*>::Value>::type>
+        -:  999:    {
+        -: 1000:        static constexpr const QMetaObject *value() { return &T::staticMetaObject; }
+        -: 1001:        static constexpr const QMetaObject *metaObjectFunction(const QMetaTypeInterface *) { return &T::staticMetaObject; }
+        -: 1002:    };
+        -: 1003:    template<typename T>
+        -: 1004:    struct MetaObjectForType<T, std::enable_if_t<
+        -: 1005:        std::disjunction_v<
+        -: 1006:            std::bool_constant<IsGadgetHelper<T>::IsGadgetOrDerivedFrom>,
+        -: 1007:            std::is_base_of<QObject, T>
+        -: 1008:        >
+        -: 1009:    >>
+        -: 1010:    {
+        -: 1011:        static constexpr const QMetaObject *value() { return &T::staticMetaObject; }
+        -: 1012:        static constexpr const QMetaObject *metaObjectFunction(const QMetaTypeInterface *) { return &T::staticMetaObject; }
+        -: 1013:    };
+        -: 1014:    template<typename T>
+        -: 1015:    struct MetaObjectForType<T, typename std::enable_if<IsPointerToGadgetHelper<T>::IsGadgetOrDerivedFrom>::type>
+        -: 1016:    {
+        -: 1017:        static constexpr const QMetaObject *value()
+        -: 1018:        {
+        -: 1019:            return &IsPointerToGadgetHelper<T>::BaseType::staticMetaObject;
+        -: 1020:        }
+        -: 1021:        static constexpr const QMetaObject *metaObjectFunction(const QMetaTypeInterface *) { return value(); }
+        -: 1022:    };
+        -: 1023:    template<typename T>
+        -: 1024:    struct MetaObjectForType<T, typename std::enable_if<IsQEnumHelper<T>::Value>::type >
+        -: 1025:    {
+        -: 1026:        static constexpr const QMetaObject *value() { return qt_getEnumMetaObject(T()); }
+        -: 1027:        static constexpr const QMetaObject *metaObjectFunction(const QMetaTypeInterface *) { return value(); }
+        -: 1028:    };
+        -: 1029:#endif
+        -: 1030:
+        -: 1031:    template<typename T>
+        -: 1032:    struct IsSharedPointerToTypeDerivedFromQObject
+        -: 1033:    {
+        -: 1034:        enum { Value = false };
+        -: 1035:    };
+        -: 1036:
+        -: 1037:    template<typename T>
+        -: 1038:    struct IsSharedPointerToTypeDerivedFromQObject<QSharedPointer<T> > : IsPointerToTypeDerivedFromQObject<T*>
+        -: 1039:    {
+        -: 1040:    };
+        -: 1041:
+        -: 1042:    template<typename T>
+        -: 1043:    struct IsWeakPointerToTypeDerivedFromQObject
+        -: 1044:    {
+        -: 1045:        enum { Value = false };
+        -: 1046:    };
+        -: 1047:
+        -: 1048:    template<typename T>
+        -: 1049:    struct IsWeakPointerToTypeDerivedFromQObject<QWeakPointer<T> > : IsPointerToTypeDerivedFromQObject<T*>
+        -: 1050:    {
+        -: 1051:    };
+        -: 1052:
+        -: 1053:    template<typename T>
+        -: 1054:    struct IsTrackingPointerToTypeDerivedFromQObject
+        -: 1055:    {
+        -: 1056:        enum { Value = false };
+        -: 1057:    };
+        -: 1058:
+        -: 1059:    template<typename T>
+        -: 1060:    struct IsTrackingPointerToTypeDerivedFromQObject<QPointer<T> >
+        -: 1061:    {
+        -: 1062:        enum { Value = true };
+        -: 1063:    };
+        -: 1064:
+        -: 1065:    template<typename T>
+        -: 1066:    struct IsSequentialContainer
+        -: 1067:    {
+        -: 1068:        enum { Value = false };
+        -: 1069:    };
+        -: 1070:
+        -: 1071:    template<typename T>
+        -: 1072:    struct IsAssociativeContainer
+        -: 1073:    {
+        -: 1074:        enum { Value = false };
+        -: 1075:    };
+        -: 1076:
+        -: 1077:    template<typename T, bool = QtPrivate::IsSequentialContainer<T>::Value>
+        -: 1078:    struct SequentialContainerTransformationHelper
+        -: 1079:    {
+        -: 1080:        static bool registerConverter()
+        -: 1081:        {
+        -: 1082:            return false;
+        -: 1083:        }
+        -: 1084:
+        -: 1085:        static bool registerMutableView()
+        -: 1086:        {
+        -: 1087:            return false;
+        -: 1088:        }
+        -: 1089:    };
+        -: 1090:
+        -: 1091:    template<typename T, bool = QMetaTypeId2<typename T::value_type>::Defined>
+        -: 1092:    struct SequentialValueTypeIsMetaType
+        -: 1093:    {
+        -: 1094:        static bool registerConverter()
+        -: 1095:        {
+        -: 1096:            return false;
+        -: 1097:        }
+        -: 1098:
+        -: 1099:        static bool registerMutableView()
+        -: 1100:        {
+        -: 1101:            return false;
+        -: 1102:        }
+        -: 1103:    };
+        -: 1104:
+        -: 1105:    template<typename T>
+        -: 1106:    struct SequentialContainerTransformationHelper<T, true> : SequentialValueTypeIsMetaType<T>
+        -: 1107:    {
+        -: 1108:    };
+        -: 1109:
+        -: 1110:    template<typename T, bool = QtPrivate::IsAssociativeContainer<T>::Value>
+        -: 1111:    struct AssociativeContainerTransformationHelper
+        -: 1112:    {
+        -: 1113:        static bool registerConverter()
+        -: 1114:        {
+        -: 1115:            return false;
+        -: 1116:        }
+        -: 1117:
+        -: 1118:        static bool registerMutableView()
+        -: 1119:        {
+        -: 1120:            return false;
+        -: 1121:        }
+        -: 1122:    };
+        -: 1123:
+        -: 1124:    template<typename T, bool = QMetaTypeId2<typename T::key_type>::Defined>
+        -: 1125:    struct AssociativeKeyTypeIsMetaType
+        -: 1126:    {
+        -: 1127:        static bool registerConverter()
+        -: 1128:        {
+        -: 1129:            return false;
+        -: 1130:        }
+        -: 1131:
+        -: 1132:        static bool registerMutableView()
+        -: 1133:        {
+        -: 1134:            return false;
+        -: 1135:        }
+        -: 1136:    };
+        -: 1137:
+        -: 1138:    template<typename T, bool = QMetaTypeId2<typename T::mapped_type>::Defined>
+        -: 1139:    struct AssociativeMappedTypeIsMetaType
+        -: 1140:    {
+        -: 1141:        static bool registerConverter()
+        -: 1142:        {
+        -: 1143:            return false;
+        -: 1144:        }
+        -: 1145:
+        -: 1146:        static bool registerMutableView()
+        -: 1147:        {
+        -: 1148:            return false;
+        -: 1149:        }
+        -: 1150:    };
+        -: 1151:
+        -: 1152:    template<typename T>
+        -: 1153:    struct AssociativeContainerTransformationHelper<T, true> : AssociativeKeyTypeIsMetaType<T>
+        -: 1154:    {
+        -: 1155:    };
+        -: 1156:
+        -: 1157:    template<typename T, bool = QMetaTypeId2<typename T::first_type>::Defined
+        -: 1158:                                && QMetaTypeId2<typename T::second_type>::Defined>
+        -: 1159:    struct IsMetaTypePair
+        -: 1160:    {
+        -: 1161:        static bool registerConverter()
+        -: 1162:        {
+        -: 1163:            return false;
+        -: 1164:        }
+        -: 1165:    };
+        -: 1166:
+        -: 1167:    template<typename T>
+        -: 1168:    struct IsMetaTypePair<T, true>
+        -: 1169:    {
+        -: 1170:        inline static bool registerConverter();
+        -: 1171:    };
+        -: 1172:
+        -: 1173:    template<typename T>
+        -: 1174:    struct IsPair
+        -: 1175:    {
+        -: 1176:        static bool registerConverter()
+        -: 1177:        {
+        -: 1178:            return false;
+        -: 1179:        }
+        -: 1180:    };
+        -: 1181:    template<typename T, typename U>
+        -: 1182:    struct IsPair<std::pair<T, U> > : IsMetaTypePair<std::pair<T, U> > {};
+        -: 1183:
+        -: 1184:    template<typename T>
+        -: 1185:    struct MetaTypePairHelper : IsPair<T> {};
+        -: 1186:
+        -: 1187:    template<typename T, typename = void>
+        -: 1188:    struct MetaTypeSmartPointerHelper
+        -: 1189:    {
+        -: 1190:        static bool registerConverter() { return false; }
+        -: 1191:    };
+        -: 1192:
+        -: 1193:#if QT_CONFIG(future)
+        -: 1194:    template<typename T>
+        -: 1195:    struct MetaTypeQFutureHelper
+        -: 1196:    {
+        -: 1197:        static bool registerConverter() { return false; }
+        -: 1198:    };
+        -: 1199:#endif
+        -: 1200:
+        -: 1201:    template <typename X> static constexpr bool checkTypeIsSuitableForMetaType()
+        -: 1202:    {
+        -: 1203:        using T = typename MetatypeDecay<X>::type;
+        -: 1204:        static_assert(is_complete<T, void>::value || std::is_void_v<T>,
+        -: 1205:                "Meta Types must be fully defined");
+        -: 1206:        static_assert(!std::is_reference_v<T>,
+        -: 1207:                "Meta Types cannot be non-const references or rvalue references.");
+        -: 1208:        if constexpr (std::is_pointer_v<T> && !IsPointerDeclaredOpaque<T>::value) {
+        -: 1209:            using Pointed = std::remove_pointer_t<T>;
+        -: 1210:            static_assert(is_complete<Pointed, void>::value,
+        -: 1211:                    "Pointer Meta Types must either point to fully-defined types "
+        -: 1212:                    "or be declared with Q_DECLARE_OPAQUE_POINTER(T *)");
+        -: 1213:        }
+        -: 1214:        return true;
+        -: 1215:    }
+        -: 1216:
+        -: 1217:    Q_CORE_EXPORT bool isBuiltinType(const QByteArray &type);
+        -: 1218:} // namespace QtPrivate
+        -: 1219:
+        -: 1220:template <typename T, int =
+        -: 1221:    QtPrivate::IsPointerToTypeDerivedFromQObject<T>::Value ? QMetaType::PointerToQObject :
+        -: 1222:    QtPrivate::IsRealGadget<T>::value                      ? QMetaType::IsGadget :
+        -: 1223:    QtPrivate::IsPointerToGadgetHelper<T>::IsRealGadget    ? QMetaType::PointerToGadget :
+        -: 1224:    QtPrivate::IsQEnumHelper<T>::Value                     ? QMetaType::IsEnumeration : 0>
+        -: 1225:struct QMetaTypeIdQObject
+        -: 1226:{
+        -: 1227:    enum {
+        -: 1228:        Defined = 0
+        -: 1229:    };
+        -: 1230:};
+        -: 1231:
+        -: 1232:template <typename T>
+        -: 1233:struct QMetaTypeId : public QMetaTypeIdQObject<T>
+        -: 1234:{
+        -: 1235:};
+        -: 1236:
+        -: 1237:template <typename T>
+        -: 1238:struct QMetaTypeId2
+        -: 1239:{
+        -: 1240:    using NameAsArrayType = void;
+        -: 1241:    enum { Defined = QMetaTypeId<T>::Defined, IsBuiltIn=false };
+function _ZN12QMetaTypeId2I14QItemSelectionE14qt_metatype_idEv called 0 returned 0% blocks executed 0%
+    #####: 1242:    static inline constexpr int qt_metatype_id() { return QMetaTypeId<T>::qt_metatype_id(); }
+    %%%%%: 1242-block  0
+call    0 never executed
+        -: 1243:};
+        -: 1244:
+        -: 1245:template <typename T>
+        -: 1246:struct QMetaTypeId2<const T&> : QMetaTypeId2<T> {};
+        -: 1247:
+        -: 1248:template <typename T>
+        -: 1249:struct QMetaTypeId2<T&>
+        -: 1250:{
+        -: 1251:    using NameAsArrayType = void;
+        -: 1252:    enum { Defined = false, IsBuiltIn = false };
+        -: 1253:    static inline constexpr int qt_metatype_id() { return 0; }
+        -: 1254:};
+        -: 1255:
+        -: 1256:namespace QtPrivate {
+        -: 1257:    template <typename T, bool Defined = QMetaTypeId2<T>::Defined>
+        -: 1258:    struct QMetaTypeIdHelper {
+function _ZN9QtPrivate17QMetaTypeIdHelperIRK14QItemSelectionLb1EE14qt_metatype_idEv called 0 returned 0% blocks executed 0%
+    #####: 1259:        static inline constexpr int qt_metatype_id()
+    #####: 1260:        { return QMetaTypeId2<T>::qt_metatype_id(); }
+    %%%%%: 1260-block  0
+call    0 never executed
+        -: 1261:    };
+        -: 1262:    template <typename T> struct QMetaTypeIdHelper<T, false> {
+        -: 1263:        static inline constexpr int qt_metatype_id()
+        -: 1264:        { return -1; }
+        -: 1265:    };
+        -: 1266:
+        -: 1267:    // Function pointers don't derive from QObject
+        -: 1268:    template <typename Result, typename... Args>
+        -: 1269:    struct IsPointerToTypeDerivedFromQObject<Result(*)(Args...)> { enum { Value = false }; };
+        -: 1270:
+        -: 1271:    template<typename T>
+        -: 1272:    inline constexpr bool IsQmlListType = false;
+        -: 1273:
+        -: 1274:    template<typename T, bool = std::is_enum<T>::value>
+        -: 1275:    constexpr bool IsUnsignedEnum = false;
+        -: 1276:    template<typename T>
+        -: 1277:    constexpr bool IsUnsignedEnum<T, true> = !std::is_signed_v<std::underlying_type_t<T>>;
+        -: 1278:
+        -: 1279:    template<typename T>
+        -: 1280:    struct QMetaTypeTypeFlags
+        -: 1281:    {
+        -: 1282:        enum { Flags = (QTypeInfo<T>::isRelocatable ? QMetaType::RelocatableType : 0)
+        -: 1283:                     | ((!std::is_default_constructible_v<T> || !QTypeInfo<T>::isValueInitializationBitwiseZero) ? QMetaType::NeedsConstruction : 0)
+        -: 1284:                     | (!std::is_trivially_destructible_v<T> ? QMetaType::NeedsDestruction : 0)
+        -: 1285:                     | (!std::is_trivially_copy_constructible_v<T> ? QMetaType::NeedsCopyConstruction : 0)
+        -: 1286:                     | (!std::is_trivially_move_constructible_v<T> ? QMetaType::NeedsMoveConstruction : 0)
+        -: 1287:                     | (IsPointerToTypeDerivedFromQObject<T>::Value ? QMetaType::PointerToQObject : 0)
+        -: 1288:                     | (IsSharedPointerToTypeDerivedFromQObject<T>::Value ? QMetaType::SharedPointerToQObject : 0)
+        -: 1289:                     | (IsWeakPointerToTypeDerivedFromQObject<T>::Value ? QMetaType::WeakPointerToQObject : 0)
+        -: 1290:                     | (IsTrackingPointerToTypeDerivedFromQObject<T>::Value ? QMetaType::TrackingPointerToQObject : 0)
+        -: 1291:                     | (IsEnumOrFlags<T>::value ? QMetaType::IsEnumeration : 0)
+        -: 1292:                     | (IsGadgetHelper<T>::IsGadgetOrDerivedFrom ? QMetaType::IsGadget : 0)
+        -: 1293:                     | (IsPointerToGadgetHelper<T>::IsGadgetOrDerivedFrom ? QMetaType::PointerToGadget : 0)
+        -: 1294:                     | (std::is_pointer_v<T> ? QMetaType::IsPointer : 0)
+        -: 1295:                     | (IsUnsignedEnum<T> ? QMetaType::IsUnsignedEnumeration : 0)
+        -: 1296:                     | (IsQmlListType<T> ? QMetaType::IsQmlList : 0)
+        -: 1297:                     | (std::is_const_v<std::remove_pointer_t<T>> ? QMetaType::IsConst : 0)
+        -: 1298:             };
+        -: 1299:    };
+        -: 1300:
+        -: 1301:    template<typename T, bool defined>
+        -: 1302:    struct MetaTypeDefinedHelper
+        -: 1303:    {
+        -: 1304:        enum DefinedType { Defined = defined };
+        -: 1305:    };
+        -: 1306:
+        -: 1307:    template<typename SmartPointer>
+        -: 1308:    struct QSmartPointerConvertFunctor
+        -: 1309:    {
+        -: 1310:        QObject* operator()(const SmartPointer &p) const
+        -: 1311:        {
+        -: 1312:            return p.operator->();
+        -: 1313:        }
+        -: 1314:    };
+        -: 1315:
+        -: 1316:    // hack to delay name lookup to instantiation time by making
+        -: 1317:    // EnableInternalData a dependent name:
+        -: 1318:    template <typename T>
+        -: 1319:    struct EnableInternalDataWrap;
+        -: 1320:
+        -: 1321:    template<typename T>
+        -: 1322:    struct QSmartPointerConvertFunctor<QWeakPointer<T> >
+        -: 1323:    {
+        -: 1324:        QObject* operator()(const QWeakPointer<T> &p) const
+        -: 1325:        {
+        -: 1326:            return QtPrivate::EnableInternalDataWrap<T>::internalData(p);
+        -: 1327:        }
+        -: 1328:    };
+        -: 1329:}
+        -: 1330:
+        -: 1331:template <typename T>
+        -: 1332:int qRegisterNormalizedMetaTypeImplementation(const QT_PREPEND_NAMESPACE(QByteArray) &normalizedTypeName)
+        -: 1333:{
+        -: 1334:#ifndef QT_NO_QOBJECT
+        -: 1335:    Q_ASSERT_X(normalizedTypeName == QMetaObject::normalizedType(normalizedTypeName.constData()),
+        -: 1336:               "qRegisterNormalizedMetaType",
+        -: 1337:               "qRegisterNormalizedMetaType was called with a not normalized type name, "
+        -: 1338:               "please call qRegisterMetaType instead.");
+        -: 1339:#endif
+        -: 1340:
+        -: 1341:    const QMetaType metaType = QMetaType::fromType<T>();
+        -: 1342:    const int id = metaType.id();
+        -: 1343:
+        -: 1344:    QtPrivate::SequentialContainerTransformationHelper<T>::registerConverter();
+        -: 1345:    QtPrivate::SequentialContainerTransformationHelper<T>::registerMutableView();
+        -: 1346:    QtPrivate::AssociativeContainerTransformationHelper<T>::registerConverter();
+        -: 1347:    QtPrivate::AssociativeContainerTransformationHelper<T>::registerMutableView();
+        -: 1348:    QtPrivate::MetaTypePairHelper<T>::registerConverter();
+        -: 1349:    QtPrivate::MetaTypeSmartPointerHelper<T>::registerConverter();
+        -: 1350:#if QT_CONFIG(future)
+        -: 1351:    QtPrivate::MetaTypeQFutureHelper<T>::registerConverter();
+        -: 1352:#endif
+        -: 1353:
+        -: 1354:    if (normalizedTypeName != metaType.name())
+        -: 1355:        QMetaType::registerNormalizedTypedef(normalizedTypeName, metaType);
+        -: 1356:
+        -: 1357:    return id;
+        -: 1358:}
+        -: 1359:
+        -: 1360:// This primary template calls the -Implementation, like all other specialisations should.
+        -: 1361:// But the split allows to
+        -: 1362:// - in a header:
+        -: 1363://   - define a specialization of this template calling an out-of-line function
+        -: 1364://     (QT_DECL_METATYPE_EXTERN{,_TAGGED})
+        -: 1365:// - in the .cpp file:
+        -: 1366://   - define the out-of-line wrapper to call the -Implementation
+        -: 1367://     (QT_IMPL_METATYPE_EXTERN{,_TAGGED})
+        -: 1368:// The _TAGGED variants let you choose a tag (must be a C identifier) to disambiguate
+        -: 1369:// the out-of-line function; the non-_TAGGED variants use the passed class name as tag.
+        -: 1370:template <typename T>
+        -: 1371:int qRegisterNormalizedMetaType(const QT_PREPEND_NAMESPACE(QByteArray) &normalizedTypeName)
+        -: 1372:{
+        -: 1373:    return qRegisterNormalizedMetaTypeImplementation<T>(normalizedTypeName);
+        -: 1374:}
+        -: 1375:
+        -: 1376:#define QT_DECL_METATYPE_EXTERN_TAGGED(TYPE, TAG, EXPORT) \
+        -: 1377:    QT_BEGIN_NAMESPACE \
+        -: 1378:    EXPORT int qRegisterNormalizedMetaType_ ## TAG (const QByteArray &); \
+        -: 1379:    template <> inline int qRegisterNormalizedMetaType< TYPE >(const QByteArray &name) \
+        -: 1380:    { return qRegisterNormalizedMetaType_ ## TAG (name); } \
+        -: 1381:    QT_END_NAMESPACE \
+        -: 1382:    Q_DECLARE_METATYPE(TYPE) \
+        -: 1383:    /* end */
+        -: 1384:#define QT_IMPL_METATYPE_EXTERN_TAGGED(TYPE, TAG) \
+        -: 1385:    int qRegisterNormalizedMetaType_ ## TAG (const QByteArray &name) \
+        -: 1386:    { return qRegisterNormalizedMetaTypeImplementation< TYPE >(name); } \
+        -: 1387:    /* end */
+        -: 1388:#define QT_DECL_METATYPE_EXTERN(TYPE, EXPORT) \
+        -: 1389:    QT_DECL_METATYPE_EXTERN_TAGGED(TYPE, TYPE, EXPORT)
+        -: 1390:#define QT_IMPL_METATYPE_EXTERN(TYPE) \
+        -: 1391:    QT_IMPL_METATYPE_EXTERN_TAGGED(TYPE, TYPE)
+        -: 1392:
+        -: 1393:template <typename T>
+function _Z17qRegisterMetaTypeI14QItemSelectionEiPKc called 0 returned 0% blocks executed 0%
+    #####: 1394:int qRegisterMetaType(const char *typeName)
+        -: 1395:{
+        -: 1396:#ifdef QT_NO_QOBJECT
+        -: 1397:    QT_PREPEND_NAMESPACE(QByteArray) normalizedTypeName = typeName;
+        -: 1398:#else
+    #####: 1399:    QT_PREPEND_NAMESPACE(QByteArray) normalizedTypeName = QMetaObject::normalizedType(typeName);
+    %%%%%: 1399-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -: 1400:#endif
+    #####: 1401:    return qRegisterNormalizedMetaType<T>(normalizedTypeName);
+    %%%%%: 1401-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%: 1401-block  1
+    %%%%%: 1401-block  2
+    #####: 1402:}
+    %%%%%: 1402-block  0
+call    0 never executed
+    $$$$$: 1402-block  1
+call    1 never executed
+        -: 1403:
+        -: 1404:template <typename T>
+        -: 1405:inline constexpr int qMetaTypeId()
+        -: 1406:{
+        -: 1407:    if constexpr (bool(QMetaTypeId2<T>::IsBuiltIn)) {
+        -: 1408:        // this has the same result as the below code, but avoids asking the
+        -: 1409:        // compiler to load a global variable whose value we know at compile
+        -: 1410:        // time
+        -: 1411:        return QMetaTypeId2<T>::MetaType;
+        -: 1412:    } else {
+        -: 1413:        return QMetaType::fromType<T>().id();
+        -: 1414:    }
+        -: 1415:}
+        -: 1416:
+        -: 1417:template <typename T>
+        -: 1418:inline constexpr int qRegisterMetaType()
+        -: 1419:{
+        -: 1420:    int id = qMetaTypeId<T>();
+        -: 1421:    return id;
+        -: 1422:}
+        -: 1423:
+        -: 1424:inline int qRegisterMetaType(QMetaType meta)
+        -: 1425:{
+        -: 1426:    return meta.registerHelper();
+        -: 1427:}
+        -: 1428:
+        -: 1429:#ifndef QT_NO_QOBJECT
+        -: 1430:template <typename T>
+        -: 1431:struct QMetaTypeIdQObject<T*, QMetaType::PointerToQObject>
+        -: 1432:{
+        -: 1433:    enum {
+        -: 1434:        Defined = 1
+        -: 1435:    };
+        -: 1436:
+        -: 1437:    static int qt_metatype_id()
+        -: 1438:    {
+        -: 1439:        Q_CONSTINIT static QBasicAtomicInt metatype_id = Q_BASIC_ATOMIC_INITIALIZER(0);
+        -: 1440:        if (const int id = metatype_id.loadAcquire())
+        -: 1441:            return id;
+        -: 1442:        const char *const cName = T::staticMetaObject.className();
+        -: 1443:        QByteArray typeName;
+        -: 1444:        typeName.reserve(strlen(cName) + 1);
+        -: 1445:        typeName.append(cName).append('*');
+        -: 1446:        const int newId = qRegisterNormalizedMetaType<T *>(typeName);
+        -: 1447:        metatype_id.storeRelease(newId);
+        -: 1448:        return newId;
+        -: 1449:    }
+        -: 1450:};
+        -: 1451:
+        -: 1452:template <typename T>
+        -: 1453:struct QMetaTypeIdQObject<T, QMetaType::IsGadget>
+        -: 1454:{
+        -: 1455:    enum {
+        -: 1456:        Defined = std::is_default_constructible<T>::value
+        -: 1457:    };
+        -: 1458:
+        -: 1459:    static int qt_metatype_id()
+        -: 1460:    {
+        -: 1461:        Q_CONSTINIT static QBasicAtomicInt metatype_id = Q_BASIC_ATOMIC_INITIALIZER(0);
+        -: 1462:        if (const int id = metatype_id.loadAcquire())
+        -: 1463:            return id;
+        -: 1464:        const char *const cName = T::staticMetaObject.className();
+        -: 1465:        const int newId = qRegisterNormalizedMetaType<T>(cName);
+        -: 1466:        metatype_id.storeRelease(newId);
+        -: 1467:        return newId;
+        -: 1468:    }
+        -: 1469:};
+        -: 1470:
+        -: 1471:template <typename T>
+        -: 1472:struct QMetaTypeIdQObject<T*, QMetaType::PointerToGadget>
+        -: 1473:{
+        -: 1474:    enum {
+        -: 1475:        Defined = 1
+        -: 1476:    };
+        -: 1477:
+        -: 1478:    static int qt_metatype_id()
+        -: 1479:    {
+        -: 1480:        Q_CONSTINIT static QBasicAtomicInt metatype_id = Q_BASIC_ATOMIC_INITIALIZER(0);
+        -: 1481:        if (const int id = metatype_id.loadAcquire())
+        -: 1482:            return id;
+        -: 1483:        const char *const cName = T::staticMetaObject.className();
+        -: 1484:        QByteArray typeName;
+        -: 1485:        typeName.reserve(strlen(cName) + 1);
+        -: 1486:        typeName.append(cName).append('*');
+        -: 1487:        const int newId = qRegisterNormalizedMetaType<T *>(typeName);
+        -: 1488:        metatype_id.storeRelease(newId);
+        -: 1489:        return newId;
+        -: 1490:    }
+        -: 1491:};
+        -: 1492:
+        -: 1493:template <typename T>
+        -: 1494:struct QMetaTypeIdQObject<T, QMetaType::IsEnumeration>
+        -: 1495:{
+        -: 1496:    enum {
+        -: 1497:        Defined = 1
+        -: 1498:    };
+        -: 1499:
+        -: 1500:    static int qt_metatype_id()
+        -: 1501:    {
+        -: 1502:        Q_CONSTINIT static QBasicAtomicInt metatype_id = Q_BASIC_ATOMIC_INITIALIZER(0);
+        -: 1503:        if (const int id = metatype_id.loadAcquire())
+        -: 1504:            return id;
+        -: 1505:        const char *eName = qt_getEnumName(T());
+        -: 1506:        const char *cName = qt_getEnumMetaObject(T())->className();
+        -: 1507:        QByteArray typeName;
+        -: 1508:        typeName.reserve(strlen(cName) + 2 + strlen(eName));
+        -: 1509:        typeName.append(cName).append("::").append(eName);
+        -: 1510:        const int newId = qRegisterNormalizedMetaType<T>(typeName);
+        -: 1511:        metatype_id.storeRelease(newId);
+        -: 1512:        return newId;
+        -: 1513:    }
+        -: 1514:};
+        -: 1515:#endif
+        -: 1516:
+        -: 1517:#define Q_DECLARE_OPAQUE_POINTER(POINTER)                               \
+        -: 1518:    QT_BEGIN_NAMESPACE namespace QtPrivate {                            \
+        -: 1519:    template <> struct IsPointerDeclaredOpaque<POINTER>                 \
+        -: 1520:        : std::true_type {};                                            \
+        -: 1521:    } QT_END_NAMESPACE                                                  \
+        -: 1522:    /**/
+        -: 1523:
+        -: 1524:#ifndef Q_MOC_RUN
+        -: 1525:#define Q_DECLARE_METATYPE(TYPE) Q_DECLARE_METATYPE_IMPL(TYPE)
+        -: 1526:#define Q_DECLARE_METATYPE_IMPL(TYPE)                                   \
+        -: 1527:    QT_BEGIN_NAMESPACE                                                  \
+        -: 1528:    template <>                                                         \
+        -: 1529:    struct QMetaTypeId< TYPE >                                          \
+        -: 1530:    {                                                                   \
+        -: 1531:        enum { Defined = 1 };                                           \
+        -: 1532:        static_assert(QtPrivate::checkTypeIsSuitableForMetaType<TYPE>());   \
+        -: 1533:        static int qt_metatype_id()                                     \
+        -: 1534:            {                                                           \
+        -: 1535:                Q_CONSTINIT static QBasicAtomicInt metatype_id = Q_BASIC_ATOMIC_INITIALIZER(0); \
+        -: 1536:                if (const int id = metatype_id.loadAcquire())           \
+        -: 1537:                    return id;                                          \
+        -: 1538:                constexpr auto arr = QtPrivate::typenameHelper<TYPE>(); \
+        -: 1539:                auto name = arr.data();                                 \
+        -: 1540:                if (QByteArrayView(name) == (#TYPE)) {                  \
+        -: 1541:                    const int id = qRegisterNormalizedMetaType<TYPE>(name); \
+        -: 1542:                    metatype_id.storeRelease(id);                       \
+        -: 1543:                    return id;                                          \
+        -: 1544:                }                                                       \
+        -: 1545:                const int newId = qRegisterMetaType< TYPE >(#TYPE);     \
+        -: 1546:                metatype_id.storeRelease(newId);                        \
+        -: 1547:                return newId;                                           \
+        -: 1548:            }                                                           \
+        -: 1549:    };                                                                  \
+        -: 1550:    QT_END_NAMESPACE
+        -: 1551:#endif // Q_MOC_RUN
+        -: 1552:
+        -: 1553:#define Q_DECLARE_BUILTIN_METATYPE(TYPE, METATYPEID, NAME) \
+        -: 1554:    QT_BEGIN_NAMESPACE \
+        -: 1555:    template<> struct QMetaTypeId2<NAME> \
+        -: 1556:    { \
+        -: 1557:        using NameAsArrayType = std::array<char, sizeof(#NAME)>; \
+        -: 1558:        enum { Defined = 1, IsBuiltIn = true, MetaType = METATYPEID };   \
+        -: 1559:        static inline constexpr int qt_metatype_id() { return METATYPEID; } \
+        -: 1560:        static constexpr NameAsArrayType nameAsArray = { #NAME }; \
+        -: 1561:    }; \
+        -: 1562:    QT_END_NAMESPACE
+        -: 1563:
+        -: 1564:#define QT_FORWARD_DECLARE_STATIC_TYPES_ITER(TypeName, TypeId, Name) \
+        -: 1565:    class Name;
+        -: 1566:
+        -: 1567:QT_FOR_EACH_STATIC_CORE_CLASS(QT_FORWARD_DECLARE_STATIC_TYPES_ITER)
+        -: 1568:QT_FOR_EACH_STATIC_GUI_CLASS(QT_FORWARD_DECLARE_STATIC_TYPES_ITER)
+        -: 1569:QT_FOR_EACH_STATIC_WIDGETS_CLASS(QT_FORWARD_DECLARE_STATIC_TYPES_ITER)
+        -: 1570:
+        -: 1571:#undef QT_FORWARD_DECLARE_STATIC_TYPES_ITER
+        -: 1572:
+        -: 1573:#define Q_DECLARE_METATYPE_TEMPLATE_1ARG(SINGLE_ARG_TEMPLATE) \
+        -: 1574:QT_BEGIN_NAMESPACE \
+        -: 1575:template <typename T> \
+        -: 1576:struct QMetaTypeId< SINGLE_ARG_TEMPLATE<T> > \
+        -: 1577:{ \
+        -: 1578:    enum { \
+        -: 1579:        Defined = QMetaTypeId2<T>::Defined \
+        -: 1580:    }; \
+        -: 1581:    static int qt_metatype_id() \
+        -: 1582:    { \
+        -: 1583:        Q_CONSTINIT static QBasicAtomicInt metatype_id = Q_BASIC_ATOMIC_INITIALIZER(0); \
+        -: 1584:        if (const int id = metatype_id.loadRelaxed()) \
+        -: 1585:            return id; \
+        -: 1586:        const char *tName = QMetaType::fromType<T>().name(); \
+        -: 1587:        Q_ASSERT(tName); \
+        -: 1588:        const size_t tNameLen = qstrlen(tName); \
+        -: 1589:        QByteArray typeName; \
+        -: 1590:        typeName.reserve(sizeof(#SINGLE_ARG_TEMPLATE) + 1 + tNameLen + 1 + 1); \
+        -: 1591:        typeName.append(#SINGLE_ARG_TEMPLATE, int(sizeof(#SINGLE_ARG_TEMPLATE)) - 1) \
+        -: 1592:            .append('<').append(tName, tNameLen); \
+        -: 1593:        typeName.append('>'); \
+        -: 1594:        const int newId = qRegisterNormalizedMetaType< SINGLE_ARG_TEMPLATE<T> >(typeName); \
+        -: 1595:        metatype_id.storeRelease(newId); \
+        -: 1596:        return newId; \
+        -: 1597:    } \
+        -: 1598:}; \
+        -: 1599:QT_END_NAMESPACE
+        -: 1600:
+        -: 1601:#define Q_DECLARE_METATYPE_TEMPLATE_2ARG(DOUBLE_ARG_TEMPLATE) \
+        -: 1602:QT_BEGIN_NAMESPACE \
+        -: 1603:template<typename T, typename U> \
+        -: 1604:struct QMetaTypeId< DOUBLE_ARG_TEMPLATE<T, U> > \
+        -: 1605:{ \
+        -: 1606:    enum { \
+        -: 1607:        Defined = QMetaTypeId2<T>::Defined && QMetaTypeId2<U>::Defined \
+        -: 1608:    }; \
+        -: 1609:    static int qt_metatype_id() \
+        -: 1610:    { \
+        -: 1611:        Q_CONSTINIT static QBasicAtomicInt metatype_id = Q_BASIC_ATOMIC_INITIALIZER(0); \
+        -: 1612:        if (const int id = metatype_id.loadAcquire()) \
+        -: 1613:            return id; \
+        -: 1614:        const char *tName = QMetaType::fromType<T>().name(); \
+        -: 1615:        const char *uName = QMetaType::fromType<U>().name(); \
+        -: 1616:        Q_ASSERT(tName); \
+        -: 1617:        Q_ASSERT(uName); \
+        -: 1618:        const size_t tNameLen = qstrlen(tName); \
+        -: 1619:        const size_t uNameLen = qstrlen(uName); \
+        -: 1620:        QByteArray typeName; \
+        -: 1621:        typeName.reserve(sizeof(#DOUBLE_ARG_TEMPLATE) + 1 + tNameLen + 1 + uNameLen + 1 + 1); \
+        -: 1622:        typeName.append(#DOUBLE_ARG_TEMPLATE, int(sizeof(#DOUBLE_ARG_TEMPLATE)) - 1) \
+        -: 1623:            .append('<').append(tName, tNameLen).append(',').append(uName, uNameLen); \
+        -: 1624:        typeName.append('>'); \
+        -: 1625:        const int newId = qRegisterNormalizedMetaType< DOUBLE_ARG_TEMPLATE<T, U> >(typeName); \
+        -: 1626:        metatype_id.storeRelease(newId); \
+        -: 1627:        return newId; \
+        -: 1628:    } \
+        -: 1629:}; \
+        -: 1630:QT_END_NAMESPACE
+        -: 1631:
+        -: 1632:namespace QtPrivate {
+        -: 1633:
+        -: 1634:template<typename T, bool /* isSharedPointerToQObjectDerived */ = false>
+        -: 1635:struct SharedPointerMetaTypeIdHelper
+        -: 1636:{
+        -: 1637:    enum {
+        -: 1638:        Defined = 0
+        -: 1639:    };
+        -: 1640:    static int qt_metatype_id()
+        -: 1641:    {
+        -: 1642:        return -1;
+        -: 1643:    }
+        -: 1644:};
+        -: 1645:
+        -: 1646:}
+        -: 1647:
+        -: 1648:#define Q_DECLARE_SMART_POINTER_METATYPE(SMART_POINTER) \
+        -: 1649:QT_BEGIN_NAMESPACE \
+        -: 1650:namespace QtPrivate { \
+        -: 1651:template<typename T> \
+        -: 1652:struct SharedPointerMetaTypeIdHelper<SMART_POINTER<T>, true> \
+        -: 1653:{ \
+        -: 1654:    enum { \
+        -: 1655:        Defined = 1 \
+        -: 1656:    }; \
+        -: 1657:    static int qt_metatype_id() \
+        -: 1658:    { \
+        -: 1659:        Q_CONSTINIT static QBasicAtomicInt metatype_id = Q_BASIC_ATOMIC_INITIALIZER(0); \
+        -: 1660:        if (const int id = metatype_id.loadAcquire()) \
+        -: 1661:            return id; \
+        -: 1662:        const char * const cName = T::staticMetaObject.className(); \
+        -: 1663:        QByteArray typeName; \
+        -: 1664:        typeName.reserve(sizeof(#SMART_POINTER) + 1 + strlen(cName) + 1); \
+        -: 1665:        typeName.append(#SMART_POINTER, int(sizeof(#SMART_POINTER)) - 1) \
+        -: 1666:            .append('<').append(cName).append('>'); \
+        -: 1667:        const int newId = qRegisterNormalizedMetaType< SMART_POINTER<T> >(typeName); \
+        -: 1668:        metatype_id.storeRelease(newId); \
+        -: 1669:        return newId; \
+        -: 1670:    } \
+        -: 1671:}; \
+        -: 1672:template<typename T> \
+        -: 1673:struct MetaTypeSmartPointerHelper<SMART_POINTER<T> , \
+        -: 1674:        typename std::enable_if<IsPointerToTypeDerivedFromQObject<T*>::Value && !std::is_const_v<T>>::type> \
+        -: 1675:{ \
+        -: 1676:    static bool registerConverter() \
+        -: 1677:    { \
+        -: 1678:        const QMetaType to = QMetaType(QMetaType::QObjectStar); \
+        -: 1679:        if (!QMetaType::hasRegisteredConverterFunction(QMetaType::fromType<SMART_POINTER<T>>(), to)) { \
+        -: 1680:            QtPrivate::QSmartPointerConvertFunctor<SMART_POINTER<T> > o; \
+        -: 1681:            return QMetaType::registerConverter<SMART_POINTER<T>, QObject*>(o); \
+        -: 1682:        } \
+        -: 1683:        return true; \
+        -: 1684:    } \
+        -: 1685:}; \
+        -: 1686:} \
+        -: 1687:template <typename T> \
+        -: 1688:struct QMetaTypeId< SMART_POINTER<T> > \
+        -: 1689:    : QtPrivate::SharedPointerMetaTypeIdHelper< SMART_POINTER<T>, \
+        -: 1690:                                                QtPrivate::IsPointerToTypeDerivedFromQObject<T*>::Value> \
+        -: 1691:{ \
+        -: 1692:};\
+        -: 1693:QT_END_NAMESPACE
+        -: 1694:
+        -: 1695:#define Q_DECLARE_SEQUENTIAL_CONTAINER_METATYPE(SINGLE_ARG_TEMPLATE) \
+        -: 1696:    QT_BEGIN_NAMESPACE \
+        -: 1697:    namespace QtPrivate { \
+        -: 1698:    template<typename T> \
+        -: 1699:    struct IsSequentialContainer<SINGLE_ARG_TEMPLATE<T> > \
+        -: 1700:    { \
+        -: 1701:        enum { Value = true }; \
+        -: 1702:    }; \
+        -: 1703:    } \
+        -: 1704:    QT_END_NAMESPACE \
+        -: 1705:    Q_DECLARE_METATYPE_TEMPLATE_1ARG(SINGLE_ARG_TEMPLATE)
+        -: 1706:
+        -: 1707:#define Q_DECLARE_SEQUENTIAL_CONTAINER_METATYPE_ITER(TEMPLATENAME) \
+        -: 1708:    Q_DECLARE_SEQUENTIAL_CONTAINER_METATYPE(TEMPLATENAME)
+        -: 1709:
+        -: 1710:QT_END_NAMESPACE
+        -: 1711:
+        -: 1712:QT_FOR_EACH_AUTOMATIC_TEMPLATE_1ARG(Q_DECLARE_SEQUENTIAL_CONTAINER_METATYPE_ITER)
+        -: 1713:
+        -: 1714:#undef Q_DECLARE_SEQUENTIAL_CONTAINER_METATYPE_ITER
+        -: 1715:
+        -: 1716:Q_DECLARE_SEQUENTIAL_CONTAINER_METATYPE(std::vector)
+        -: 1717:Q_DECLARE_SEQUENTIAL_CONTAINER_METATYPE(std::list)
+        -: 1718:
+        -: 1719:#define Q_DECLARE_ASSOCIATIVE_CONTAINER_METATYPE(TEMPLATENAME) \
+        -: 1720:    QT_BEGIN_NAMESPACE \
+        -: 1721:    namespace QtPrivate { \
+        -: 1722:    template<typename T, typename U> \
+        -: 1723:    struct IsAssociativeContainer<TEMPLATENAME<T, U> > \
+        -: 1724:    { \
+        -: 1725:        enum { Value = true }; \
+        -: 1726:    }; \
+        -: 1727:    } \
+        -: 1728:    QT_END_NAMESPACE \
+        -: 1729:    Q_DECLARE_METATYPE_TEMPLATE_2ARG(TEMPLATENAME)
+        -: 1730:
+        -: 1731:Q_DECLARE_ASSOCIATIVE_CONTAINER_METATYPE(QHash)
+        -: 1732:Q_DECLARE_ASSOCIATIVE_CONTAINER_METATYPE(QMap)
+        -: 1733:Q_DECLARE_ASSOCIATIVE_CONTAINER_METATYPE(std::map)
+        -: 1734:
+        -: 1735:Q_DECLARE_METATYPE_TEMPLATE_2ARG(std::pair)
+        -: 1736:
+        -: 1737:#define Q_DECLARE_METATYPE_TEMPLATE_SMART_POINTER_ITER(TEMPLATENAME) \
+        -: 1738:    Q_DECLARE_SMART_POINTER_METATYPE(TEMPLATENAME)
+        -: 1739:
+        -: 1740:QT_FOR_EACH_AUTOMATIC_TEMPLATE_SMART_POINTER(Q_DECLARE_METATYPE_TEMPLATE_SMART_POINTER_ITER)
+        -: 1741:
+        -: 1742:QT_BEGIN_NAMESPACE
+        -: 1743:
+        -: 1744:#undef Q_DECLARE_METATYPE_TEMPLATE_SMART_POINTER_ITER
+        -: 1745:
+        -: 1746:QT_END_NAMESPACE
+        -: 1747:
+        -: 1748:QT_FOR_EACH_STATIC_TYPE(Q_DECLARE_BUILTIN_METATYPE)
+        -: 1749:
+        -: 1750:
+        -: 1751:QT_BEGIN_NAMESPACE
+        -: 1752:
+        -: 1753:template <typename T>
+        -: 1754:inline bool QtPrivate::IsMetaTypePair<T, true>::registerConverter()
+        -: 1755:{
+        -: 1756:    const QMetaType to = QMetaType::fromType<QtMetaTypePrivate::QPairVariantInterfaceImpl>();
+        -: 1757:    if (!QMetaType::hasRegisteredConverterFunction(QMetaType::fromType<T>(), to)) {
+        -: 1758:        QtMetaTypePrivate::QPairVariantInterfaceConvertFunctor<T> o;
+        -: 1759:        return QMetaType::registerConverter<T, QtMetaTypePrivate::QPairVariantInterfaceImpl>(o);
+        -: 1760:    }
+        -: 1761:    return true;
+        -: 1762:}
+        -: 1763:
+        -: 1764:namespace QtPrivate {
+        -: 1765:
+        -: 1766:template<typename From>
+        -: 1767:struct QSequentialIterableConvertFunctor
+        -: 1768:{
+        -: 1769:    QIterable<QMetaSequence> operator()(const From &f) const
+        -: 1770:    {
+        -: 1771:        return QIterable<QMetaSequence>(QMetaSequence::fromContainer<From>(), &f);
+        -: 1772:    }
+        -: 1773:};
+        -: 1774:
+        -: 1775:template<typename From>
+        -: 1776:struct QSequentialIterableMutableViewFunctor
+        -: 1777:{
+        -: 1778:    QIterable<QMetaSequence> operator()(From &f) const
+        -: 1779:    {
+        -: 1780:        return QIterable<QMetaSequence>(QMetaSequence::fromContainer<From>(), &f);
+        -: 1781:    }
+        -: 1782:};
+        -: 1783:
+        -: 1784:template<typename T>
+        -: 1785:struct SequentialValueTypeIsMetaType<T, true>
+        -: 1786:{
+        -: 1787:    static bool registerConverter()
+        -: 1788:    {
+        -: 1789:        const QMetaType to = QMetaType::fromType<QIterable<QMetaSequence>>();
+        -: 1790:        if (!QMetaType::hasRegisteredConverterFunction(QMetaType::fromType<T>(), to)) {
+        -: 1791:            QSequentialIterableConvertFunctor<T> o;
+        -: 1792:            return QMetaType::registerConverter<T, QIterable<QMetaSequence>>(o);
+        -: 1793:        }
+        -: 1794:        return true;
+        -: 1795:    }
+        -: 1796:
+        -: 1797:    static bool registerMutableView()
+        -: 1798:    {
+        -: 1799:        const QMetaType to = QMetaType::fromType<QIterable<QMetaSequence>>();
+        -: 1800:        if (!QMetaType::hasRegisteredMutableViewFunction(QMetaType::fromType<T>(), to)) {
+        -: 1801:            QSequentialIterableMutableViewFunctor<T> o;
+        -: 1802:            return QMetaType::registerMutableView<T, QIterable<QMetaSequence>>(o);
+        -: 1803:        }
+        -: 1804:        return true;
+        -: 1805:    }
+        -: 1806:};
+        -: 1807:
+        -: 1808:template<typename From>
+        -: 1809:struct QAssociativeIterableConvertFunctor
+        -: 1810:{
+        -: 1811:    QIterable<QMetaAssociation> operator()(const From &f) const
+        -: 1812:    {
+        -: 1813:        return QIterable<QMetaAssociation>(QMetaAssociation::fromContainer<From>(), &f);
+        -: 1814:    }
+        -: 1815:};
+        -: 1816:
+        -: 1817:template<typename From>
+        -: 1818:struct QAssociativeIterableMutableViewFunctor
+        -: 1819:{
+        -: 1820:    QIterable<QMetaAssociation> operator()(From &f) const
+        -: 1821:    {
+        -: 1822:        return QIterable<QMetaAssociation>(QMetaAssociation::fromContainer<From>(), &f);
+        -: 1823:    }
+        -: 1824:};
+        -: 1825:
+        -: 1826:// Mapped type can be omitted, for example in case of a set.
+        -: 1827:// However, if it is available, we want to instantiate the metatype here.
+        -: 1828:template<typename T>
+        -: 1829:struct AssociativeKeyTypeIsMetaType<T, true> : AssociativeMappedTypeIsMetaType<T>
+        -: 1830:{
+        -: 1831:    static bool registerConverter()
+        -: 1832:    {
+        -: 1833:        const QMetaType to = QMetaType::fromType<QIterable<QMetaAssociation>>();
+        -: 1834:        if (!QMetaType::hasRegisteredConverterFunction(QMetaType::fromType<T>(), to)) {
+        -: 1835:            QAssociativeIterableConvertFunctor<T> o;
+        -: 1836:            return QMetaType::registerConverter<T, QIterable<QMetaAssociation>>(o);
+        -: 1837:        }
+        -: 1838:        return true;
+        -: 1839:    }
+        -: 1840:
+        -: 1841:    static bool registerMutableView()
+        -: 1842:    {
+        -: 1843:        const QMetaType to = QMetaType::fromType<QIterable<QMetaAssociation>>();
+        -: 1844:        if (!QMetaType::hasRegisteredMutableViewFunction(QMetaType::fromType<T>(), to)) {
+        -: 1845:            QAssociativeIterableMutableViewFunctor<T> o;
+        -: 1846:            return QMetaType::registerMutableView<T, QIterable<QMetaAssociation>>(o);
+        -: 1847:        }
+        -: 1848:        return true;
+        -: 1849:    }
+        -: 1850:};
+        -: 1851:
+        -: 1852:struct QTypeNormalizer
+        -: 1853:{
+        -: 1854:    char *output;
+        -: 1855:    int len = 0;
+        -: 1856:    char last = 0;
+        -: 1857:
+        -: 1858:private:
+        -: 1859:    static constexpr bool is_ident_char(char s)
+        -: 1860:    {
+        -: 1861:        return ((s >= 'a' && s <= 'z') || (s >= 'A' && s <= 'Z') || (s >= '0' && s <= '9')
+        -: 1862:                || s == '_');
+        -: 1863:    }
+        -: 1864:    static constexpr bool is_space(char s) { return (s == ' ' || s == '\t' || s == '\n'); }
+        -: 1865:    static constexpr bool is_number(char s) { return s >= '0' && s <= '9'; }
+        -: 1866:    static constexpr bool starts_with_token(const char *b, const char *e, const char *token,
+        -: 1867:                                            bool msvcKw = false)
+        -: 1868:    {
+        -: 1869:        while (b != e && *token && *b == *token) {
+        -: 1870:            b++;
+        -: 1871:            token++;
+        -: 1872:        }
+        -: 1873:        if (*token)
+        -: 1874:            return false;
+        -: 1875:#ifdef Q_CC_MSVC
+        -: 1876:        /// On MSVC, keywords like class or struct are not separated with spaces in constexpr
+        -: 1877:        /// context
+        -: 1878:        if (msvcKw && !is_ident_char(*b))
+        -: 1879:            return true;
+        -: 1880:#endif
+        -: 1881:        Q_UNUSED(msvcKw);
+        -: 1882:        return b == e || !is_ident_char(*b);
+        -: 1883:    }
+        -: 1884:    static constexpr bool skipToken(const char *&x, const char *e, const char *token,
+        -: 1885:                                    bool msvcKw = false)
+        -: 1886:    {
+        -: 1887:        if (!starts_with_token(x, e, token, msvcKw))
+        -: 1888:            return false;
+        -: 1889:        while (*token++)
+        -: 1890:            x++;
+        -: 1891:        while (x != e && is_space(*x))
+        -: 1892:            x++;
+        -: 1893:        return true;
+        -: 1894:    }
+        -: 1895:    static constexpr const char *skipString(const char *x, const char *e)
+        -: 1896:    {
+        -: 1897:        char delim = *x;
+        -: 1898:        x++;
+        -: 1899:        while (x != e && *x != delim) {
+        -: 1900:            if (*x == '\\') {
+        -: 1901:                x++;
+        -: 1902:                if (x == e)
+        -: 1903:                    return e;
+        -: 1904:            }
+        -: 1905:            x++;
+        -: 1906:        }
+        -: 1907:        if (x != e)
+        -: 1908:            x++;
+        -: 1909:        return x;
+        -: 1910:    }
+        -: 1911:    static constexpr const char *skipTemplate(const char *x, const char *e, bool stopAtComa = false)
+        -: 1912:    {
+        -: 1913:        int scopeDepth = 0;
+        -: 1914:        int templateDepth = 0;
+        -: 1915:        while (x != e) {
+        -: 1916:            switch (*x) {
+        -: 1917:            case '<':
+        -: 1918:                if (!scopeDepth)
+        -: 1919:                    templateDepth++;
+        -: 1920:                break;
+        -: 1921:            case ',':
+        -: 1922:                if (stopAtComa && !scopeDepth && !templateDepth)
+        -: 1923:                    return x;
+        -: 1924:                break;
+        -: 1925:            case '>':
+        -: 1926:                if (!scopeDepth)
+        -: 1927:                    if (--templateDepth < 0)
+        -: 1928:                        return x;
+        -: 1929:                break;
+        -: 1930:            case '(':
+        -: 1931:            case '[':
+        -: 1932:            case '{':
+        -: 1933:                scopeDepth++;
+        -: 1934:                break;
+        -: 1935:            case '}':
+        -: 1936:            case ']':
+        -: 1937:            case ')':
+        -: 1938:                scopeDepth--;
+        -: 1939:                break;
+        -: 1940:            case '\'':
+        -: 1941:                if (is_number(x[-1]))
+        -: 1942:                    break;
+        -: 1943:                Q_FALLTHROUGH();
+        -: 1944:            case '\"':
+        -: 1945:                x = skipString(x, e);
+        -: 1946:                continue;
+        -: 1947:            }
+        -: 1948:            x++;
+        -: 1949:        }
+        -: 1950:        return x;
+        -: 1951:    }
+        -: 1952:
+        -: 1953:    constexpr void append(char x)
+        -: 1954:    {
+        -: 1955:        last = x;
+        -: 1956:        len++;
+        -: 1957:        if (output)
+        -: 1958:            *output++ = x;
+        -: 1959:    }
+        -: 1960:
+        -: 1961:    constexpr void replaceLast(char x)
+        -: 1962:    {
+        -: 1963:        last = x;
+        -: 1964:        if (output)
+        -: 1965:            *(output - 1) = x;
+        -: 1966:    }
+        -: 1967:
+        -: 1968:    constexpr void appendStr(const char *x)
+        -: 1969:    {
+        -: 1970:        while (*x)
+        -: 1971:            append(*x++);
+        -: 1972:    }
+        -: 1973:
+        -: 1974:    constexpr void normalizeIntegerTypes(const char *&begin, const char *end)
+        -: 1975:    {
+        -: 1976:        int numLong = 0;
+        -: 1977:        int numSigned = 0;
+        -: 1978:        int numUnsigned = 0;
+        -: 1979:        int numInt = 0;
+        -: 1980:        int numShort = 0;
+        -: 1981:        int numChar = 0;
+        -: 1982:        while (begin < end) {
+        -: 1983:            if (skipToken(begin, end, "long")) {
+        -: 1984:                numLong++;
+        -: 1985:                continue;
+        -: 1986:            }
+        -: 1987:            if (skipToken(begin, end, "int")) {
+        -: 1988:                numInt++;
+        -: 1989:                continue;
+        -: 1990:            }
+        -: 1991:            if (skipToken(begin, end, "short")) {
+        -: 1992:                numShort++;
+        -: 1993:                continue;
+        -: 1994:            }
+        -: 1995:            if (skipToken(begin, end, "unsigned")) {
+        -: 1996:                numUnsigned++;
+        -: 1997:                continue;
+        -: 1998:            }
+        -: 1999:            if (skipToken(begin, end, "signed")) {
+        -: 2000:                numSigned++;
+        -: 2001:                continue;
+        -: 2002:            }
+        -: 2003:            if (skipToken(begin, end, "char")) {
+        -: 2004:                numChar++;
+        -: 2005:                continue;
+        -: 2006:            }
+        -: 2007:#ifdef Q_CC_MSVC
+        -: 2008:            if (skipToken(begin, end, "__int64")) {
+        -: 2009:                numLong = 2;
+        -: 2010:                continue;
+        -: 2011:            }
+        -: 2012:#endif
+        -: 2013:            break;
+        -: 2014:        }
+        -: 2015:        if (numLong == 2)
+        -: 2016:            append('q'); // q(u)longlong
+        -: 2017:        if (numSigned && numChar)
+        -: 2018:            appendStr("signed ");
+        -: 2019:        else if (numUnsigned)
+        -: 2020:            appendStr("u");
+        -: 2021:        if (numChar)
+        -: 2022:            appendStr("char");
+        -: 2023:        else if (numShort)
+        -: 2024:            appendStr("short");
+        -: 2025:        else if (numLong == 1)
+        -: 2026:            appendStr("long");
+        -: 2027:        else if (numLong == 2)
+        -: 2028:            appendStr("longlong");
+        -: 2029:        else if (numUnsigned || numSigned || numInt)
+        -: 2030:            appendStr("int");
+        -: 2031:    }
+        -: 2032:
+        -: 2033:    constexpr void skipStructClassOrEnum(const char *&begin, const char *end)
+        -: 2034:    {
+        -: 2035:        // discard 'struct', 'class', and 'enum'; they are optional
+        -: 2036:        // and we don't want them in the normalized signature
+        -: 2037:        skipToken(begin, end, "struct", true) || skipToken(begin, end, "class", true)
+        -: 2038:                || skipToken(begin, end, "enum", true);
+        -: 2039:    }
+        -: 2040:
+        -: 2041:    constexpr void skipQtNamespace(const char *&begin, const char *end)
+        -: 2042:    {
+        -: 2043:#ifdef QT_NAMESPACE
+        -: 2044:        const char *nsbeg = begin;
+        -: 2045:        if (skipToken(nsbeg, end, QT_STRINGIFY(QT_NAMESPACE)) && nsbeg + 2 < end && nsbeg[0] == ':'
+        -: 2046:            && nsbeg[1] == ':') {
+        -: 2047:            begin = nsbeg + 2;
+        -: 2048:            while (begin != end && is_space(*begin))
+        -: 2049:                begin++;
+        -: 2050:        }
+        -: 2051:#else
+        -: 2052:        Q_UNUSED(begin);
+        -: 2053:        Q_UNUSED(end);
+        -: 2054:#endif
+        -: 2055:    }
+        -: 2056:
+        -: 2057:public:
+        -: 2058:#if defined(Q_CC_CLANG) || defined (Q_CC_GNU)
+        -: 2059:    // this is much simpler than the full type normalization below
+        -: 2060:    // the reason is that the signature returned by Q_FUNC_INFO is already
+        -: 2061:    // normalized to the largest degree, and we need to do only small adjustments
+        -: 2062:    constexpr int normalizeTypeFromSignature(const char *begin, const char *end)
+        -: 2063:    {
+        -: 2064:        // bail out if there is an anonymous struct
+        -: 2065:        std::string_view name(begin, end-begin);
+        -: 2066:#if defined (Q_CC_CLANG)
+        -: 2067:        if (name.find("anonymous ") != std::string_view::npos)
+        -: 2068:            return normalizeType(begin, end);
+        -: 2069:#endif
+        -: 2070:        if (name.find("unnamed ") != std::string_view::npos)
+        -: 2071:            return normalizeType(begin, end);
+        -: 2072:        while (begin < end) {
+        -: 2073:            if (*begin == ' ') {
+        -: 2074:                if (last == ',' || last == '>' || last == '<' || last == '*' || last == '&') {
+        -: 2075:                    ++begin;
+        -: 2076:                    continue;
+        -: 2077:                }
+        -: 2078:            }
+        -: 2079:            if (last == ' ') {
+        -: 2080:                if (*begin == '*' || *begin == '&' || *begin == '(') {
+        -: 2081:                    replaceLast(*begin);
+        -: 2082:                    ++begin;
+        -: 2083:                    continue;
+        -: 2084:                }
+        -: 2085:            }
+        -: 2086:            if (!is_ident_char(last)) {
+        -: 2087:                skipStructClassOrEnum(begin, end);
+        -: 2088:                if (begin == end)
+        -: 2089:                    break;
+        -: 2090:
+        -: 2091:                skipQtNamespace(begin, end);
+        -: 2092:                if (begin == end)
+        -: 2093:                    break;
+        -: 2094:
+        -: 2095:                normalizeIntegerTypes(begin, end);
+        -: 2096:                if (begin == end)
+        -: 2097:                    break;
+        -: 2098:            }
+        -: 2099:            append(*begin);
+        -: 2100:            ++begin;
+        -: 2101:        }
+        -: 2102:        return len;
+        -: 2103:    }
+        -: 2104:#else
+        -: 2105:    // MSVC needs the full normalization, as it puts the const in a different
+        -: 2106:    // place than we expect
+        -: 2107:    constexpr int normalizeTypeFromSignature(const char *begin, const char *end)
+        -: 2108:    { return normalizeType(begin, end); }
+        -: 2109:#endif
+        -: 2110:
+        -: 2111:    constexpr int normalizeType(const char *begin, const char *end, bool adjustConst = true)
+        -: 2112:    {
+        -: 2113:        // Trim spaces
+        -: 2114:        while (begin != end && is_space(*begin))
+        -: 2115:            begin++;
+        -: 2116:        while (begin != end && is_space(*(end - 1)))
+        -: 2117:            end--;
+        -: 2118:
+        -: 2119:        // Convert 'char const *' into 'const char *'. Start at index 1,
+        -: 2120:        // not 0, because 'const char *' is already OK.
+        -: 2121:        const char *cst = begin + 1;
+        -: 2122:        if (*begin == '\'' || *begin == '"')
+        -: 2123:            cst = skipString(begin, end);
+        -: 2124:        bool seenStar = false;
+        -: 2125:        bool hasMiddleConst = false;
+        -: 2126:        while (cst < end) {
+        -: 2127:            if (*cst == '\"' || (*cst == '\'' && !is_number(cst[-1]))) {
+        -: 2128:                cst = skipString(cst, end);
+        -: 2129:                if (cst == end)
+        -: 2130:                    break;
+        -: 2131:            }
+        -: 2132:
+        -: 2133:            // We mustn't convert 'char * const *' into 'const char **'
+        -: 2134:            // and we must beware of 'Bar<const Bla>'.
+        -: 2135:            if (*cst == '&' || *cst == '*' || *cst == '[') {
+        -: 2136:                seenStar = *cst != '&' || cst != (end - 1);
+        -: 2137:                break;
+        -: 2138:            }
+        -: 2139:            if (*cst == '<') {
+        -: 2140:                cst = skipTemplate(cst + 1, end);
+        -: 2141:                if (cst == end)
+        -: 2142:                    break;
+        -: 2143:            }
+        -: 2144:            cst++;
+        -: 2145:            const char *skipedCst = cst;
+        -: 2146:            if (!is_ident_char(*(cst - 1)) && skipToken(skipedCst, end, "const")) {
+        -: 2147:                const char *testEnd = end;
+        -: 2148:                while (skipedCst < testEnd--) {
+        -: 2149:                    if (*testEnd == '*' || *testEnd == '['
+        -: 2150:                        || (*testEnd == '&' && testEnd != (end - 1))) {
+        -: 2151:                        seenStar = true;
+        -: 2152:                        break;
+        -: 2153:                    }
+        -: 2154:                    if (*testEnd == '>')
+        -: 2155:                        break;
+        -: 2156:                }
+        -: 2157:                if (adjustConst && !seenStar) {
+        -: 2158:                    if (*(end - 1) == '&')
+        -: 2159:                        end--;
+        -: 2160:                } else {
+        -: 2161:                    appendStr("const ");
+        -: 2162:                }
+        -: 2163:                normalizeType(begin, cst, false);
+        -: 2164:                begin = skipedCst;
+        -: 2165:                hasMiddleConst = true;
+        -: 2166:                break;
+        -: 2167:            }
+        -: 2168:        }
+        -: 2169:        if (skipToken(begin, end, "const")) {
+        -: 2170:            if (adjustConst && !seenStar) {
+        -: 2171:                if (*(end - 1) == '&')
+        -: 2172:                    end--;
+        -: 2173:            } else {
+        -: 2174:                appendStr("const ");
+        -: 2175:            }
+        -: 2176:        }
+        -: 2177:        if (seenStar && adjustConst) {
+        -: 2178:            const char *e = end;
+        -: 2179:            if (*(end - 1) == '&' && *(end - 2) != '&')
+        -: 2180:                e--;
+        -: 2181:            while (begin != e && is_space(*(e - 1)))
+        -: 2182:                e--;
+        -: 2183:            const char *token = "tsnoc"; // 'const' reverse, to check if it ends with const
+        -: 2184:            while (*token && begin != e && *(--e) == *token++)
+        -: 2185:                ;
+        -: 2186:            if (!*token && begin != e && !is_ident_char(*(e - 1))) {
+        -: 2187:                while (begin != e && is_space(*(e - 1)))
+        -: 2188:                    e--;
+        -: 2189:                end = e;
+        -: 2190:            }
+        -: 2191:        }
+        -: 2192:
+        -: 2193:        skipStructClassOrEnum(begin, end);
+        -: 2194:        skipQtNamespace(begin, end);
+        -: 2195:
+        -: 2196:        if (skipToken(begin, end, "QVector")) {
+        -: 2197:            // Replace QVector by QList
+        -: 2198:            appendStr("QList");
+        -: 2199:        }
+        -: 2200:
+        -: 2201:        if (skipToken(begin, end, "QPair")) {
+        -: 2202:            // replace QPair by std::pair
+        -: 2203:            appendStr("std::pair");
+        -: 2204:        }
+        -: 2205:
+        -: 2206:        if (!hasMiddleConst)
+        -: 2207:            // Normalize the integer types
+        -: 2208:            normalizeIntegerTypes(begin, end);
+        -: 2209:
+        -: 2210:        bool spaceSkiped = true;
+        -: 2211:        while (begin != end) {
+        -: 2212:            char c = *begin++;
+        -: 2213:            if (is_space(c)) {
+        -: 2214:                spaceSkiped = true;
+        -: 2215:            } else if ((c == '\'' && !is_number(last)) || c == '\"') {
+        -: 2216:                begin--;
+        -: 2217:                auto x = skipString(begin, end);
+        -: 2218:                while (begin < x)
+        -: 2219:                    append(*begin++);
+        -: 2220:            } else {
+        -: 2221:                if (spaceSkiped && is_ident_char(last) && is_ident_char(c))
+        -: 2222:                    append(' ');
+        -: 2223:                append(c);
+        -: 2224:                spaceSkiped = false;
+        -: 2225:                if (c == '<') {
+        -: 2226:                    do {
+        -: 2227:                        // template recursion
+        -: 2228:                        const char *tpl = skipTemplate(begin, end, true);
+        -: 2229:                        normalizeType(begin, tpl, false);
+        -: 2230:                        if (tpl == end)
+        -: 2231:                            return len;
+        -: 2232:                        append(*tpl);
+        -: 2233:                        begin = tpl;
+        -: 2234:                    } while (*begin++ == ',');
+        -: 2235:                }
+        -: 2236:            }
+        -: 2237:        }
+        -: 2238:        return len;
+        -: 2239:    }
+        -: 2240:};
+        -: 2241:
+        -: 2242:// Normalize the type between begin and end, and store the data in the output. Returns the length.
+        -: 2243:// The idea is to first run this function with nullptr as output to allocate the output with the
+        -: 2244:// size
+        -: 2245:constexpr int qNormalizeType(const char *begin, const char *end, char *output)
+        -: 2246:{
+        -: 2247:    return QTypeNormalizer { output }.normalizeType(begin, end);
+        -: 2248:}
+        -: 2249:
+        -: 2250:template<typename T>
+        -: 2251:struct is_std_pair : std::false_type {};
+        -: 2252:
+        -: 2253:template <typename T1_, typename T2_>
+        -: 2254:struct is_std_pair<std::pair<T1_, T2_>> : std::true_type {
+        -: 2255:    using T1 = T1_;
+        -: 2256:    using T2 = T2_;
+        -: 2257:};
+        -: 2258:
+        -: 2259:namespace TypeNameHelper {
+        -: 2260:template<typename T>
+        -: 2261:constexpr auto typenameHelper()
+        -: 2262:{
+        -: 2263:    if constexpr (is_std_pair<T>::value) {
+        -: 2264:        using T1 = typename is_std_pair<T>::T1;
+        -: 2265:        using T2 = typename is_std_pair<T>::T2;
+        -: 2266:        std::remove_const_t<std::conditional_t<bool (QMetaTypeId2<T1>::IsBuiltIn), typename QMetaTypeId2<T1>::NameAsArrayType, decltype(typenameHelper<T1>())>> t1Name {};
+        -: 2267:        std::remove_const_t<std::conditional_t<bool (QMetaTypeId2<T2>::IsBuiltIn), typename QMetaTypeId2<T2>::NameAsArrayType, decltype(typenameHelper<T2>())>> t2Name {};
+        -: 2268:        if constexpr (bool (QMetaTypeId2<T1>::IsBuiltIn) ) {
+        -: 2269:            t1Name = QMetaTypeId2<T1>::nameAsArray;
+        -: 2270:        } else {
+        -: 2271:            t1Name = typenameHelper<T1>();
+        -: 2272:        }
+        -: 2273:        if constexpr (bool(QMetaTypeId2<T2>::IsBuiltIn)) {
+        -: 2274:            t2Name = QMetaTypeId2<T2>::nameAsArray;
+        -: 2275:        } else {
+        -: 2276:            t2Name = typenameHelper<T2>();
+        -: 2277:        }
+        -: 2278:        constexpr auto nonTypeDependentLen = sizeof("std::pair<,>");
+        -: 2279:        constexpr auto t1Len = t1Name.size() - 1;
+        -: 2280:        constexpr auto t2Len = t2Name.size() - 1;
+        -: 2281:        constexpr auto length = nonTypeDependentLen + t1Len + t2Len;
+        -: 2282:        std::array<char, length + 1> result {};
+        -: 2283:        constexpr auto prefix = "std::pair<";
+        -: 2284:        int currentLength = 0;
+        -: 2285:        for (; currentLength < int(sizeof("std::pair<") - 1); ++currentLength)
+        -: 2286:            result[currentLength] = prefix[currentLength];
+        -: 2287:        for (int i = 0; i < int(t1Len); ++currentLength, ++i)
+        -: 2288:            result[currentLength] = t1Name[i];
+        -: 2289:        result[currentLength++] = ',';
+        -: 2290:        for (int i = 0; i < int(t2Len); ++currentLength, ++i)
+        -: 2291:            result[currentLength] = t2Name[i];
+        -: 2292:        result[currentLength++] = '>';
+        -: 2293:        result[currentLength++] = '\0';
+        -: 2294:        return result;
+        -: 2295:    } else {
+        -: 2296:        constexpr auto prefix = sizeof(
+        -: 2297:#ifdef QT_NAMESPACE
+        -: 2298:            QT_STRINGIFY(QT_NAMESPACE) "::"
+        -: 2299:#endif
+        -: 2300:#if defined(Q_CC_MSVC) && defined(Q_CC_CLANG)
+        -: 2301:            "auto __cdecl QtPrivate::TypeNameHelper::typenameHelper(void) [T = "
+        -: 2302:#elif defined(Q_CC_MSVC)
+        -: 2303:            "auto __cdecl QtPrivate::TypeNameHelper::typenameHelper<"
+        -: 2304:#elif defined(Q_CC_CLANG)
+        -: 2305:            "auto QtPrivate::TypeNameHelper::typenameHelper() [T = "
+        -: 2306:#elif defined(Q_CC_GHS)
+        -: 2307:            "auto QtPrivate::TypeNameHelper::typenameHelper<T>()[with T="
+        -: 2308:#else
+        -: 2309:            "constexpr auto QtPrivate::TypeNameHelper::typenameHelper() [with T = "
+        -: 2310:#endif
+        -: 2311:            ) - 1;
+        -: 2312:#if defined(Q_CC_MSVC) && !defined(Q_CC_CLANG)
+        -: 2313:        constexpr int suffix = sizeof(">(void)");
+        -: 2314:#else
+        -: 2315:        constexpr int suffix = sizeof("]");
+        -: 2316:#endif
+        -: 2317:
+        -: 2318:#if defined(Q_CC_GNU_ONLY) && Q_CC_GNU_ONLY < 804
+        -: 2319:        auto func = Q_FUNC_INFO;
+        -: 2320:        const char *begin = func + prefix;
+        -: 2321:        const char *end = func + sizeof(Q_FUNC_INFO) - suffix;
+        -: 2322:        // This is an upper bound of the size since the normalized signature should always be smaller
+        -: 2323:        constexpr int len = sizeof(Q_FUNC_INFO) - suffix - prefix;
+        -: 2324:#else
+        -: 2325:        constexpr auto func = Q_FUNC_INFO;
+        -: 2326:        constexpr const char *begin = func + prefix;
+        -: 2327:        constexpr const char *end = func + sizeof(Q_FUNC_INFO) - suffix;
+        -: 2328:        constexpr int len = QTypeNormalizer{ nullptr }.normalizeTypeFromSignature(begin, end);
+        -: 2329:#endif
+        -: 2330:        std::array<char, len + 1> result {};
+        -: 2331:        QTypeNormalizer{ result.data() }.normalizeTypeFromSignature(begin, end);
+        -: 2332:        return result;
+        -: 2333:    }
+        -: 2334:}
+        -: 2335:} // namespace TypeNameHelper
+        -: 2336:using TypeNameHelper::typenameHelper;
+        -: 2337:
+        -: 2338:template<typename T, typename = void>
+        -: 2339:struct BuiltinMetaType : std::integral_constant<int, 0>
+        -: 2340:{
+        -: 2341:};
+        -: 2342:template<typename T>
+        -: 2343:struct BuiltinMetaType<T, std::enable_if_t<QMetaTypeId2<T>::IsBuiltIn>>
+        -: 2344:    : std::integral_constant<int, QMetaTypeId2<T>::MetaType>
+        -: 2345:{
+        -: 2346:};
+        -: 2347:
+        -: 2348:template<typename T, bool = (QTypeTraits::has_operator_equal_v<T> && !std::is_pointer_v<T>)>
+        -: 2349:struct QEqualityOperatorForType
+        -: 2350:{
+        -: 2351:QT_WARNING_PUSH
+        -: 2352:QT_WARNING_DISABLE_FLOAT_COMPARE
+        -: 2353:    static bool equals(const QMetaTypeInterface *, const void *a, const void *b)
+        -: 2354:    { return *reinterpret_cast<const T *>(a) == *reinterpret_cast<const T *>(b); }
+        -: 2355:QT_WARNING_POP
+        -: 2356:};
+        -: 2357:
+        -: 2358:template<typename T>
+        -: 2359:struct QEqualityOperatorForType <T, false>
+        -: 2360:{
+        -: 2361:    static constexpr QMetaTypeInterface::EqualsFn equals = nullptr;
+        -: 2362:};
+        -: 2363:
+        -: 2364:template<typename T, bool = (QTypeTraits::has_operator_less_than_v<T> && !std::is_pointer_v<T>)>
+        -: 2365:struct QLessThanOperatorForType
+        -: 2366:{
+        -: 2367:    static bool lessThan(const QMetaTypeInterface *, const void *a, const void *b)
+        -: 2368:    { return *reinterpret_cast<const T *>(a) < *reinterpret_cast<const T *>(b); }
+        -: 2369:};
+        -: 2370:
+        -: 2371:template<typename T>
+        -: 2372:struct QLessThanOperatorForType <T, false>
+        -: 2373:{
+        -: 2374:    static constexpr QMetaTypeInterface::LessThanFn lessThan = nullptr;
+        -: 2375:};
+        -: 2376:
+        -: 2377:template<typename T, bool = (QTypeTraits::has_ostream_operator_v<QDebug, T> && !std::is_pointer_v<T>)>
+        -: 2378:struct QDebugStreamOperatorForType
+        -: 2379:{
+        -: 2380:    static void debugStream(const QMetaTypeInterface *, QDebug &dbg, const void *a)
+        -: 2381:    { dbg << *reinterpret_cast<const T *>(a); }
+        -: 2382:};
+        -: 2383:
+        -: 2384:template<typename T>
+        -: 2385:struct QDebugStreamOperatorForType <T, false>
+        -: 2386:{
+        -: 2387:    static constexpr QMetaTypeInterface::DebugStreamFn debugStream = nullptr;
+        -: 2388:};
+        -: 2389:
+        -: 2390:template<typename T, bool = QTypeTraits::has_stream_operator_v<QDataStream, T>>
+        -: 2391:struct QDataStreamOperatorForType
+        -: 2392:{
+        -: 2393:    static constexpr QMetaTypeInterface::DataStreamOutFn dataStreamOut = nullptr;
+        -: 2394:    static constexpr QMetaTypeInterface::DataStreamInFn dataStreamIn = nullptr;
+        -: 2395:};
+        -: 2396:
+        -: 2397:#ifndef QT_NO_DATASTREAM
+        -: 2398:template<typename T>
+        -: 2399:struct QDataStreamOperatorForType <T, true>
+        -: 2400:{
+        -: 2401:    static void dataStreamOut(const QMetaTypeInterface *, QDataStream &ds, const void *a)
+        -: 2402:    { ds << *reinterpret_cast<const T *>(a); }
+        -: 2403:    static void dataStreamIn(const QMetaTypeInterface *, QDataStream &ds, void *a)
+        -: 2404:    { ds >> *reinterpret_cast<T *>(a); }
+        -: 2405:};
+        -: 2406:#endif
+        -: 2407:
+        -: 2408:// Performance optimization:
+        -: 2409://
+        -: 2410:// Don't add all these symbols to the dynamic symbol tables on ELF systems and
+        -: 2411:// on Darwin. Each library is going to have a copy anyway and QMetaType already
+        -: 2412:// copes with some of these being "hidden" (see QMetaType::idHelper()). We may
+        -: 2413:// as well let the linker know it can always use the local copy.
+        -: 2414://
+        -: 2415:// This is currently not enabled for GCC due to
+        -: 2416:// https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106023
+        -: 2417:
+        -: 2418:#if !defined(Q_OS_WIN) && defined(Q_CC_CLANG)
+        -: 2419:#  pragma GCC visibility push(hidden)
+        -: 2420:#endif
+        -: 2421:
+        -: 2422:template<typename S>
+        -: 2423:class QMetaTypeForType
+        -: 2424:{
+        -: 2425:public:
+        -: 2426:    static constexpr decltype(typenameHelper<S>()) name = typenameHelper<S>();
+        -: 2427:    static constexpr unsigned Flags = QMetaTypeTypeFlags<S>::Flags;
+        -: 2428:
+        -: 2429:    static constexpr QMetaTypeInterface::DefaultCtrFn getDefaultCtr()
+        -: 2430:    {
+        -: 2431:        if constexpr (std::is_default_constructible_v<S> && !QTypeInfo<S>::isValueInitializationBitwiseZero) {
+        -: 2432:            return [](const QMetaTypeInterface *, void *addr) { new (addr) S(); };
+        -: 2433:        } else {
+        -: 2434:            return nullptr;
+        -: 2435:        }
+        -: 2436:    }
+        -: 2437:
+        -: 2438:    static constexpr QMetaTypeInterface::CopyCtrFn getCopyCtr()
+        -: 2439:    {
+        -: 2440:        if constexpr (std::is_copy_constructible_v<S> && !std::is_trivially_copy_constructible_v<S>) {
+        -: 2441:            return [](const QMetaTypeInterface *, void *addr, const void *other) {
+        -: 2442:                new (addr) S(*reinterpret_cast<const S *>(other));
+        -: 2443:            };
+        -: 2444:        } else {
+        -: 2445:            return nullptr;
+        -: 2446:        }
+        -: 2447:    }
+        -: 2448:
+        -: 2449:    static constexpr QMetaTypeInterface::MoveCtrFn getMoveCtr()
+        -: 2450:    {
+        -: 2451:        if constexpr (std::is_move_constructible_v<S> && !std::is_trivially_move_constructible_v<S>) {
+        -: 2452:            return [](const QMetaTypeInterface *, void *addr, void *other) {
+        -: 2453:                new (addr) S(std::move(*reinterpret_cast<S *>(other)));
+        -: 2454:            };
+        -: 2455:        } else {
+        -: 2456:            return nullptr;
+        -: 2457:        }
+        -: 2458:    }
+        -: 2459:
+        -: 2460:    static constexpr QMetaTypeInterface::DtorFn getDtor()
+        -: 2461:    {
+        -: 2462:        if constexpr (std::is_destructible_v<S> && !std::is_trivially_destructible_v<S>)
+        -: 2463:            return [](const QMetaTypeInterface *, void *addr) {
+        -: 2464:                reinterpret_cast<S *>(addr)->~S();
+        -: 2465:            };
+        -: 2466:        else
+        -: 2467:            return nullptr;
+        -: 2468:    }
+        -: 2469:
+        -: 2470:    static constexpr QMetaTypeInterface::LegacyRegisterOp getLegacyRegister()
+        -: 2471:    {
+        -: 2472:        if constexpr (QMetaTypeId2<S>::Defined && !QMetaTypeId2<S>::IsBuiltIn) {
+        -: 2473:            return []() { QMetaTypeId2<S>::qt_metatype_id(); };
+        -: 2474:        } else {
+        -: 2475:            return nullptr;
+        -: 2476:        }
+        -: 2477:    }
+        -: 2478:
+        -: 2479:    static constexpr const char *getName()
+        -: 2480:    {
+        -: 2481:        if constexpr (bool(QMetaTypeId2<S>::IsBuiltIn)) {
+        -: 2482:            return QMetaTypeId2<S>::nameAsArray.data();
+        -: 2483:        } else {
+        -: 2484:            return name.data();
+        -: 2485:        }
+        -: 2486:    }
+        -: 2487:};
+        -: 2488:
+        -: 2489:template<typename T>
+        -: 2490:struct QMetaTypeInterfaceWrapper
+        -: 2491:{
+        -: 2492:    // if the type ID for T is known at compile-time, then we can declare
+        -: 2493:    // the QMetaTypeInterface object const; otherwise, we declare it as
+        -: 2494:    // non-const and the .typeId is updated by QMetaType::idHelper().
+        -: 2495:    static constexpr bool IsConstMetaTypeInterface = !!BuiltinMetaType<T>::value;
+        -: 2496:    using InterfaceType = std::conditional_t<IsConstMetaTypeInterface, const QMetaTypeInterface, NonConstMetaTypeInterface>;
+        -: 2497:
+        -: 2498:    static inline InterfaceType metaType = {
+        -: 2499:        /*.revision=*/ QMetaTypeInterface::CurrentRevision,
+        -: 2500:        /*.alignment=*/ alignof(T),
+        -: 2501:        /*.size=*/ sizeof(T),
+        -: 2502:        /*.flags=*/ QMetaTypeForType<T>::Flags,
+        -: 2503:        /*.typeId=*/ BuiltinMetaType<T>::value,
+        -: 2504:        /*.metaObjectFn=*/ MetaObjectForType<T>::metaObjectFunction,
+        -: 2505:        /*.name=*/ QMetaTypeForType<T>::getName(),
+        -: 2506:        /*.defaultCtr=*/ QMetaTypeForType<T>::getDefaultCtr(),
+        -: 2507:        /*.copyCtr=*/ QMetaTypeForType<T>::getCopyCtr(),
+        -: 2508:        /*.moveCtr=*/ QMetaTypeForType<T>::getMoveCtr(),
+        -: 2509:        /*.dtor=*/ QMetaTypeForType<T>::getDtor(),
+        -: 2510:        /*.equals=*/ QEqualityOperatorForType<T>::equals,
+        -: 2511:        /*.lessThan=*/ QLessThanOperatorForType<T>::lessThan,
+        -: 2512:        /*.debugStream=*/ QDebugStreamOperatorForType<T>::debugStream,
+        -: 2513:        /*.dataStreamOut=*/ QDataStreamOperatorForType<T>::dataStreamOut,
+        -: 2514:        /*.dataStreamIn=*/ QDataStreamOperatorForType<T>::dataStreamIn,
+        -: 2515:        /*.legacyRegisterOp=*/ QMetaTypeForType<T>::getLegacyRegister()
+        -: 2516:    };
+        -: 2517:};
+        -: 2518:
+        -: 2519:#if !defined(Q_OS_WIN) && defined(Q_CC_CLANG)
+        -: 2520:#  pragma GCC visibility pop
+        -: 2521:#endif
+        -: 2522:
+        -: 2523:template<>
+        -: 2524:class QMetaTypeInterfaceWrapper<void>
+        -: 2525:{
+        -: 2526:public:
+        -: 2527:    static constexpr QMetaTypeInterface metaType =
+        -: 2528:    {
+        -: 2529:        /*.revision=*/ 0,
+        -: 2530:        /*.alignment=*/ 0,
+        -: 2531:        /*.size=*/ 0,
+        -: 2532:        /*.flags=*/ 0,
+        -: 2533:        /*.typeId=*/ BuiltinMetaType<void>::value,
+        -: 2534:        /*.metaObjectFn=*/ nullptr,
+        -: 2535:        /*.name=*/ "void",
+        -: 2536:        /*.defaultCtr=*/ nullptr,
+        -: 2537:        /*.copyCtr=*/ nullptr,
+        -: 2538:        /*.moveCtr=*/ nullptr,
+        -: 2539:        /*.dtor=*/ nullptr,
+        -: 2540:        /*.equals=*/ nullptr,
+        -: 2541:        /*.lessThan=*/ nullptr,
+        -: 2542:        /*.debugStream=*/ nullptr,
+        -: 2543:        /*.dataStreamOut=*/ nullptr,
+        -: 2544:        /*.dataStreamIn=*/ nullptr,
+        -: 2545:        /*.legacyRegisterOp=*/ nullptr
+        -: 2546:    };
+        -: 2547:};
+        -: 2548:
+        -: 2549:/*
+        -: 2550: MSVC instantiates extern templates
+        -: 2551:(https://developercommunity.visualstudio.com/t/c11-extern-templates-doesnt-work-for-class-templat/157868)
+        -: 2552:
+        -: 2553: The INTEGRITY compiler apparently does too.
+        -: 2554:
+        -: 2555: On Windows (with other compilers or whenever MSVC is fixed), we can't declare
+        -: 2556: QMetaTypeInterfaceWrapper with __declspec(dllimport) because taking its
+        -: 2557: address is not a core constant expression.
+        -: 2558: */
+        -: 2559:#if !defined(QT_BOOTSTRAPPED) && !defined(Q_CC_MSVC) && !defined(Q_OS_INTEGRITY)
+        -: 2560:
+        -: 2561:#ifdef QT_NO_DATA_RELOCATION
+        -: 2562:#  define QT_METATYPE_DECLARE_EXTERN_TEMPLATE_ITER(TypeName, Id, Name)          \
+        -: 2563:    extern template class Q_CORE_EXPORT QMetaTypeForType<Name>;
+        -: 2564:#else
+        -: 2565:#  define QT_METATYPE_DECLARE_EXTERN_TEMPLATE_ITER(TypeName, Id, Name)          \
+        -: 2566:    extern template class Q_CORE_EXPORT QMetaTypeForType<Name>;                 \
+        -: 2567:    extern template struct Q_CORE_EXPORT QMetaTypeInterfaceWrapper<Name>;
+        -: 2568:#endif
+        -: 2569:
+        -: 2570:QT_FOR_EACH_STATIC_PRIMITIVE_NON_VOID_TYPE(QT_METATYPE_DECLARE_EXTERN_TEMPLATE_ITER)
+        -: 2571:QT_FOR_EACH_STATIC_PRIMITIVE_POINTER(QT_METATYPE_DECLARE_EXTERN_TEMPLATE_ITER)
+        -: 2572:QT_FOR_EACH_STATIC_CORE_CLASS(QT_METATYPE_DECLARE_EXTERN_TEMPLATE_ITER)
+        -: 2573:QT_FOR_EACH_STATIC_CORE_POINTER(QT_METATYPE_DECLARE_EXTERN_TEMPLATE_ITER)
+        -: 2574:QT_FOR_EACH_STATIC_CORE_TEMPLATE(QT_METATYPE_DECLARE_EXTERN_TEMPLATE_ITER)
+        -: 2575:#undef QT_METATYPE_DECLARE_EXTERN_TEMPLATE_ITER
+        -: 2576:#endif
+        -: 2577:
+        -: 2578:template<typename T>
+        -: 2579:struct qRemovePointerLike
+        -: 2580:{
+        -: 2581:    using type = std::remove_pointer_t<T>;
+        -: 2582:};
+        -: 2583:
+        -: 2584:#define Q_REMOVE_POINTER_LIKE_IMPL(Pointer) \
+        -: 2585:template <typename T> \
+        -: 2586:struct qRemovePointerLike<Pointer<T>> \
+        -: 2587:{ \
+        -: 2588:    using type = T; \
+        -: 2589:};
+        -: 2590:
+        -: 2591:QT_FOR_EACH_AUTOMATIC_TEMPLATE_SMART_POINTER(Q_REMOVE_POINTER_LIKE_IMPL)
+        -: 2592:template<typename T>
+        -: 2593:using qRemovePointerLike_t = typename qRemovePointerLike<T>::type;
+        -: 2594:#undef Q_REMOVE_POINTER_LIKE_IMPL
+        -: 2595:
+        -: 2596:template<typename T, typename ForceComplete_>
+        -: 2597:struct TypeAndForceComplete
+        -: 2598:{
+        -: 2599:    using type = T;
+        -: 2600:    using ForceComplete = ForceComplete_;
+        -: 2601:};
+        -: 2602:
+        -: 2603:template<typename T>
+        -: 2604:constexpr const QMetaTypeInterface *qMetaTypeInterfaceForType()
+        -: 2605:{
+        -: 2606:    // don't check the type is suitable here
+        -: 2607:    using Ty = typename MetatypeDecay<T>::type;
+        -: 2608:    return &QMetaTypeInterfaceWrapper<Ty>::metaType;
+        -: 2609:}
+        -: 2610:
+        -: 2611:template<typename Unique, typename TypeCompletePair>
+        -: 2612:constexpr const QMetaTypeInterface *qTryMetaTypeInterfaceForType()
+        -: 2613:{
+        -: 2614:    using T = typename TypeCompletePair::type;
+        -: 2615:    using ForceComplete = typename TypeCompletePair::ForceComplete;
+        -: 2616:    using Ty = typename MetatypeDecay<T>::type;
+        -: 2617:    using Tz = qRemovePointerLike_t<Ty>;
+        -: 2618:
+        -: 2619:    if constexpr (std::is_void_v<Tz>) {
+        -: 2620:        // early out to avoid expanding the rest of the templates
+        -: 2621:        return &QMetaTypeInterfaceWrapper<Ty>::metaType;
+        -: 2622:    } else if constexpr (ForceComplete::value) {
+        -: 2623:        checkTypeIsSuitableForMetaType<Ty>();
+        -: 2624:        return &QMetaTypeInterfaceWrapper<Ty>::metaType;
+        -: 2625:    } else if constexpr (std::is_reference_v<Tz>) {
+        -: 2626:        return nullptr;
+        -: 2627:    } else if constexpr (!is_complete<Tz, Unique>::value) {
+        -: 2628:        return nullptr;
+        -: 2629:    } else {
+        -: 2630:        // don't check the type is suitable here
+        -: 2631:        return &QMetaTypeInterfaceWrapper<Ty>::metaType;
+        -: 2632:    }
+        -: 2633:}
+        -: 2634:
+        -: 2635:} // namespace QtPrivate
+        -: 2636:
+        -: 2637:template<typename T>
+        -: 2638:constexpr QMetaType QMetaType::fromType()
+        -: 2639:{
+        -: 2640:    QtPrivate::checkTypeIsSuitableForMetaType<T>();
+        -: 2641:    return QMetaType(QtPrivate::qMetaTypeInterfaceForType<T>());
+        -: 2642:}
+        -: 2643:
+        -: 2644:constexpr qsizetype QMetaType::sizeOf() const
+        -: 2645:{
+        -: 2646:    return d_ptr ? d_ptr->size : 0;
+        -: 2647:}
+        -: 2648:
+        -: 2649:constexpr qsizetype QMetaType::alignOf() const
+        -: 2650:{
+        -: 2651:    return d_ptr ? d_ptr->alignment : 0;
+        -: 2652:}
+        -: 2653:
+        -: 2654:constexpr QMetaType::TypeFlags QMetaType::flags() const
+        -: 2655:{
+        -: 2656:    return d_ptr ? TypeFlags(d_ptr->flags) : TypeFlags{};
+        -: 2657:}
+        -: 2658:
+        -: 2659:constexpr const QMetaObject *QMetaType::metaObject() const
+        -: 2660:{
+        -: 2661:    return d_ptr && d_ptr->metaObjectFn ? d_ptr->metaObjectFn(d_ptr) : nullptr;
+        -: 2662:}
+        -: 2663:
+        -: 2664:template<typename... T>
+        -: 2665:constexpr const QtPrivate::QMetaTypeInterface *const qt_metaTypeArray[] = {
+        -: 2666:    /*
+        -: 2667:       Unique in qTryMetaTypeInterfaceForType does not have to be unique here
+        -: 2668:       as we require _all_ types here to be actually complete.
+        -: 2669:       We just want to have the additional type processing that exist in
+        -: 2670:       QtPrivate::qTryMetaTypeInterfaceForType as opposed to the normal
+        -: 2671:       QtPrivate::qMetaTypeInterfaceForType used in QMetaType::fromType
+        -: 2672:    */
+        -: 2673:    QtPrivate::qTryMetaTypeInterfaceForType<void, QtPrivate::TypeAndForceComplete<T, std::true_type>>()...
+        -: 2674:};
+        -: 2675:
+        -: 2676:constexpr const char *QMetaType::name() const
+        -: 2677:{
+        -: 2678:    return d_ptr ? d_ptr->name : nullptr;
+        -: 2679:}
+        -: 2680:
+        -: 2681:template<typename Unique,typename... T>
+        -: 2682:constexpr const QtPrivate::QMetaTypeInterface *const qt_incomplete_metaTypeArray[] = {
+        -: 2683:    QtPrivate::qTryMetaTypeInterfaceForType<Unique, T>()...
+        -: 2684:};
+        -: 2685:
+        -: 2686:inline size_t qHash(QMetaType type, size_t seed = 0)
+        -: 2687:{
+        -: 2688:    // We cannot use d_ptr here since the same type in different DLLs
+        -: 2689:    // might result in different pointers!
+        -: 2690:    return qHash(type.id(), seed);
+        -: 2691:}
+        -: 2692:
+        -: 2693:QT_END_NAMESPACE
+        -: 2694:
+        -: 2695:QT_DECL_METATYPE_EXTERN_TAGGED(QtMetaTypePrivate::QPairVariantInterfaceImpl,
+        -: 2696:                               QPairVariantInterfaceImpl, Q_CORE_EXPORT)
+        -: 2697:
+        -: 2698:#endif // QMETATYPE_H

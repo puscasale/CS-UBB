@@ -1,0 +1,21 @@
+# ninja log v5
+9	100	7380782099667867	test_oop_autogen/timestamp	588e875ba04ec31d
+9	100	7380782099667867	test_oop_autogen/mocs_compilation.cpp	588e875ba04ec31d
+132	185	7380743722103334	CMakeFiles/test_oop.dir/test_oop_autogen/mocs_compilation.cpp.obj	caa40536f643983d
+140	754	7380743727796235	CMakeFiles/test_oop.dir/Repo.cpp.obj	6f179f121ae5037
+135	640	7380743726649799	CMakeFiles/test_oop.dir/Echipe.cpp.obj	1c38657911fe9b7d
+78	367	7380754754148882	CMakeFiles/test_oop.dir/Service.cpp.obj	39968d2f4893380c
+103	2650	7380782125170478	CMakeFiles/test_oop.dir/main.cpp.obj	d4d69540874d409d
+2650	2912	7380782126525701	test_oop.exe	d9913d627009d92
+79	596	7380775582667840	CMakeFiles/test_oop.dir/tests.cpp.obj	ab14054a9db95caf
+8	123	7408386584850534	test_oop_autogen/timestamp	1fdb27777b8322c6
+8	123	7408386584850534	test_oop_autogen/mocs_compilation.cpp	1fdb27777b8322c6
+8	123	7408386584850534	C:/Users/Ale/Desktop/oop/test_oop/cmake-build-debug/test_oop_autogen/timestamp	1fdb27777b8322c6
+8	123	7408386584850534	C:/Users/Ale/Desktop/oop/test_oop/cmake-build-debug/test_oop_autogen/mocs_compilation.cpp	1fdb27777b8322c6
+133	187	7408386585460348	CMakeFiles/test_oop.dir/test_oop_autogen/mocs_compilation.cpp.obj	fdbcf1c6f8fee2b2
+126	494	7408386588568315	CMakeFiles/test_oop.dir/Echipe.cpp.obj	f84f19fc60078949
+128	539	7408386589018787	CMakeFiles/test_oop.dir/tests.cpp.obj	4589b528b1ad5631
+130	579	7408386589409369	CMakeFiles/test_oop.dir/Service.cpp.obj	f92dd8f1333e2a75
+123	682	7408386590445476	CMakeFiles/test_oop.dir/Repo.cpp.obj	4fd93f2ef00892b4
+125	2221	7408386605819515	CMakeFiles/test_oop.dir/main.cpp.obj	6175b806189b9781
+2221	2510	7408386607523959	test_oop.exe	642e5bef7b7e1257

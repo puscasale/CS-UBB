@@ -1,0 +1,5 @@
+C:/Users/Ale/Desktop/sim_apartamente/cmake-build-debug/CMakeFiles/sim_apartamente.dir
+C:/Users/Ale/Desktop/sim_apartamente/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Ale/Desktop/sim_apartamente/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/Ale/Desktop/sim_apartamente/cmake-build-debug/CMakeFiles/sim_apartamente_autogen_timestamp_deps.dir
+C:/Users/Ale/Desktop/sim_apartamente/cmake-build-debug/CMakeFiles/sim_apartamente_autogen.dir

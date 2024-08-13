@@ -1,0 +1,8 @@
+tit1, art1, Balet, 6666
+tit1, art1, Balet, 6666
+tit2, art2, Concert, 3433
+tit3, art3, Balet, 5656
+tit4, art4, Altele, 2232
+tit5, art5, Altele, 2345
+uyaw kigecu, eboyom reb, Concert, 2972
+onavolis x, i urezaxucot, Comedie, 3861

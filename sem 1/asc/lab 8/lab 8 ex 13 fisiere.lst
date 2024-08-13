@@ -1,0 +1,107 @@
+     1                                  bits 32
+     2                                  global start
+     3                                  extern exit, fopen, fclose, fread, printf
+     4                                  import exit msvcrt.dll
+     5                                  import fopen msvcrt.dll
+     6                                  import fclose msvcrt.dll
+     7                                  import fread msvcrt.dll
+     8                                  import printf msvcrt.dll
+     9                                  
+    10                                  segment data use32 class=data 
+    11 00000000 6C6162387072322E74-         nume_fisier db "lab8pr2.txt", 0
+    11 00000009 787400             
+    12 0000000C 7200                        mod_acces db "r", 0
+    13 0000000E FFFFFFFF                    descriptor_fisier dd -1
+    14                                      len equ 20
+    15 00000012 00<rept>                    text times (len+1) db 0
+    16 00000027 4E756D6172756C2064-         format db "Numarul de consoane este %d", 0
+    16 00000030 6520636F6E736F616E-
+    16 00000039 652065737465202564-
+    16 00000042 00                 
+    17                                      
+    18 00000043 6165696F754145494F-         sir_vocale db 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', ' '
+    18 0000004C 5520               
+    19                                      l_vocale equ $-sir_vocale
+    20 0000004E <res 00000004>              aux resd 1
+    21 00000052 <res 00000004>              auxesi resd 1
+    22 00000056 00000000                    nr_consoane dd 0
+    23 0000005A 01                          afisare db 1
+    24                                      
+    25                                  segment code use32 class=code
+    26                                  start:
+    27                                     
+    28                                          ;deschide fisier
+    29 00000000 68[0C000000]                    push dword mod_acces
+    30 00000005 68[00000000]                    push dword nume_fisier
+    31 0000000A FF15[00000000]                  call [fopen]
+    32 00000010 83C408                          add esp, 4*2
+    33                                          
+    34 00000013 A3[0E000000]                    mov [descriptor_fisier], eax
+    35                                          
+    36 00000018 83F800                          cmp eax, 0
+    37 0000001B 0F848E000000                    je final
+    38                                          
+    39                                          ; eax = fread(text, 1, len, descriptor_fis)
+    40 00000021 FF35[0E000000]                  push dword [descriptor_fisier]
+    41 00000027 6A14                            push dword len
+    42 00000029 6A01                            push dword 1
+    43 0000002B 68[12000000]                    push dword text
+    44 00000030 FF15[00000000]                  call [fread]
+    45 00000036 83C410                          add esp, 4*4
+    46                                          
+    47                                          ;dupa apelul functiei fread EAX contine numarul de caractere cititte din fisier 
+    48                                          
+    49 00000039 89C1                            mov ecx, eax; parcurgem sirul citit din fisier 
+    50 0000003B E372                            jecxz final 
+    51 0000003D BE[12000000]                    mov esi, text 
+    52 00000042 BF[5A000000]                    mov edi, afisare 
+    53                                          parcurgere:
+    54 00000047 AC                                  lodsb
+    55 00000048 AA                                  stosb
+    56                                              
+    57                                              ;parcurgem sirul de vocale si verificam daca litera se afiseaza in sir 
+    58 00000049 890D[4E000000]                      mov [aux], ecx
+    59 0000004F B90B000000                          mov ecx, l_vocale
+    60 00000054 E337                                jecxz sari 
+    61 00000056 8935[52000000]                      mov [auxesi], esi; salvam copia lui esi pentru a-l putea folosi
+    62 0000005C BE00000000                          mov esi, 0
+    63 00000061 B301                                mov bl, 1; daca litera e consoana bl ramane 1, daca nu se face 0
+    64                                              repeta:
+    65 00000063 8A47FF                                  mov al, [edi-1]
+    66 00000066 3A86[43000000]                          cmp al, [sir_vocale + esi]
+    67 0000006C 7502                                    jne diferit 
+    68 0000006E B300                                    mov bl, 0
+    69                                                  diferit:
+    70 00000070 46                                      inc esi 
+    71 00000071 E2F0                                loop repeta 
+    72                                              
+    73 00000073 8B35[52000000]                      mov esi, [auxesi]
+    74 00000079 80FB01                              cmp bl, 1; bl este 1 daca litera a fost consoana 
+    75 0000007C 750F                                jne sari 
+    76                                              
+    77 0000007E 8B1D[56000000]                      mov ebx, [nr_consoane]
+    78 00000084 83C301                              add ebx, 1
+    79 00000087 891D[56000000]                      mov [nr_consoane], ebx 
+    80                                              
+    81                                              sari:
+    82                                              
+    83 0000008D 8B0D[4E000000]                      mov ecx, [aux]
+    84 00000093 E2B2                            loop parcurgere 
+    85                                          
+    86 00000095 8B1D[56000000]                  mov ebx, [nr_consoane]
+    87                                          ;printf(format, nr_consoane)
+    88 0000009B FF35[56000000]                  push dword [nr_consoane]
+    89 000000A1 68[27000000]                    push dword format 
+    90 000000A6 FF15[00000000]                  call [printf]
+    91 000000AC 83C408                          add esp, 4*2
+    92                                          
+    93                                          
+    94                                          final:
+    95                                          
+    96                                          ;fclose(descriptor_fisier)
+    97 000000AF FF35[0E000000]                  push dword [descriptor_fisier]
+    98 000000B5 FF15[00000000]                  call [fclose]
+    99 000000BB 83C404                          add esp, 4*1
+   100                                   
+   101 000000BE 6A00                    push dword 0
+   102 000000C0 FF15[00000000]          call [exit]

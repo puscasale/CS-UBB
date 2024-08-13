@@ -1,0 +1,356 @@
+        -:    0:Source:C:/Users/Ale/Desktop/oop/lab2-4/functions_test.c
+        -:    0:Graph:C:\Users\Ale\Desktop\oop\lab2-4\cmake-build-debug-coverage\CMakeFiles\lab2_4.dir\functions_test.c.gcno
+        -:    0:Data:C:\Users\Ale\Desktop\oop\lab2-4\cmake-build-debug-coverage\CMakeFiles\lab2_4.dir\functions_test.c.gcda
+        -:    0:Runs:1
+        -:    1:#include "functions.h"
+        -:    2:#include <assert.h>
+        -:    3:#include <string.h>
+        -:    4:#include <stdio.h>
+        -:    5:
+function test_create_list called 1 returned 100% blocks executed 83%
+        1:    6:void test_create_list(){
+        -:    7:
+        1:    8:    Medicament_list medicamente = create_list();
+        1:    8-block  0
+call    0 returned 1
+       1*:    9:    assert(get_size(&medicamente) == 0);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:    9-block  0
+call    3 never executed
+        1:    9-block  1
+        1:   10:}
+        -:   11:
+function test_create_medicament called 1 returned 100% blocks executed 78%
+        1:   12:void test_create_medicament(){
+        -:   13:    Medicament medicament;
+        1:   14:    medicament = create_medicament(1, "nume", 2, 12);
+        1:   14-block  0
+call    0 returned 1
+       1*:   15:    assert(get_cod(&medicament) == 1);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   15-block  0
+call    3 never executed
+        1:   15-block  1
+       1*:   16:    assert(strcmp(get_nume(&medicament), "nume") == 0);
+        1:   16-block  0
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   16-block  1
+call    3 never executed
+        1:   16-block  2
+       1*:   17:    assert(get_concentratie(&medicament) == 2);
+        1:   17-block  0
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   17-block  1
+call    3 never executed
+        1:   17-block  2
+       1*:   18:    assert(get_cantitate(&medicament) == 12);
+        1:   18-block  0
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   18-block  1
+call    3 never executed
+        1:   18-block  2
+        1:   19:}
+        -:   20:
+function test_valid called 1 returned 100% blocks executed 82%
+        1:   21:void test_valid(){
+        1:   22:    Medicament_list medicamente = create_list();
+        1:   22-block  0
+call    0 returned 1
+        -:   23:    Medicament medicament, medicament1, medicament2;
+        -:   24:    char err[5][100];
+        -:   25:    int len;
+        -:   26:
+        1:   27:    medicament = create_medicament(1, "nume", 2, 12);
+call    0 returned 1
+       1*:   28:    assert(valid(&medicamente,medicament, err, &len));
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   28-block  0
+call    3 never executed
+        1:   28-block  1
+       1*:   29:    assert(len == 0);
+        1:   29-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   29-block  1
+call    2 never executed
+        1:   29-block  2
+        -:   30:
+        1:   31:    add(&medicamente, medicament);
+        1:   31-block  0
+call    0 returned 1
+        1:   32:    medicament1 = create_medicament(1, "23", -3, -5);
+call    0 returned 1
+        1:   33:    valid(&medicamente, medicament1, err, &len);
+call    0 returned 1
+       1*:   34:    assert(len != 0);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   34-block  0
+call    2 never executed
+        1:   34-block  1
+        1:   35:    add(&medicamente, medicament);
+        1:   35-block  0
+call    0 returned 1
+        1:   36:    int cod = -2;
+        -:   37:
+        1:   38:    medicament2 = create_medicament(cod, "numee", 3, 5);
+call    0 returned 1
+        1:   39:    valid(&medicamente, medicament2, err, &len);
+call    0 returned 1
+       1*:   40:    assert(len != 0);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   40-block  0
+call    2 never executed
+        1:   40-block  1
+        -:   41:
+        -:   42:
+        1:   43:}
+function test_valid_new_concentratie called 1 returned 100% blocks executed 75%
+        1:   44:void test_valid_new_concentratie(){
+        -:   45:    char err[5][100];
+        1:   46:    int len = 0;
+       1*:   47:    assert(valid_new_concentratie( 6, err, &len));
+        1:   47-block  0
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   47-block  1
+call    3 never executed
+        1:   47-block  2
+       1*:   48:    assert(len == 0);
+        1:   48-block  0
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   48-block  1
+call    2 never executed
+        1:   48-block  2
+        1:   49:    int concentratie = -2;
+        1:   50:    valid_new_concentratie( concentratie, err, &len);
+        1:   50-block  0
+call    0 returned 1
+       1*:   51:    assert(len != 0);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   51-block  0
+call    2 never executed
+        1:   51-block  1
+        1:   52:}
+        -:   53:
+function test_valid_new_name called 1 returned 100% blocks executed 78%
+        1:   54:void test_valid_new_name(){
+        -:   55:    char err[5][100];
+        1:   56:    int len = 0;
+        1:   57:    valid_new_name("paracetamol", err, &len);
+        1:   57-block  0
+call    0 returned 1
+       1*:   58:    assert(len == 0);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   58-block  0
+call    2 never executed
+        1:   58-block  1
+        1:   59:    valid_new_name("23", err, &len);
+        1:   59-block  0
+call    0 returned 1
+       1*:   60:    assert(len != 0);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:   60-block  0
+call    2 never executed
+        1:   60-block  1
+        1:   61:}
+        -:   62:
+function test_delete called 1 returned 100% blocks executed 86%
+        1:   63:void test_delete(){
+        1:   64:    Medicament_list  medicamente = create_list();
+        1:   64-block  0
+call    0 returned 1
+        -:   65:    Medicament medicament1, medicament2, medicament3;
+        1:   66:    medicament1 = create_medicament(1, "nume1", 2, 3);
+call    0 returned 1
+        1:   67:    medicament2 = create_medicament(2, "nume2", 3, 4);
+call    0 returned 1
+        1:   68:    medicament3 = create_medicament(3, "nume3", 4, 5);
+call    0 returned 1
+        1:   69:    add(&medicamente, medicament1);
+call    0 returned 1
+        1:   70:    add(&medicamente, medicament2);
+call    0 returned 1
+        1:   71:    add(&medicamente, medicament3);
+call    0 returned 1
+       1*:   72:    assert(get_size(&medicamente) == 3);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   72-block  0
+call    3 never executed
+        1:   72-block  1
+        1:   73:    delete(&medicamente, 1);
+        1:   73-block  0
+call    0 returned 1
+       1*:   74:    assert(get_size(&medicamente) == 2);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   74-block  0
+call    3 never executed
+        1:   74-block  1
+        1:   75:    delete(&medicamente, 2);
+        1:   75-block  0
+call    0 returned 1
+       1*:   76:    assert(get_size(&medicamente) == 1);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   76-block  0
+call    3 never executed
+        1:   76-block  1
+        1:   77:}
+        -:   78:
+function test_add called 1 returned 100% blocks executed 89%
+        1:   79:void test_add(){
+        1:   80:    Medicament_list medicamente = create_list();
+        1:   80-block  0
+call    0 returned 1
+        -:   81:    Medicament medicament1, medicament2, medicament3, medicament4;
+        1:   82:    medicament1 = create_medicament(1, "nume1", 2, 3);
+call    0 returned 1
+        1:   83:    medicament2 = create_medicament(2, "nume2", 3, 4);
+call    0 returned 1
+        1:   84:    medicament3 = create_medicament(3, "nume3", 4, 5);
+call    0 returned 1
+        1:   85:    add(&medicamente, medicament1);
+call    0 returned 1
+        1:   86:    add(&medicamente, medicament2);
+call    0 returned 1
+        1:   87:    add(&medicamente, medicament3);
+call    0 returned 1
+       1*:   88:    assert(get_size(&medicamente) == 3);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   88-block  0
+call    3 never executed
+        1:   88-block  1
+        1:   89:    medicament4 = create_medicament(4, "nume4", 5, 6);
+        1:   89-block  0
+call    0 returned 1
+        1:   90:    add(&medicamente, medicament4);
+call    0 returned 1
+       1*:   91:    assert(get_size(&medicamente) == 4);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:   91-block  0
+call    3 never executed
+        1:   91-block  1
+        -:   92:
+        1:   93:}
+        -:   94:
+function test_add_medicament called 1 returned 100% blocks executed 88%
+        1:   95:void test_add_medicament(){
+        1:   96:    Medicament_list medicamente = create_list();
+        1:   96-block  0
+call    0 returned 1
+        -:   97:    char err[5][100];
+        -:   98:    int len;
+        1:   99:    add_medicament(&medicamente, 1, "nume", 2, 4, err, &len);
+call    0 returned 1
+       1*:  100:    assert(get_size(&medicamente) == 1);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:  100-block  0
+call    3 never executed
+        1:  100-block  1
+        1:  101:    add_medicament(&medicamente, 2, "nume2", 3, 4, err, &len);
+        1:  101-block  0
+call    0 returned 1
+        -:  102:
+        1:  103:}
+        -:  104:
+function test_delete_medicament called 1 returned 100% blocks executed 81%
+        1:  105:void test_delete_medicament(){
+        1:  106:    Medicament_list medicamente = create_list();
+        1:  106-block  0
+call    0 returned 1
+        -:  107:    char err[5][100];
+        -:  108:    int len;
+        -:  109:
+        1:  110:    add_medicament(&medicamente, 1, "nume", 2, 3, err, &len);
+call    0 returned 1
+       1*:  111:    assert(get_size(&medicamente) == 1);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:  111-block  0
+call    3 never executed
+        1:  111-block  1
+        1:  112:    add_medicament(&medicamente, 2, "nume2", 5, 7, err, &len);
+        1:  112-block  0
+call    0 returned 1
+        1:  113:    delete_medicament(&medicamente, 10, err, &len);
+call    0 returned 1
+       1*:  114:    assert(len != 0);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  114-block  0
+call    2 never executed
+        1:  114-block  1
+        1:  115:    delete_medicament(&medicamente, 1, err, &len);
+        1:  115-block  0
+call    0 returned 1
+       1*:  116:    assert(get_size(&medicamente) == 0);
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    %%%%%:  116-block  0
+call    3 never executed
+        1:  116-block  1
+        1:  117:    delete_medicament(&medicamente, 6, err, &len);
+        1:  117-block  0
+call    0 returned 1
+       1*:  118:    assert(len != 0);
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    %%%%%:  118-block  0
+call    2 never executed
+        1:  118-block  1
+        -:  119:
+        1:  120:}
+        -:  121:
+function test_modificare_medicament called 1 returned 100% blocks executed 100%
+        1:  122:void test_modificare_medicament(){
+        1:  123:    Medicament_list medicamente = create_list();
+        1:  123-block  0
+call    0 returned 1
+        -:  124:    Medicament medicament;
+        -:  125:    char err[5][100];
+        -:  126:    int len;
+        1:  127:    medicament = create_medicament(1, "nume", 2, 3);
+call    0 returned 1
+        1:  128:    add(&medicamente, medicament);
+call    0 returned 1
+        1:  129:    modificare_medicament(&medicamente,1,"nume2",22,err, &len);
+call    0 returned 1
+        1:  130:    int concentratie = 22;
+        1:  131:    printf("%d",get_concentratie(&medicamente.nr[0]));
+call    0 returned 1
+call    1 returned 1
+        -:  132:    //assert(get_concentratie(&medicamente.nr[0]) == concentratie);
+        1:  133:}
+        -:  134:
+        -:  135:
